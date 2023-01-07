@@ -1,3 +1,9 @@
+import "../styling/theme.css";
+
 export const CreateSong = () => {
-  return <div>hello</div>;
+  return (
+    <div style={{ padding: "10px" }}>
+      <div style={{ background: "white" }}>hello</div>
+    </div>
+  );
 };
