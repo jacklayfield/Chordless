@@ -17,7 +17,7 @@
 }
 
 .alt-login {
-  width: 80%;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   padding-bottom: 1rem;
@@ -52,6 +52,8 @@ input:focus {
   transition: 0.2s;
   border-radius: 0.5rem;
   cursor: pointer;
+  color: white;
+  text-shadow: 2px 4px 4px rgba(39, 39, 39, 0.5);
 }
 
 .login-btn:hover {
@@ -59,12 +61,12 @@ input:focus {
 }
 
 .google {
-  background-color: #ff8080;
+  background-color: #ff4949;
 }
 
 .icon {
-  width: 20px;
-  height: 20px;
+  width: 1.5rem;
+  height: 1.5rem;
   margin-right: 10px;
 }
 
@@ -85,4 +87,9 @@ input:focus {
 
 .bottom {
   padding-bottom: 20px;
+}
+
+.google-login-text {
+  color: white;
+  text-shadow: 2px 4px 4px rgba(39, 39, 39, 0.5);
 }

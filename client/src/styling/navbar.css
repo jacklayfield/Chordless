@@ -1,0 +1,14 @@
+.nav-link {
+  margin-left: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: 0.1s;
+}
+
+.nav-link:hover {
+  transform: scale(1.1);
+}
+
+.sign-in {
+  margin-right: 30px;
+}

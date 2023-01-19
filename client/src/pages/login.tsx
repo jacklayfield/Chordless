@@ -19,12 +19,12 @@ export const Login = () => {
 
         <div className="login-btn">Login</div>
 
-        <h4 className="alt-login-text">Or login with</h4>
+        <h4 className="alt-login-text">Or</h4>
 
         <div className="alt-login">
           <div className="login-btn google" onClick={google}>
             <img src={Google} alt="" className="icon" />
-            Google
+            <span className="google-login-text">Login with Google</span>
           </div>
         </div>
       </div>
