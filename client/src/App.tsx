@@ -6,6 +6,7 @@ import { CreateSong } from "./pages/createSong";
 import { NavBar } from "./components/navBar";
 import { About } from "./pages/about";
 import { Login } from "./pages/login";
+import { CreateAccount } from "./pages/createAccount";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/createSong" element={<CreateSong />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/createAccount" element={<CreateAccount />} />
       </Routes>
     </Router>
   );

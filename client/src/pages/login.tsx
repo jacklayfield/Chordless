@@ -16,11 +16,12 @@ export const Login = () => {
         <div className="input-container bottom">
           <input type="password" placeholder="password" />
         </div>
-
         <button className="login-btn">Login</button>
-
+        <span>
+          New user? Sign up{" "}
+          <a href="http://localhost:3000/createAccount">Here</a>
+        </span>
         <h4 className="alt-login-text">Or</h4>
-
         <div className="alt-login">
           <button disabled className="login-btn google" onClick={google}>
             <img src={Google} alt="" className="icon" />

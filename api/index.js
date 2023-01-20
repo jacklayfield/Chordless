@@ -3,7 +3,8 @@ const dotenv = require("dotenv");
 const passportSetup = require("./passport");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
-const authRoute = require("./routes/auth-google");
+const authGoogleRoute = require("./routes/auth-google");
+const authStandardRoute = require("./routes/auth-standard");
 const cors = require("cors");
 const songRoute = require("./routes/songs");
 const userRoute = require("./routes/users");
@@ -46,7 +47,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/auth-google", authRoute);
+app.use("/auth-google", authGoogleRoute);
+app.use("/api/auth-standard", authStandardRoute);
 app.use("/api/songs", songRoute);
 app.use("/api/users", userRoute);
 
