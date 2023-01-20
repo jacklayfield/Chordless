@@ -8,7 +8,6 @@ import { About } from "./pages/about";
 import { Login } from "./pages/login";
 
 function App() {
-  document.body.classList.add("background-red");
   return (
     <Router>
       <NavBar />

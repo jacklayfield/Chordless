@@ -1,12 +1,12 @@
 const express = require("express");
-const Sequelize = require("sequelize");
 const dotenv = require("dotenv");
 const passportSetup = require("./passport");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
-const authRoute = require("./routes/auth");
+const authRoute = require("./routes/auth-google");
 const cors = require("cors");
-const session = require("express-session");
+const songRoute = require("./routes/songs");
+const userRoute = require("./routes/users");
 
 dotenv.config();
 
@@ -45,30 +45,13 @@ app.use(
   })
 );
 
-app.use("/auth", authRoute);
-
-const sequelize = new Sequelize(process.env.DATABASE_URL);
+app.use(express.json());
+app.use("/auth-google", authRoute);
+app.use("/api/songs", songRoute);
+app.use("/api/users", userRoute);
 
 // console.log(process.env.PGHOST);
 
 app.listen("8000", () => {
   console.log("Server running...");
-});
-
-const Song = sequelize.define(
-  "songs",
-  {
-    id: {
-      field: "name",
-      type: Sequelize.STRING,
-      primaryKey: true,
-    },
-  },
-  { timestamps: false }
-);
-
-app.get("/api/songs", function (request, response) {
-  Song.findAll().then((songs) => {
-    response.json(songs);
-  });
 });

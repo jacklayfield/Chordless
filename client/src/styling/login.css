@@ -54,6 +54,7 @@ input:focus {
   cursor: pointer;
   color: white;
   text-shadow: 2px 4px 4px rgba(39, 39, 39, 0.5);
+  border-width: 0px;
 }
 
 .login-btn:hover {
@@ -61,7 +62,9 @@ input:focus {
 }
 
 .google {
-  background-color: #ff4949;
+  background-color: #c9c9c9;
+  transform: scale(1) !important;
+  cursor: not-allowed !important;
 }
 
 .icon {

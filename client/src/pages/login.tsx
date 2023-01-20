@@ -4,7 +4,7 @@ import "../styling/theme.css";
 
 export const Login = () => {
   const google = () => {
-    window.open("http://localhost:8000/auth/google", "_self");
+    window.open("http://localhost:8000/auth-google/google", "_self");
   };
   return (
     <div className="center">
@@ -17,15 +17,15 @@ export const Login = () => {
           <input type="password" placeholder="password" />
         </div>
 
-        <div className="login-btn">Login</div>
+        <button className="login-btn">Login</button>
 
         <h4 className="alt-login-text">Or</h4>
 
         <div className="alt-login">
-          <div className="login-btn google" onClick={google}>
+          <button disabled className="login-btn google" onClick={google}>
             <img src={Google} alt="" className="icon" />
             <span className="google-login-text">Login with Google</span>
-          </div>
+          </button>
         </div>
       </div>
     </div>
