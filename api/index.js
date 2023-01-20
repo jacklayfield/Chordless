@@ -6,14 +6,33 @@ const cookieSession = require("cookie-session");
 const passport = require("passport");
 const authRoute = require("./routes/auth");
 const cors = require("cors");
+const session = require("express-session");
 
 dotenv.config();
 
 const app = express();
 
 app.use(
-  cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })
+  cookieSession({
+    name: "session",
+    keys: ["random"],
+    maxAge: 24 * 60 * 60 * 100,
+  })
 );
+
+app.use(function (request, response, next) {
+  if (request.session && !request.session.regenerate) {
+    request.session.regenerate = (cb) => {
+      cb();
+    };
+  }
+  if (request.session && !request.session.save) {
+    request.session.save = (cb) => {
+      cb();
+    };
+  }
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());

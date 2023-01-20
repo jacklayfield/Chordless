@@ -13,7 +13,6 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, done) {
       done(null, profile);
-      // Will need callback here
     }
   )
 );
