@@ -14,13 +14,13 @@ export const CreateAccount = () => {
   const [error, setError] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("HERE");
-
+    event.preventDefault();
     try {
       const res = await axios.post("/api/auth-standard/create", {
         data: { username, email, password },
       });
-      res.data && window.location.replace("/");
+      console.log(res.data);
+      console.log("HERE");
     } catch (err) {
       setError(true);
       console.log(err);

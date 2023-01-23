@@ -3,6 +3,8 @@ const User = require("../models/User");
 const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
 
 // CREATE USER
 router.post("/create", async (req, res) => {
@@ -33,8 +35,16 @@ router.post("/login", async (req, res) => {
     const validated = await bcrypt.compare(req.body.password, user.password);
     !validated && res.status(400).json("Wrong credentials!");
 
-    const { password, ...others } = user.dataValues;
-    res.status(200).json(others);
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // 24 hours
+    });
+
+    res.status(200).send({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      accessToken: token,
+    });
   } catch (err) {
     console.error(err.message);
   }
