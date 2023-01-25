@@ -28,12 +28,24 @@ router.post("/create", async (req, res) => {
 // LOGIN (NEED TO IMPLEMENT)
 router.post("/login", async (req, res) => {
   try {
-    console.log(req.body.username);
-    const user = await User.findOne({ where: { username: req.body.username } });
-    !user && res.status(400).json("Wrong credentials!");
+    const user = await User.findOne({
+      where: { username: req.body.data.username },
+    });
 
-    const validated = await bcrypt.compare(req.body.password, user.password);
-    !validated && res.status(400).json("Wrong credentials!");
+    if (!user) {
+      console.log("failed to find user");
+      return res.status(400).json("Wrong credentials!");
+    }
+
+    const validated = await bcrypt.compare(
+      req.body.data.password,
+      user.password
+    );
+
+    if (!validated) {
+      console.log("failed to verify password");
+      return res.status(400).json("Wrong credentials!");
+    }
 
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours

@@ -1,20 +1,55 @@
+import React, { useState } from "react";
 import Google from "../google.png";
 import "../styling/login.css";
 import "../styling/theme.css";
+import axios from "axios";
 
 export const Login = () => {
   const google = () => {
     window.open("http://localhost:8000/auth-google/google", "_self");
   };
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      console.log(username);
+      const res = await axios
+        .post("/api/auth-standard/login", {
+          data: { username, password },
+        })
+        .then((response) => {
+          if (response.data.accessToken) {
+            localStorage.setItem(
+              "chordless-token",
+              JSON.stringify(response.data.accessToken)
+            );
+          }
+        });
+      console.log("HERE");
+    } catch (err) {
+      setError(true);
+      console.log(err);
+    }
+  };
   return (
     <div className="center">
-      <div className="cover">
+      <form className="cover" onSubmit={handleSubmit}>
         <h1 className="login-text">Login</h1>
         <div className="input-container">
-          <input type="text" placeholder="username" />
+          <input
+            type="text"
+            placeholder="username"
+            onChange={(event) => setUsername(event.target.value)}
+          />
         </div>
         <div className="input-container bottom">
-          <input type="password" placeholder="password" />
+          <input
+            type="password"
+            placeholder="password"
+            onChange={(event) => setPassword(event.target.value)}
+          />
         </div>
         <button className="login-btn">Login</button>
         <span>
@@ -28,7 +63,7 @@ export const Login = () => {
             <span className="google-login-text">Login with Google</span>
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
