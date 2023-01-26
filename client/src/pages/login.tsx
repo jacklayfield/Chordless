@@ -21,10 +21,7 @@ export const Login = () => {
         })
         .then((response) => {
           if (response.data.accessToken) {
-            localStorage.setItem(
-              "chordless-token",
-              JSON.stringify(response.data.accessToken)
-            );
+            localStorage.setItem("chordless-token", response.data.accessToken);
           }
         });
       console.log("HERE");

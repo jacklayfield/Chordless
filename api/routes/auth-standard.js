@@ -25,8 +25,9 @@ router.post("/create", async (req, res) => {
   }
 });
 
-// LOGIN (NEED TO IMPLEMENT)
+// LOGIN
 router.post("/login", async (req, res) => {
+  console.log(req.headers);
   try {
     const user = await User.findOne({
       where: { username: req.body.data.username },
