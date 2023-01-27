@@ -25,6 +25,8 @@ router.post("/create", async (req, res) => {
   }
 });
 
+let refreshTokens = [];
+
 // LOGIN
 router.post("/login", async (req, res) => {
   console.log(req.headers);
@@ -49,18 +51,42 @@ router.post("/login", async (req, res) => {
     }
 
     var token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
+      expiresIn: "15s",
     });
+
+    var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
+      expiresIn: "86400s",
+    });
+
+    refreshTokens.push(token_refresh);
+
+    res.cookie("token", token, { httpOnly: true });
+    res.cookie("refreshToken", token_refresh, { httpOnly: true });
 
     res.status(200).send({
       id: user.id,
       username: user.username,
       email: user.email,
       accessToken: token,
+      refreshToken: token_refresh,
     });
   } catch (err) {
     console.error(err.message);
   }
+});
+
+router.post("/token=:token", (req, res) => {
+  const refreshToken = req.params.token;
+  if (refreshToken == null) return res.sendStatus(401);
+  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
+  jwt.verify(refreshToken, config.refresh_secret, (err, user) => {
+    if (err) return res.sendStatus(403);
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: "15s",
+    });
+    res.cookie("token", token, { httpOnly: true });
+    res.json({ accessToken: token });
+  });
 });
 
 module.exports = router;

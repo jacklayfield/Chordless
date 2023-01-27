@@ -8,10 +8,13 @@ const authStandardRoute = require("./routes/auth-standard");
 const cors = require("cors");
 const songRoute = require("./routes/songs");
 const userRoute = require("./routes/users");
+const cookieParser = require("cookie-parser");
 
 dotenv.config();
 
 const app = express();
+
+app.use(cookieParser());
 
 app.use(
   cookieSession({

@@ -20,8 +20,9 @@ export const Login = () => {
           data: { username, password },
         })
         .then((response) => {
-          if (response.data.accessToken) {
+          if (response.data.accessToken && response.data.refreshToken) {
             localStorage.setItem("chordless-token", response.data.accessToken);
+            localStorage.setItem("refresh-token", response.data.refreshToken);
           }
         });
       console.log("HERE");

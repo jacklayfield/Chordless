@@ -1,6 +1,17 @@
 import * as React from "react";
 import axios from "axios";
 
+// axios.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("chordless-token");
+//     config.headers.authorization = `Bearer ${token}`;
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   }
+// );
+
 export type UserType = {
   username: string;
   email: string;
@@ -31,17 +42,37 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   }, []);
 
   const checkLogin = async () => {
-    const token = localStorage.getItem("chordless-token");
+    const refreshToken = localStorage.getItem("refresh-token");
 
-    console.log(token);
+    console.log(refreshToken);
 
     console.log("CHECKING LOGIN");
 
     setAuthIsLoading(true);
 
+    //If the user has a refresh token, let's refresh the access token
+    if (refreshToken) {
+      console.log("IN HERE111");
+      const res = await axios
+        .post("/api/auth-standard/token=" + refreshToken)
+        .then((response) => {
+          if (response.data.accessToken) {
+            localStorage.setItem("chordless-token", response.data.accessToken);
+          }
+        })
+        .catch((_error) => {
+          console.log(_error);
+        });
+    }
+
+    //grab the newest token
+    const token = localStorage.getItem("chordless-token");
+
+    console.log(token);
+
+    //authenticate the token and return user data
     if (token) {
-      // const res = await axios.get("/api/users/id=" + token);
-      // console.log(res);
+      console.log("IN HERE112");
       const res = await axios
         .get("/api/users/id=" + token)
         .then((response) => {

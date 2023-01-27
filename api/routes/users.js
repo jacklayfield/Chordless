@@ -10,8 +10,11 @@ module.exports = router;
 
 router.get("/id=:id", async (req, res) => {
   try {
-    console.log(req.params.id);
-    const decoded = jwt.verify(req.params.id, config.secret);
+    // console.log(req.cookies.token);
+    // console.log("TOKEN FROM HTTP HEADER: " + req.headers);
+    // console.log(req.headers);
+    // console.log(req.params.id);
+    const decoded = jwt.verify(req.cookies.token, config.secret);
     user_id = decoded.id;
 
     const user = await User.findOne({
