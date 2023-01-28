@@ -18,8 +18,8 @@ router.post("/create", async (req, res) => {
     );
 
     res.json(results);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 });
 

@@ -5,6 +5,7 @@ const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
+const RefreshToken = require("../models/RefreshToken");
 
 // CREATE USER
 router.post("/create", async (req, res) => {
@@ -20,17 +21,16 @@ router.post("/create", async (req, res) => {
     );
 
     res.json(results);
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 });
-
-let refreshTokens = [];
 
 // LOGIN
 router.post("/login", async (req, res) => {
   console.log(req.headers);
   try {
+    // Grab user from DB and validate
     const user = await User.findOne({
       where: { username: req.body.data.username },
     });
@@ -50,6 +50,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json("Wrong credentials!");
     }
 
+    // Sign the new tokens for the now verified user
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: "15s",
     });
@@ -58,8 +59,17 @@ router.post("/login", async (req, res) => {
       expiresIn: "86400s",
     });
 
-    refreshTokens.push(token_refresh);
+    // Put the refresh token in the DB
+    try {
+      const [results, meta] = await sequelize.query(
+        "INSERT INTO refreshtokens (tokenvalue) VALUES($1) RETURNING *",
+        { bind: [token_refresh], type: QueryTypes.INSERT }
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
 
+    // Set cookies
     res.cookie("token", token, { httpOnly: true });
     res.cookie("refreshToken", token_refresh, { httpOnly: true });
 
@@ -70,20 +80,45 @@ router.post("/login", async (req, res) => {
       accessToken: token,
       refreshToken: token_refresh,
     });
-  } catch (err) {
-    console.error(err.message);
+  } catch (error) {
+    console.error(error.message);
   }
 });
 
-router.post("/refresh", (req, res) => {
+router.post("/refresh", async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (refreshToken == null) return res.sendStatus(401);
-  if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
-  jwt.verify(refreshToken, config.refresh_secret, (err, user) => {
-    if (err) return res.sendStatus(403);
+
+  // Check DB to see if refresh token exists
+  try {
+    const tokenFromDB = await RefreshToken.findOne({
+      where: { tokenValue: refreshToken },
+    });
+
+    if (!tokenFromDB) return res.sendStatus(403);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Verify token with secret
+  jwt.verify(refreshToken, config.refresh_secret, async (error, user) => {
+    if (error) {
+      // If there is an error, token is no longer valid, delete it from DB and return
+      try {
+        const [results, meta] = await sequelize.query(
+          "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
+          { bind: [refreshToken], type: QueryTypes.INSERT }
+        );
+      } catch (error) {
+        console.error(error.message);
+      }
+      return res.sendStatus(403);
+    }
+    //otherwise let's sign the new access token for the user
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: "15s",
     });
+    // Set cookie
     res.cookie("token", token, { httpOnly: true });
     res.json({ accessToken: token });
   });
@@ -91,10 +126,19 @@ router.post("/refresh", (req, res) => {
 
 router.get("/logout", async (req, res) => {
   try {
-    // Call to DB to delete refreshToken
+    //delete the refresh token from the DB
+    try {
+      const [results, meta] = await sequelize.query(
+        "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
+        { bind: [req.cookies.refreshToken], type: QueryTypes.INSERT }
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
+    //clear all user cookies
     res.clearCookie("token");
     res.clearCookie("refreshToken");
-    await req.user.save();
+    res.status(200).send("User logged out");
   } catch (error) {
     res.status(500).send(error);
   }

@@ -20,10 +20,9 @@ export const CreateAccount = () => {
         data: { username, email, password },
       });
       console.log(res.data);
-      console.log("HERE");
-    } catch (err) {
+    } catch (error) {
       setError(true);
-      console.log(err);
+      console.error(error);
     }
   };
 

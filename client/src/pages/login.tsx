@@ -14,18 +14,12 @@ export const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      console.log(username);
-      const res = await axios
-        .post("/api/auth-standard/login", {
-          data: { username, password },
-        })
-        .then((response) => {
-          //handle failure nicely here
-        });
-      console.log("HERE");
-    } catch (err) {
+      const res = await axios.post("/api/auth-standard/login", {
+        data: { username, password },
+      });
+    } catch (error) {
       setError(true);
-      console.log(err);
+      console.error(error);
     }
   };
   return (

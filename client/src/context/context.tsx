@@ -31,25 +31,25 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   }, []);
 
   const checkLogin = async () => {
-    console.log("CHECKING LOGIN");
-
     setAuthIsLoading(true);
 
     // Refresh our token
-    const res = await axios
+    axios
       .post("/api/auth-standard/refresh")
       .then((response) => {
-        //handle failure nicely here
+        if (response.data.accessToken) {
+          console.log("Token refreshed");
+        }
       })
-      .catch((_error) => {
-        console.log(_error);
+      .catch((error) => {
+        console.error(error);
       });
 
     // Auth our current token and return back our user data if successful
-    const res2 = await axios
+    axios
       .get("/api/users/userdata")
       .then((response) => {
-        console.log("CURRENT USER RES", String(response.data.username));
+        console.log("user: ", String(response.data.username));
         const user: UserType = {
           username: String(response.data.username),
           email: String(response.data.email),
@@ -57,19 +57,17 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
         setCurrentUser(user);
         setAuthIsLoading(false);
       })
-      .catch((_error) => {
+      .catch((error) => {
+        console.error(error);
         setCurrentUser({} as UserType);
         setAuthIsLoading(false);
       });
   };
 
   const handleLogout = async () => {
-    console.log("clicked");
-    try {
-      const res2 = await axios.get("/api/auth-standard/logout");
-    } catch (error) {
-      console.log("Error with logout");
-    }
+    axios.get("/api/auth-standard/logout").catch((error) => {
+      console.error(error);
+    });
 
     setCurrentUser({} as UserType);
   };
