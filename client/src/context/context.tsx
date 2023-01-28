@@ -1,17 +1,6 @@
 import * as React from "react";
 import axios from "axios";
 
-// axios.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("chordless-token");
-//     config.headers.authorization = `Bearer ${token}`;
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 export type UserType = {
   username: string;
   email: string;
@@ -42,60 +31,46 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   }, []);
 
   const checkLogin = async () => {
-    const refreshToken = localStorage.getItem("refresh-token");
-
-    console.log(refreshToken);
-
     console.log("CHECKING LOGIN");
 
     setAuthIsLoading(true);
 
-    //If the user has a refresh token, let's refresh the access token
-    if (refreshToken) {
-      console.log("IN HERE111");
-      const res = await axios
-        .post("/api/auth-standard/token=" + refreshToken)
-        .then((response) => {
-          if (response.data.accessToken) {
-            localStorage.setItem("chordless-token", response.data.accessToken);
-          }
-        })
-        .catch((_error) => {
-          console.log(_error);
-        });
-    }
+    // Refresh our token
+    const res = await axios
+      .post("/api/auth-standard/refresh")
+      .then((response) => {
+        //handle failure nicely here
+      })
+      .catch((_error) => {
+        console.log(_error);
+      });
 
-    //grab the newest token
-    const token = localStorage.getItem("chordless-token");
-
-    console.log(token);
-
-    //authenticate the token and return user data
-    if (token) {
-      console.log("IN HERE112");
-      const res = await axios
-        .get("/api/users/id=" + token)
-        .then((response) => {
-          console.log("CURRENT USER RES", String(response.data.username));
-          const user: UserType = {
-            username: String(response.data.username),
-            email: String(response.data.email),
-          };
-          setCurrentUser(user);
-          setAuthIsLoading(false);
-        })
-        .catch((_error) => {
-          setCurrentUser({} as UserType);
-          setAuthIsLoading(false);
-        });
-    } else {
-      setCurrentUser({} as UserType);
-      setAuthIsLoading(false);
-    }
+    // Auth our current token and return back our user data if successful
+    const res2 = await axios
+      .get("/api/users/userdata")
+      .then((response) => {
+        console.log("CURRENT USER RES", String(response.data.username));
+        const user: UserType = {
+          username: String(response.data.username),
+          email: String(response.data.email),
+        };
+        setCurrentUser(user);
+        setAuthIsLoading(false);
+      })
+      .catch((_error) => {
+        setCurrentUser({} as UserType);
+        setAuthIsLoading(false);
+      });
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem("chordless-token");
+    console.log("clicked");
+    try {
+      const res2 = await axios.get("/api/auth-standard/logout");
+    } catch (error) {
+      console.log("Error with logout");
+    }
+
     setCurrentUser({} as UserType);
   };
 

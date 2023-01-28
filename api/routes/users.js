@@ -8,7 +8,7 @@ const config = require("../config/auth.config");
 
 module.exports = router;
 
-router.get("/id=:id", async (req, res) => {
+router.get("/userdata", async (req, res) => {
   try {
     // console.log(req.cookies.token);
     // console.log("TOKEN FROM HTTP HEADER: " + req.headers);

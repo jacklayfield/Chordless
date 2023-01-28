@@ -75,8 +75,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/token=:token", (req, res) => {
-  const refreshToken = req.params.token;
+router.post("/refresh", (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
   if (refreshToken == null) return res.sendStatus(401);
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
   jwt.verify(refreshToken, config.refresh_secret, (err, user) => {
@@ -87,6 +87,17 @@ router.post("/token=:token", (req, res) => {
     res.cookie("token", token, { httpOnly: true });
     res.json({ accessToken: token });
   });
+});
+
+router.get("/logout", async (req, res) => {
+  try {
+    // Call to DB to delete refreshToken
+    res.clearCookie("token");
+    res.clearCookie("refreshToken");
+    await req.user.save();
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;

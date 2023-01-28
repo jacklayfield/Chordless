@@ -20,10 +20,7 @@ export const Login = () => {
           data: { username, password },
         })
         .then((response) => {
-          if (response.data.accessToken && response.data.refreshToken) {
-            localStorage.setItem("chordless-token", response.data.accessToken);
-            localStorage.setItem("refresh-token", response.data.refreshToken);
-          }
+          //handle failure nicely here
         });
       console.log("HERE");
     } catch (err) {
