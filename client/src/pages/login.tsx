@@ -30,6 +30,7 @@ export const Login = () => {
           <input
             type="text"
             placeholder="username"
+            required
             onChange={(event) => setUsername(event.target.value)}
           />
         </div>
@@ -37,6 +38,7 @@ export const Login = () => {
           <input
             type="password"
             placeholder="password"
+            required
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>

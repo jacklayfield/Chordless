@@ -39,23 +39,23 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
       .then((response) => {
         if (response.data.accessToken) {
           console.log("Token refreshed");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    // Auth our current token and return back our user data if successful
-    axios
-      .get("/api/users/userdata")
-      .then((response) => {
-        console.log("user: ", String(response.data.username));
-        const user: UserType = {
-          username: String(response.data.username),
-          email: String(response.data.email),
-        };
-        setCurrentUser(user);
-        setAuthIsLoading(false);
+        } // Auth our current token and return back our user data if successful
+        axios
+          .get("/api/users/userdata")
+          .then((response) => {
+            console.log("user: ", String(response.data.username));
+            const user: UserType = {
+              username: String(response.data.username),
+              email: String(response.data.email),
+            };
+            setCurrentUser(user);
+            setAuthIsLoading(false);
+          })
+          .catch((error) => {
+            console.error(error);
+            setCurrentUser({} as UserType);
+            setAuthIsLoading(false);
+          });
       })
       .catch((error) => {
         console.error(error);

@@ -12,10 +12,12 @@ module.exports = sequelize.define(
     username: {
       field: "username",
       type: Sequelize.STRING,
+      unique: true,
     },
     email: {
       field: "email",
       type: Sequelize.STRING,
+      unique: true,
     },
     password: {
       field: "password",

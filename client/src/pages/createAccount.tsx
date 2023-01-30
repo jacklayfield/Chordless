@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Google from "../google.png";
 import "../styling/login.css";
 import "../styling/theme.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const CreateAccount = () => {
   const google = () => {
@@ -12,6 +12,8 @@ export const CreateAccount = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [emailError, setEmailError] = useState<boolean>(false);
+  const [usernameError, setusernameError] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,10 +21,21 @@ export const CreateAccount = () => {
       const res = await axios.post("/api/auth-standard/create", {
         data: { username, email, password },
       });
-      console.log(res.data);
     } catch (error) {
       setError(true);
-      console.error(error);
+      console.log(error);
+      setusernameError(false);
+      setEmailError(false);
+      if (
+        `${(error as AxiosError)?.response?.data}` == "email must be unique"
+      ) {
+        setEmailError(true);
+      }
+      if (
+        `${(error as AxiosError)?.response?.data}` == "username must be unique"
+      ) {
+        setusernameError(true);
+      }
     }
   };
 
@@ -35,6 +48,8 @@ export const CreateAccount = () => {
           <input
             type="text"
             placeholder="username"
+            minLength={3}
+            required
             onChange={(event) => setUsername(event.target.value)}
           />
         </div>
@@ -42,6 +57,8 @@ export const CreateAccount = () => {
           <input
             type="text"
             placeholder="email"
+            minLength={7}
+            required
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
@@ -49,6 +66,8 @@ export const CreateAccount = () => {
           <input
             type="password"
             placeholder="password"
+            minLength={6}
+            required
             onChange={(event) => setPassword(event.target.value)}
           />
         </div>
@@ -60,6 +79,16 @@ export const CreateAccount = () => {
             <span className="google-login-text">Login with Google</span>
           </button>
         </div>
+        {emailError && (
+          <div style={{ color: "red", fontSize: "20px" }}>
+            Sorry, that email is already in use!
+          </div>
+        )}
+        {usernameError && (
+          <div style={{ color: "red", fontSize: "20px" }}>
+            Sorry, that username is already taken!
+          </div>
+        )}
       </form>
     </div>
   );

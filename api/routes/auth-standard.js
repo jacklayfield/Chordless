@@ -15,14 +15,19 @@ router.post("/create", async (req, res) => {
     const hashedPass = await bcrypt.hash(req.body.data.password, salt);
     const username = req.body.data.username;
     const email = req.body.data.email;
+
     const [results, meta] = await sequelize.query(
       "INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *",
       { bind: [username, email, hashedPass], type: QueryTypes.INSERT }
     );
 
+    console.log(results);
+
     res.json(results);
   } catch (error) {
-    console.error(error.message);
+    console.log(error.errors[0].message);
+    console.log(error);
+    res.status(500).send(error.errors[0].message);
   }
 });
 
@@ -56,7 +61,7 @@ router.post("/login", async (req, res) => {
     });
 
     var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
-      expiresIn: "86400s",
+      expiresIn: "30s",
     });
 
     // Put the refresh token in the DB
