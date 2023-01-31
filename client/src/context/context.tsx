@@ -33,34 +33,52 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   const checkLogin = async () => {
     setAuthIsLoading(true);
 
-    // Refresh our token
+    /* Here let's first check the users token. If it has expired,
+     * we can refresh it using the refresh token and try once more.
+     */
     axios
-      .post("/api/auth-standard/refresh")
+      .get("/api/users/userdata")
       .then((response) => {
-        if (response.data.accessToken) {
-          console.log("Token refreshed");
-        } // Auth our current token and return back our user data if successful
+        console.log("user: ", String(response.data.username));
+        const user: UserType = {
+          username: String(response.data.username),
+          email: String(response.data.email),
+        };
+        setCurrentUser(user);
+        setAuthIsLoading(false);
+      })
+      .catch((error) => {
+        // Here we failed the regular token check, so we will now attempt to refresh the token
+        console.error(error);
         axios
-          .get("/api/users/userdata")
+          .post("/api/auth-standard/refresh")
           .then((response) => {
-            console.log("user: ", String(response.data.username));
-            const user: UserType = {
-              username: String(response.data.username),
-              email: String(response.data.email),
-            };
-            setCurrentUser(user);
-            setAuthIsLoading(false);
+            if (response.data.accessToken) {
+              console.log("Token refreshed");
+            }
+            // If we made it here then we have refreshed properly, so auth again
+            axios
+              .get("/api/users/userdata")
+              .then((response) => {
+                console.log("user: ", String(response.data.username));
+                const user: UserType = {
+                  username: String(response.data.username),
+                  email: String(response.data.email),
+                };
+                setCurrentUser(user);
+                setAuthIsLoading(false);
+              })
+              .catch((error) => {
+                console.error(error);
+                setCurrentUser({} as UserType);
+                setAuthIsLoading(false);
+              });
           })
           .catch((error) => {
             console.error(error);
             setCurrentUser({} as UserType);
             setAuthIsLoading(false);
           });
-      })
-      .catch((error) => {
-        console.error(error);
-        setCurrentUser({} as UserType);
-        setAuthIsLoading(false);
       });
   };
 

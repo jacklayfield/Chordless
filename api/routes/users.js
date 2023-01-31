@@ -10,10 +10,6 @@ module.exports = router;
 
 router.get("/userdata", async (req, res) => {
   try {
-    // console.log(req.cookies.token);
-    // console.log("TOKEN FROM HTTP HEADER: " + req.headers);
-    // console.log(req.headers);
-    // console.log(req.params.id);
     const decoded = jwt.verify(req.cookies.token, config.secret);
     user_id = decoded.id;
 
@@ -26,7 +22,8 @@ router.get("/userdata", async (req, res) => {
     parsedUser = { username, email };
 
     res.json(parsedUser);
-  } catch (err) {
-    res.json(err);
+  } catch (error) {
+    console.error(error);
+    res.status(403).send(error);
   }
 });

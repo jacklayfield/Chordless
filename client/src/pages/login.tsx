@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Google from "../google.png";
 import "../styling/login.css";
 import "../styling/theme.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const Login = () => {
   const google = () => {
@@ -14,12 +14,16 @@ export const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      setError(false);
       const res = await axios.post("/api/auth-standard/login", {
         data: { username, password },
       });
     } catch (error) {
       setError(true);
-      console.error(error);
+      console.log(`${(error as AxiosError)?.response?.data}`);
+      if (`${(error as AxiosError)?.response?.data}` == "Wrong credentials!") {
+        console.log("Erroorr");
+      }
     }
   };
   return (
@@ -54,6 +58,19 @@ export const Login = () => {
             <span className="google-login-text">Login with Google</span>
           </button>
         </div>
+        {error && (
+          <div
+            style={{
+              background: "black",
+              color: "red",
+              fontSize: "20px",
+              marginBottom: "20px",
+              padding: "0 10px 0 10px",
+            }}
+          >
+            Password and/or username is incorrect
+          </div>
+        )}
       </form>
     </div>
   );

@@ -25,8 +25,7 @@ router.post("/create", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.log(error.errors[0].message);
-    console.log(error);
+    console.error(error);
     res.status(500).send(error.errors[0].message);
   }
 });
@@ -61,7 +60,7 @@ router.post("/login", async (req, res) => {
     });
 
     var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
-      expiresIn: "30s",
+      expiresIn: "86400s",
     });
 
     // Put the refresh token in the DB
@@ -102,7 +101,8 @@ router.post("/refresh", async (req, res) => {
 
     if (!tokenFromDB) return res.sendStatus(403);
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
+    console.error(error);
   }
 
   // Verify token with secret

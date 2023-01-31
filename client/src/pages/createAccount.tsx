@@ -18,14 +18,14 @@ export const CreateAccount = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      setusernameError(false);
+      setEmailError(false);
       const res = await axios.post("/api/auth-standard/create", {
         data: { username, email, password },
       });
     } catch (error) {
       setError(true);
       console.log(error);
-      setusernameError(false);
-      setEmailError(false);
       if (
         `${(error as AxiosError)?.response?.data}` == "email must be unique"
       ) {
@@ -80,12 +80,28 @@ export const CreateAccount = () => {
           </button>
         </div>
         {emailError && (
-          <div style={{ color: "red", fontSize: "20px" }}>
+          <div
+            style={{
+              background: "black",
+              color: "red",
+              fontSize: "20px",
+              marginBottom: "20px",
+              padding: "0 10px 0 10px",
+            }}
+          >
             Sorry, that email is already in use!
           </div>
         )}
         {usernameError && (
-          <div style={{ color: "red", fontSize: "20px" }}>
+          <div
+            style={{
+              background: "black",
+              color: "red",
+              fontSize: "20px",
+              marginBottom: "20px",
+              padding: "0 10px 0 10px",
+            }}
+          >
             Sorry, that username is already taken!
           </div>
         )}
