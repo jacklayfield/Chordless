@@ -117,7 +117,9 @@ router.post("/refresh", async (req, res) => {
       } catch (error) {
         console.error(error.message);
       }
-      return res.sendStatus(403);
+      res.clearCookie("token");
+      res.clearCookie("refreshToken");
+      return res.status(403).send("token auth failed");
     }
     //otherwise let's sign the new access token for the user
     var token = jwt.sign({ id: user.id }, config.secret, {

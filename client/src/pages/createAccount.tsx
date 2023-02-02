@@ -82,11 +82,12 @@ export const CreateAccount = () => {
         {emailError && (
           <div
             style={{
-              background: "black",
-              color: "red",
-              fontSize: "20px",
+              background: "#ff5757",
+              color: "#212529",
               marginBottom: "20px",
-              padding: "0 10px 0 10px",
+              padding: "10px 10px 10px 10px",
+              borderRadius: "10px",
+              fontSize: "1.25rem",
             }}
           >
             Sorry, that email is already in use!
@@ -95,11 +96,12 @@ export const CreateAccount = () => {
         {usernameError && (
           <div
             style={{
-              background: "black",
-              color: "red",
-              fontSize: "20px",
+              background: "#ff5757",
+              color: "#212529",
               marginBottom: "20px",
-              padding: "0 10px 0 10px",
+              padding: "10px 10px 10px 10px",
+              borderRadius: "10px",
+              fontSize: "1.25rem",
             }}
           >
             Sorry, that username is already taken!

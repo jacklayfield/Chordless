@@ -11,22 +11,52 @@ export const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      setSuccess(false);
       setError(false);
       const res = await axios.post("/api/auth-standard/login", {
         data: { username, password },
       });
+      if (res.status == 200) {
+        setSuccess(true);
+        await new Promise((r) => setTimeout(r, 1000));
+        window.open("http://localhost:3000/songs", "_self");
+        console.log("Success");
+      }
     } catch (error) {
       setError(true);
       console.log(`${(error as AxiosError)?.response?.data}`);
       if (`${(error as AxiosError)?.response?.data}` == "Wrong credentials!") {
-        console.log("Erroorr");
+        console.error(error);
       }
     }
   };
-  return (
+  if (success) {
+  }
+  return success ? (
+    <div className="center">
+      <div className="cover">
+        <h1 className="login-text">Login</h1>
+        <div>
+          <h4
+            style={{
+              background: "#4acf69",
+              color: "#212529",
+              marginBottom: "20px",
+              padding: "10px 10px 10px 10px",
+              borderRadius: "10px",
+              fontSize: "1.5rem",
+            }}
+          >
+            Login Successful!
+          </h4>
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className="center">
       <form className="cover" onSubmit={handleSubmit}>
         <h1 className="login-text">Login</h1>
@@ -61,14 +91,15 @@ export const Login = () => {
         {error && (
           <div
             style={{
-              background: "black",
-              color: "red",
-              fontSize: "20px",
+              background: "#ff5757",
+              color: "#212529",
               marginBottom: "20px",
-              padding: "0 10px 0 10px",
+              padding: "10px 10px 10px 10px",
+              borderRadius: "10px",
+              fontSize: "1.25rem",
             }}
           >
-            Password and/or username is incorrect
+            <text>Password and/or username is incorrect!</text>
           </div>
         )}
       </form>

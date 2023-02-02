@@ -5,8 +5,11 @@ import logo from "./../logo.png";
 import text from "../text.png";
 import "../styling/navbar.css";
 import React from "react";
+import CurrentUserContext from "./../context/context";
 
 export const NavBar = () => {
+  const { currentUser, authIsLoading, handleLogout } =
+    React.useContext(CurrentUserContext);
   return (
     <Navbar
       collapseOnSelect
@@ -47,10 +50,18 @@ export const NavBar = () => {
             </Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link className="sign-in" eventKey={2} href="/login">
-              <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
-              <> </> Login
-            </Nav.Link>
+            {currentUser?.username == null && (
+              <Nav.Link className="sign-in" eventKey={2} href="/login">
+                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
+                <> </> Login
+              </Nav.Link>
+            )}
+            {currentUser?.username != null && (
+              <Nav.Link className="sign-in" eventKey={2} href="/login">
+                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
+                <> </> {currentUser.username}
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
