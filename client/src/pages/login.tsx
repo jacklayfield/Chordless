@@ -22,6 +22,8 @@ export const Login = () => {
       });
       if (res.status == 200) {
         setSuccess(true);
+        //Store the username in localStorage for setting NavBar
+        localStorage.setItem("username", String(username));
         await new Promise((r) => setTimeout(r, 1000));
         window.open("http://localhost:3000/songs", "_self");
         console.log("Success");

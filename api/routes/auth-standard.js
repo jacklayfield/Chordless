@@ -75,7 +75,10 @@ router.post("/login", async (req, res) => {
 
     // Set cookies
     res.cookie("token", token, { httpOnly: true });
-    res.cookie("refreshToken", token_refresh, { httpOnly: true });
+    res.cookie("refreshToken", token_refresh, {
+      maxAge: 86400000,
+      httpOnly: true,
+    });
 
     res.status(200).send({
       id: user.id,

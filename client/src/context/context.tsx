@@ -70,11 +70,13 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
               })
               .catch((error) => {
                 console.error(error);
+                localStorage.removeItem("username");
                 setCurrentUser({} as UserType);
                 setAuthIsLoading(false);
               });
           })
           .catch((error) => {
+            localStorage.removeItem("username");
             console.error(error);
             setCurrentUser({} as UserType);
             setAuthIsLoading(false);
@@ -87,6 +89,7 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
       console.error(error);
     });
 
+    localStorage.removeItem("username");
     setCurrentUser({} as UserType);
   };
 

@@ -3,13 +3,19 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import logo from "./../logo.png";
 import text from "../text.png";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import "../styling/navbar.css";
-import React from "react";
+import React, { useState } from "react";
 import CurrentUserContext from "./../context/context";
 
 export const NavBar = () => {
   const { currentUser, authIsLoading, handleLogout } =
     React.useContext(CurrentUserContext);
+
+  if (!authIsLoading) {
+    localStorage.setItem("username", String(currentUser?.username));
+  }
+
   return (
     <Navbar
       collapseOnSelect
@@ -50,16 +56,50 @@ export const NavBar = () => {
             </Nav.Link>
           </Nav>
           <Nav>
-            {currentUser?.username == null && (
+            {/* {currentUser?.username == null && !authIsLoading && (
               <Nav.Link className="sign-in" eventKey={2} href="/login">
                 <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
                 <> </> Login
+              </Nav.Link>
+            )}
+            {authIsLoading && localStorage.getItem("username") == undefined && (
+              <Nav.Link className="sign-in" eventKey={2} href="/login">
+                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
+                <> </> {localStorage.getItem("username")}
               </Nav.Link>
             )}
             {currentUser?.username != null && (
               <Nav.Link className="sign-in" eventKey={2} href="/login">
                 <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
                 <> </> {currentUser.username}
+              </Nav.Link>
+            )} */}
+            {localStorage.getItem("username") != "undefined" && (
+              <Nav.Link className="sign-in" eventKey={2} href="/login">
+                <NavDropdown
+                  id="nav-dropdown-dark-example"
+                  title={localStorage.getItem("username")}
+                  menuVariant="dark"
+                >
+                  <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.2">
+                    Another action
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.3">
+                    Something
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4">
+                    Separated link
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </Nav.Link>
+            )}
+
+            {localStorage.getItem("username") == "undefined" && (
+              <Nav.Link className="sign-in" eventKey={2} href="/login">
+                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
+                <> </> Login
               </Nav.Link>
             )}
           </Nav>
