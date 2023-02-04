@@ -1,11 +1,10 @@
-.nav-link {
-  margin-left: 0.75rem;
+.nav-link-text {
   font-size: 1.25rem;
   font-weight: 600;
   transition: 0.1s;
 }
 
-.nav-link:hover {
+.nav-link-text:hover {
   transform: scale(1.1);
 }
 

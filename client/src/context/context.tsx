@@ -4,6 +4,8 @@ import axios from "axios";
 export type UserType = {
   username: string;
   email: string;
+  name: string | null;
+  bio: string | null;
 };
 export type UserContext = {
   currentUser?: UserType;
@@ -43,6 +45,8 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
         const user: UserType = {
           username: String(response.data.username),
           email: String(response.data.email),
+          name: String(response.data.name),
+          bio: String(response.data.bio),
         };
         setCurrentUser(user);
         setAuthIsLoading(false);
@@ -64,6 +68,8 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
                 const user: UserType = {
                   username: String(response.data.username),
                   email: String(response.data.email),
+                  name: String(response.data.name),
+                  bio: String(response.data.bio),
                 };
                 setCurrentUser(user);
                 setAuthIsLoading(false);

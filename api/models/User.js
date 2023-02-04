@@ -23,6 +23,14 @@ module.exports = sequelize.define(
       field: "password",
       type: Sequelize.STRING,
     },
+    name: {
+      field: "name",
+      type: Sequelize.STRING,
+    },
+    bio: {
+      field: "bio",
+      type: Sequelize.STRING,
+    },
   },
   { timestamps: false }
 );
