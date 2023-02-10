@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GuitarBody } from "./guitarBody";
+import { Fretboard } from "./fretboard";
 import "../../styling/guitar.css";
 
 export const Guitar = () => {
@@ -8,6 +9,7 @@ export const Guitar = () => {
   return (
     <div className="guitar">
       <GuitarBody currFrets={currFrets} />
+      <Fretboard />
     </div>
   );
 };

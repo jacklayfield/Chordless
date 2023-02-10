@@ -80,3 +80,15 @@
   position: absolute;
   opacity: 0;
 }
+
+.fretboard-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+.fretboard-container svg {
+  display: block;
+}
+.fretboard-bg {
+  background: #402f1f;
+}
