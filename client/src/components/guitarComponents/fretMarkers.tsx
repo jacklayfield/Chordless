@@ -19,7 +19,14 @@ export const FretMarkers: React.FC<FPROPS> = ({
 
   const fretMarker = (
     <circle
-      cx={`${fretPositions[fret] - 6}`}
+      cx={
+        fret > 0
+          ? `${
+              fretPositions[fret] -
+              0.5 * (fretPositions[fret] - fretPositions[fret - 1])
+            }`
+          : `${fretPositions[fret] - 6}`
+      }
       cy={`${stringPositions[string]}`}
       r="6"
       fill="rgba(255,255,255,0.7)"
@@ -51,11 +58,18 @@ export const FretMarkers: React.FC<FPROPS> = ({
       return (
         <circle
           key={i}
-          cx={`${fretPositions[f] - 6}`}
+          cx={
+            f > 0
+              ? `${
+                  fretPositions[f] -
+                  0.5 * (fretPositions[f] - fretPositions[f - 1])
+                }`
+              : `${fretPositions[f] - 6}`
+          }
           cy={`${stringPositions[i]}`}
           r="6"
-          fill="rgba(255,255,255,0.5)"
-          stroke="#fff"
+          fill={f === 0 ? "#000" : "rgba(255,255,255,0.5)"}
+          stroke={f === 0 ? "#fff" : "#fff"}
         />
       );
     }

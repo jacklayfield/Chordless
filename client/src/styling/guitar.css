@@ -105,7 +105,7 @@
 }
 .mute-btn label {
   width: 16px;
-  height: 16px;
+  height: 18px;
   display: block;
   background: rgba(204, 187, 170, 0.5);
   border: 1px solid #fff;
@@ -117,7 +117,7 @@
 .mute-btn input:checked + label::after {
   content: "";
   width: 2px;
-  height: 13px;
+  height: 16px;
   position: absolute;
   top: 0;
   left: 6px;
@@ -137,4 +137,8 @@
 
 .fret-markers circle {
   pointer-events: none;
+}
+
+.read-only {
+  cursor: default !important;
 }
