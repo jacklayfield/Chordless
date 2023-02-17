@@ -80,30 +80,12 @@ export const CreateAccount = () => {
           </button>
         </div>
         {emailError && (
-          <div
-            style={{
-              background: "#ff5757",
-              color: "#212529",
-              marginBottom: "20px",
-              padding: "10px 10px 10px 10px",
-              borderRadius: "10px",
-              fontSize: "1.25rem",
-            }}
-          >
+          <div className="login-status">
             Sorry, that email is already in use!
           </div>
         )}
         {usernameError && (
-          <div
-            style={{
-              background: "#ff5757",
-              color: "#212529",
-              marginBottom: "20px",
-              padding: "10px 10px 10px 10px",
-              borderRadius: "10px",
-              fontSize: "1.25rem",
-            }}
-          >
+          <div className="login-status">
             Sorry, that username is already taken!
           </div>
         )}

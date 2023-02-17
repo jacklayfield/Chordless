@@ -1,6 +1,8 @@
 import React from "react";
 import CurrentUserContext from "./../context/context";
 
+//THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
+
 export const Songs = () => {
   const { currentUser, authIsLoading, handleLogout } =
     React.useContext(CurrentUserContext);

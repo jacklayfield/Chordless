@@ -43,18 +43,7 @@ export const Login = () => {
       <div className="cover">
         <h1 className="login-text">Login</h1>
         <div>
-          <h4
-            style={{
-              background: "#4acf69",
-              color: "#212529",
-              marginBottom: "20px",
-              padding: "10px 10px 10px 10px",
-              borderRadius: "10px",
-              fontSize: "1.5rem",
-            }}
-          >
-            Login Successful!
-          </h4>
+          <h4 className="login-status success">Login Successful!</h4>
         </div>
       </div>
     </div>
@@ -91,16 +80,7 @@ export const Login = () => {
           </button>
         </div>
         {error && (
-          <div
-            style={{
-              background: "#ff5757",
-              color: "#212529",
-              marginBottom: "20px",
-              padding: "10px 10px 10px 10px",
-              borderRadius: "10px",
-              fontSize: "1.25rem",
-            }}
-          >
+          <div className="login-status">
             <text>Password and/or username is incorrect!</text>
           </div>
         )}

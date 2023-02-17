@@ -59,24 +59,6 @@ export const NavBar = () => {
             </Nav.Link>
           </Nav>
           <Nav>
-            {/* {currentUser?.username == null && !authIsLoading && (
-              <Nav.Link className="sign-in" eventKey={2} href="/login">
-                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
-                <> </> Login
-              </Nav.Link>
-            )}
-            {authIsLoading && localStorage.getItem("username") == undefined && (
-              <Nav.Link className="sign-in" eventKey={2} href="/login">
-                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
-                <> </> {localStorage.getItem("username")}
-              </Nav.Link>
-            )}
-            {currentUser?.username != null && (
-              <Nav.Link className="sign-in" eventKey={2} href="/login">
-                <i style={{ color: "gray" }} className="fa-solid fa-user"></i>
-                <> </> {currentUser.username}
-              </Nav.Link>
-            )} */}
             <Nav.Link className="align-middle" href="#">
               <i
                 style={{ color: "gray", justifyContent: "Center" }}

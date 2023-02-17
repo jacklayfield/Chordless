@@ -96,3 +96,17 @@ input:focus {
   color: white;
   text-shadow: 2px 4px 4px rgba(39, 39, 39, 0.5);
 }
+
+.login-status {
+  background: #ff5757;
+  color: #212529;
+  margin-bottom: 20px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 10px;
+  font-size: 1.25rem;
+}
+
+.success {
+  background: #4acf69;
+  color: #212529;
+}
