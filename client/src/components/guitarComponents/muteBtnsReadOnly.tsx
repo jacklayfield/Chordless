@@ -11,8 +11,8 @@ export const MuteBtnsReadOnly: React.FC<FPROPS> = ({ frets }) => {
         const isChecked = fret < 0 || Object.is(fret, -0);
 
         return (
-          <div className="mute-btn">
-            <input type="checkbox" checked={isChecked} />
+          <div key={i} className="mute-btn">
+            <input type="checkbox" checked={isChecked} readOnly />
 
             <label className="read-only"></label>
           </div>

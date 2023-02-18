@@ -83,14 +83,14 @@ export const FretMarkers: React.FC<FPROPS> = ({
         viewBox={`0 0 ${fbSize.width} ${fbSize.height}`}
         width={`${fbSize.width}`}
         height={`${fbSize.height}`}
-        onMouseMove={showMarker}
-        onMouseLeave={hideMarker}
         onClick={() => {
           updateCurrFrets(string, fret);
         }}
+        onMouseMove={showMarker}
+        onMouseLeave={hideMarker}
       >
-        {string > -1 && fretMarker}
         {fretMarkers}
+        {string > -1 && fretMarker}
       </svg>
     </div>
   );

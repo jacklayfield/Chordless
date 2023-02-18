@@ -3,12 +3,18 @@ import { Fretboard } from "./guitarComponents/fretboard";
 import "../styling/guitar.css";
 import "../styling/theme.css";
 import { FretboardReadOnly } from "./guitarComponents/fretboardReadOnly";
+import { findChord } from "./../utils/chords";
 
 export const SongBuilder = () => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
+  type CHORD_OBJECT = {
+    chordArr: number[];
+    chordName: String;
+  };
+
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
-  const [chords, setChords] = useState<number[][]>([]);
+  const [chords, setChords] = useState<CHORD_OBJECT[]>([]);
 
   const updateCurrFrets = (string: number, fret: number) => {
     let newFrets = [...currFrets];
@@ -18,16 +24,19 @@ export const SongBuilder = () => {
 
   const updateChords = (currChord: number[]) => {
     let newChords = [...chords];
-    newChords.push(currChord);
+    let chordObj: CHORD_OBJECT = {
+      chordArr: currChord,
+      chordName: String(findChord(currChord)),
+    };
+    newChords.push(chordObj);
     setChords(newChords);
   };
-
-  console.log(chords);
 
   return (
     <div className="center-div">
       <h3>Song Name</h3>
       <input className="mb-4"></input>
+
       <Fretboard currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
 
       <button
@@ -40,10 +49,11 @@ export const SongBuilder = () => {
 
       {chords.length > 0 ? (
         <div className="center-div">
-          {chords.map((chord) => {
+          {chords.map((chord, i) => {
             return (
-              <div className="mb-4">
-                <FretboardReadOnly frets={chord} />
+              <div className="mb-4" key={i}>
+                <FretboardReadOnly frets={chord.chordArr} />
+                {chord.chordName}
               </div>
             );
           })}{" "}

@@ -25,6 +25,13 @@ export const CreateSong = () => {
                 }}
               >
                 <SongBuilder />{" "}
+                <div>
+                  Please note that chords with a "~" preceding them denote
+                  chords that are not their true form, but are inferred. For
+                  example, an "A" chord in its true form would have a muted "low
+                  E" (A), but an "A" chord is still inferred from leaving the
+                  "low E" open (~A).
+                </div>
               </div>
             </div>
           </div>
