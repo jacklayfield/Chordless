@@ -53,3 +53,13 @@ body {
   align-items: center;
   padding: 10px;
 }
+
+.delete-chord {
+  background-color: #ff5757;
+  height: 2rem;
+  font-weight: normal;
+}
+
+.delete-chord:hover {
+  background-color: #ff3535;
+}

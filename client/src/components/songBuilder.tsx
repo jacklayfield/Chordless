@@ -32,6 +32,12 @@ export const SongBuilder = () => {
     setChords(newChords);
   };
 
+  const deleteChord = (chordIndex: number) => {
+    let newChords = [...chords];
+    newChords.splice(chordIndex, 1);
+    setChords(newChords);
+  };
+
   return (
     <div className="center-div">
       <h3>Song Name</h3>
@@ -51,9 +57,19 @@ export const SongBuilder = () => {
         <div className="center-div">
           {chords.map((chord, i) => {
             return (
-              <div className="mb-4" key={i}>
+              <div className="chords mb-4" key={i}>
                 <FretboardReadOnly frets={chord.chordArr} />
-                {chord.chordName}
+                <div className="center-div">
+                  <span className="chord-name">
+                    {chord.chordName !== "undefined" ? chord.chordName : ""}
+                  </span>
+                  <button
+                    className="chordless-btn delete-chord"
+                    onClick={() => deleteChord(i)}
+                  >
+                    Delete Chord
+                  </button>
+                </div>
               </div>
             );
           })}{" "}
@@ -61,7 +77,7 @@ export const SongBuilder = () => {
             className="chordless-btn"
             onClick={() => updateChords(currFrets)}
           >
-            Submit Song
+            Save Song
           </button>
         </div>
       ) : (

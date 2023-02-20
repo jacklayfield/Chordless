@@ -142,3 +142,14 @@
 .read-only {
   cursor: default !important;
 }
+
+.chords {
+  background: #e6e6e6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.chord-name {
+  font-weight: bold;
+  font-size: 2rem;
+}
