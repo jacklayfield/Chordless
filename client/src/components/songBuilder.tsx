@@ -4,6 +4,7 @@ import "../styling/guitar.css";
 import "../styling/theme.css";
 import { FretboardReadOnly } from "./guitarComponents/fretboardReadOnly";
 import { findChord } from "./../utils/chords";
+import { useViewport } from "../hooks/useViewport";
 
 export const SongBuilder = () => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
@@ -38,7 +39,15 @@ export const SongBuilder = () => {
     setChords(newChords);
   };
 
-  return (
+  const restartSong = () => {
+    let newChords: CHORD_OBJECT[] = [];
+    setChords(newChords);
+  };
+
+  const { width } = useViewport();
+  const breakpoint_mobile = 1000;
+
+  return width > breakpoint_mobile ? (
     <div className="center-div">
       <h3>Song Name</h3>
       <input className="mb-4"></input>
@@ -55,6 +64,12 @@ export const SongBuilder = () => {
 
       {chords.length > 0 ? (
         <div className="center-div">
+          <button
+            className="chordless-btn delete-chord mb-2"
+            onClick={() => restartSong()}
+          >
+            Clear All Chords
+          </button>
           {chords.map((chord, i) => {
             return (
               <div className="chords mb-4" key={i}>
@@ -74,18 +89,23 @@ export const SongBuilder = () => {
             );
           })}{" "}
           <button
-            className="chordless-btn"
+            className="chordless-btn mb-2"
             onClick={() => updateChords(currFrets)}
           >
             Save Song
           </button>
         </div>
       ) : (
-        <div>
+        <div className="chords">
           No chords added to this song yet! Select the strings on the guitar and
           once finished click "Add Chord".{" "}
         </div>
       )}
+    </div>
+  ) : (
+    <div>
+      Mobile Version coming Soon! Please use a window size with a width greater
+      than 1000px for now!
     </div>
   );
 };
