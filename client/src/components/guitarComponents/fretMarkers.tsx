@@ -45,6 +45,7 @@ export const FretMarkers: React.FC<FPROPS> = ({
     );
     let f = fretPositions.findIndex((pos) => e.nativeEvent.offsetX < pos);
     f = f === -1 ? 0 : f;
+    s = s > 5 || s < 0 ? -1 : s;
     setString(s);
     setFret(f);
   };

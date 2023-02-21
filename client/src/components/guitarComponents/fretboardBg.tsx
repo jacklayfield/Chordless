@@ -46,6 +46,7 @@ export const FretboardBg = () => {
   );
 
   const dotFrets = [3, 5, 7, 9, 12, 15, 17, 19];
+
   const dots = dotFrets.map((fret, i) => {
     if (fret === 12) {
       return (

@@ -45,7 +45,7 @@ export const SongBuilder = () => {
   };
 
   const { width } = useViewport();
-  const breakpoint_mobile = 1000;
+  const breakpoint_mobile = 957;
 
   return width > breakpoint_mobile ? (
     <div className="center-div">
@@ -103,9 +103,9 @@ export const SongBuilder = () => {
       )}
     </div>
   ) : (
-    <div>
+    <div className="chords" style={{ color: "red", fontWeight: "bold" }}>
       Mobile Version coming Soon! Please use a window size with a width greater
-      than 1000px for now!
+      than 960px for now!
     </div>
   );
 };

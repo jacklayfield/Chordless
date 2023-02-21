@@ -6,13 +6,22 @@ import { useState } from "react";
 
 export const CreateSong = () => {
   const { width } = useViewport();
-  const breakpoint_small_window = 1500;
+  const breakpoint_mid_window = 1440;
+  const breakpoint_small_window = 1160;
 
   return (
     <div>
       <Row className="gx-0">
         <Col />
-        <Col xs={width > breakpoint_small_window ? 8 : 12}>
+        <Col
+          xs={
+            width > breakpoint_mid_window
+              ? 8
+              : width > breakpoint_small_window
+              ? 10
+              : 12
+          }
+        >
           <div className="columns">
             <div className="sectionTitles">
               <header className="sectionTitlesText">Create Song</header>

@@ -1,6 +1,6 @@
 const fbSize = {
-  width: 900,
-  height: 110,
+  width: 830,
+  height: 108,
 };
 
 const createStringPositions = () => {
