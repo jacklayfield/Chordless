@@ -23,4 +23,26 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.get("/userSongs", async (req, res) => {
+  try {
+    const userId = req.body.data.userId;
+
+    // Fetch songs based on user id
+    // This will only fetch from the song table, returning name, id , etc. (for song cards)
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/singleSong", async (req, res) => {
+  try {
+    const songId = req.body.data.songId;
+
+    // Fetch a single song based on song id
+    // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

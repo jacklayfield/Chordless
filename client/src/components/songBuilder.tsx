@@ -5,6 +5,7 @@ import "../styling/theme.css";
 import { FretboardReadOnly } from "./guitarComponents/fretboardReadOnly";
 import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
+import axios from "axios";
 
 export const SongBuilder = () => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);

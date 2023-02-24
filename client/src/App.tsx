@@ -10,6 +10,7 @@ import { CreateAccount } from "./pages/createAccount";
 import { CurrentUserProvider } from "./context/context";
 import { Songs } from "./pages/songs";
 import { Profile } from "./pages/profile";
+import { SingleSong } from "./pages/singleSong";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/createAccount" element={<CreateAccount />} />
           <Route path="/mySongs" element={<Songs />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/song/:songId" element={<SingleSong />} />
         </Routes>
       </Router>
     </CurrentUserProvider>
