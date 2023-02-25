@@ -2,6 +2,34 @@ const router = require("express").Router();
 const Song = require("../models/Song");
 const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
+var jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
+
+const constructSqlState = (chords, id) => {
+  let sqlState = "INSERT INTO chords(songId, chordNotes, chordName) VALUES";
+  for (let i = 0; i < chords.length - 1; i++) {
+    sqlState =
+      sqlState +
+      "(" +
+      id +
+      ", '{" +
+      String(chords[i].chordArr) +
+      "}', '" +
+      String(chords[i].chordName) +
+      "'),";
+  }
+  sqlState =
+    sqlState +
+    "(" +
+    id +
+    ", '{" +
+    String(chords[chords.length - 1].chordArr) +
+    "}', '" +
+    String(chords[chords.length - 1].chordName) +
+    "')";
+
+  return sqlState;
+};
 
 router.get("/", function (request, response) {
   Song.findAll().then((songs) => {
@@ -11,11 +39,20 @@ router.get("/", function (request, response) {
 
 router.post("/create", async (req, res) => {
   try {
-    const { name } = req.body;
+    const name = req.body.data.songName;
+    const chords = req.body.data.chords;
+    console.log(req.body.data.chords);
+    console.log(req.body.data.songName);
     const [results, meta] = await sequelize.query(
-      "INSERT INTO songs (name) VALUES($1) RETURNING *",
-      { bind: [name], type: QueryTypes.INSERT }
+      "INSERT INTO songs (userId, name) VALUES($1, $2) RETURNING *",
+      { bind: [1, name], type: QueryTypes.INSERT }
     );
+
+    const sqlState = constructSqlState(chords, results[0].id);
+
+    const [results1, meta1] = await sequelize.query(sqlState, {
+      type: QueryTypes.INSERT,
+    });
 
     res.json(results);
   } catch (error) {
@@ -25,9 +62,14 @@ router.post("/create", async (req, res) => {
 
 router.get("/userSongs", async (req, res) => {
   try {
-    const userId = req.body.data.userId;
+    const decoded = jwt.verify(req.cookies.token, config.secret);
+    user_id = decoded.id;
 
     // Fetch songs based on user id
+    const songs = await Song.findAll({
+      where: { userid: user_id },
+    });
+    res.json(songs);
     // This will only fetch from the song table, returning name, id , etc. (for song cards)
   } catch (error) {
     res.status(500).send(error);

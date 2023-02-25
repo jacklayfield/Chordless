@@ -9,6 +9,10 @@ module.exports = sequelize.define(
       type: Sequelize.INTEGER,
       primaryKey: true,
     },
+    userId: {
+      field: "userid",
+      type: Sequelize.INTEGER,
+    },
     name: {
       field: "name",
       type: Sequelize.STRING,

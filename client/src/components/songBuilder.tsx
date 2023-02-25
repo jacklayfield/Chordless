@@ -10,13 +10,14 @@ import axios from "axios";
 export const SongBuilder = () => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
-  type CHORD_OBJECT = {
+  type CHORD_TYPE = {
     chordArr: number[];
     chordName: String;
   };
 
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
-  const [chords, setChords] = useState<CHORD_OBJECT[]>([]);
+  const [chords, setChords] = useState<CHORD_TYPE[]>([]);
+  const [songName, setSongName] = useState<String>("my song");
 
   const updateCurrFrets = (string: number, fret: number) => {
     let newFrets = [...currFrets];
@@ -26,7 +27,7 @@ export const SongBuilder = () => {
 
   const updateChords = (currChord: number[]) => {
     let newChords = [...chords];
-    let chordObj: CHORD_OBJECT = {
+    let chordObj: CHORD_TYPE = {
       chordArr: currChord,
       chordName: String(findChord(currChord)),
     };
@@ -41,8 +42,17 @@ export const SongBuilder = () => {
   };
 
   const restartSong = () => {
-    let newChords: CHORD_OBJECT[] = [];
+    let newChords: CHORD_TYPE[] = [];
     setChords(newChords);
+  };
+
+  const handleSubmit = async () => {
+    const res = await axios.post("/api/songs/create", {
+      data: { chords, songName },
+    });
+    if (res.status == 200) {
+      console.log("submitted song successfully");
+    }
   };
 
   const { width } = useViewport();
@@ -51,7 +61,13 @@ export const SongBuilder = () => {
   return width > breakpoint_mobile ? (
     <div className="center-div">
       <h3>Song Name</h3>
-      <input className="mb-4"></input>
+      <input
+        className="mb-4"
+        type="text"
+        placeholder="my song"
+        required
+        onChange={(event) => setSongName(event.target.value)}
+      ></input>
 
       <Fretboard currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
 
@@ -89,10 +105,7 @@ export const SongBuilder = () => {
               </div>
             );
           })}{" "}
-          <button
-            className="chordless-btn mb-2"
-            onClick={() => updateChords(currFrets)}
-          >
+          <button className="chordless-btn mb-2" onClick={() => handleSubmit()}>
             Save Song
           </button>
         </div>

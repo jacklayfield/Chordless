@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CurrentUserContext from "./../context/context";
 import { SongCard } from "../components/songCard";
 import { Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 //THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
 
 export const Songs = () => {
   const { currentUser, authIsLoading, handleLogout } =
     React.useContext(CurrentUserContext);
+
+  // Creating type now as other elements will be added
+  type SONG_TYPE = {
+    songName: String;
+  };
+
+  const [songs, setSongs] = useState<SONG_TYPE[]>([]);
+  const [userLoaded, setUserLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const res = await axios.get("/api/songs/userSongs");
+        console.log(res);
+
+        let dbSongs: SONG_TYPE[] = [];
+
+        for (let i = 0; i < res.data.length; i++) {
+          let song: SONG_TYPE = {
+            songName: res.data[i].name,
+          };
+          dbSongs.push(song);
+        }
+
+        setSongs(dbSongs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSongs();
+  }, []);
+
   const content = () => {
     if (authIsLoading) {
       return <div>Loading...</div>;
@@ -35,9 +68,16 @@ export const Songs = () => {
                         <SongCard />
                       </Col>
                       <Col>
-                        <SongCard />
+                        {songs.map((song, i) => {
+                          return (
+                            <div className="chords mb-4" key={i}>
+                              {song.songName}
+                            </div>
+                          );
+                        })}
                       </Col>
                     </Row>
+
                     <a onClick={handleLogout}>Logout</a>
                     <div>Welcome, {currentUser.email}</div>
                   </div>

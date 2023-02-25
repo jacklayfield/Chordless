@@ -24,7 +24,7 @@ function App() {
           <Route path="/createAccount" element={<CreateAccount />} />
           <Route path="/mySongs" element={<Songs />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/song/:songId" element={<SingleSong />} />
+          <Route path="/song" element={<SingleSong />} />
         </Routes>
       </Router>
     </CurrentUserProvider>

@@ -17,11 +17,12 @@ router.get("/userdata", async (req, res) => {
       where: { id: user_id },
     });
 
+    const id = user.id;
     const email = user.email;
     const username = user.username;
     const name = user.name;
     const bio = user.bio;
-    parsedUser = { username, email, name, bio };
+    parsedUser = { id, username, email, name, bio };
 
     res.json(parsedUser);
   } catch (error) {
