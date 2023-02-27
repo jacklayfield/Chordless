@@ -7,8 +7,7 @@ import axios from "axios";
 //THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
 
 export const Songs = () => {
-  const { currentUser, authIsLoading, handleLogout } =
-    React.useContext(CurrentUserContext);
+  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
 
   // Creating type now as other elements will be added
   type SONG_TYPE = {
@@ -16,10 +15,11 @@ export const Songs = () => {
   };
 
   const [songs, setSongs] = useState<SONG_TYPE[]>([]);
-  const [userLoaded, setUserLoaded] = useState<boolean>(false);
+  const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchSongs = async () => {
+      setLoadingSongs(true);
       try {
         const res = await axios.get("/api/songs/userSongs");
         console.log(res);
@@ -32,21 +32,30 @@ export const Songs = () => {
           };
           dbSongs.push(song);
         }
-
         setSongs(dbSongs);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
+      setLoadingSongs(false);
     };
     fetchSongs();
   }, []);
 
+  let half: number, half1: SONG_TYPE[], half2: SONG_TYPE[];
+
+  const splitSongs = () => {
+    half = Math.ceil(songs.length / 2);
+    half1 = songs.slice(0, half);
+    half2 = songs.slice(half, songs.length);
+  };
+
   const content = () => {
-    if (authIsLoading) {
+    if (authIsLoading || loadingSongs) {
       return <div>Loading...</div>;
     } else if (!currentUser) {
       return <div>no user</div>;
     } else {
+      splitSongs();
       return (
         <div>
           <Row className="gx-0">
@@ -65,20 +74,24 @@ export const Songs = () => {
                   >
                     <Row>
                       <Col>
-                        <SongCard />
+                        {half1.map((song, i) => {
+                          return (
+                            <div className="m-3" key={i}>
+                              <SongCard songName={song.songName} />
+                            </div>
+                          );
+                        })}
                       </Col>
                       <Col>
-                        {songs.map((song, i) => {
+                        {half2.map((song, i) => {
                           return (
-                            <div className="chords mb-4" key={i}>
-                              {song.songName}
+                            <div className="m-3" key={i}>
+                              <SongCard songName={song.songName} />
                             </div>
                           );
                         })}
                       </Col>
                     </Row>
-
-                    <a onClick={handleLogout}>Logout</a>
                     <div>Welcome, {currentUser.email}</div>
                   </div>
                 </div>

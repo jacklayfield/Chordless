@@ -39,13 +39,15 @@ router.get("/", function (request, response) {
 
 router.post("/create", async (req, res) => {
   try {
+    const decoded = jwt.verify(req.cookies.token, config.secret);
+    const user_id = decoded.id;
+
     const name = req.body.data.songName;
     const chords = req.body.data.chords;
-    console.log(req.body.data.chords);
-    console.log(req.body.data.songName);
+
     const [results, meta] = await sequelize.query(
       "INSERT INTO songs (userId, name) VALUES($1, $2) RETURNING *",
-      { bind: [1, name], type: QueryTypes.INSERT }
+      { bind: [user_id, name], type: QueryTypes.INSERT }
     );
 
     const sqlState = constructSqlState(chords, results[0].id);
@@ -63,7 +65,7 @@ router.post("/create", async (req, res) => {
 router.get("/userSongs", async (req, res) => {
   try {
     const decoded = jwt.verify(req.cookies.token, config.secret);
-    user_id = decoded.id;
+    const user_id = decoded.id;
 
     // Fetch songs based on user id
     const songs = await Song.findAll({

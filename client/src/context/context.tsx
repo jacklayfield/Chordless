@@ -100,6 +100,7 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
 
     localStorage.removeItem("username");
     setCurrentUser({} as UserType);
+    window.location.reload();
   };
 
   const stateValues = {
