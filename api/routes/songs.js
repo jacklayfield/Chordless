@@ -78,10 +78,21 @@ router.get("/userSongs", async (req, res) => {
   }
 });
 
-router.get("/singleSong", async (req, res) => {
+router.get("/singleSong/id=:id", async (req, res) => {
   try {
-    const songId = req.body.data.songId;
+    const decoded = jwt.verify(req.cookies.token, config.secret);
+    const user_id = decoded.id;
 
+    const songId = req.params.id;
+
+    const song = await Song.findOne({
+      where: { id: songId },
+    });
+
+    if (song.dataValues.userId != user_id) {
+      return res.status(403).send("user not permitted to view song");
+    }
+    res.json(song);
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
