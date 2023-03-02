@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Song = require("../models/Song");
+const Chord = require("../models/Chord");
 const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 var jwt = require("jsonwebtoken");
@@ -93,6 +94,25 @@ router.get("/singleSong/id=:id", async (req, res) => {
       return res.status(403).send("user not permitted to view song");
     }
     res.json(song);
+    // Fetch a single song based on song id
+    // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+router.get("/allChords/id=:id", async (req, res) => {
+  try {
+    const decoded = jwt.verify(req.cookies.token, config.secret);
+    const user_id = decoded.id;
+
+    const songId = req.params.id;
+
+    const chords = await Chord.findAll({
+      where: { songid: songId },
+    });
+
+    res.json(chords);
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {

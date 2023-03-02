@@ -7,13 +7,13 @@ import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
 import axios from "axios";
 
+export type CHORD_TYPE = {
+  chordArr: number[];
+  chordName: String;
+};
+
 export const SongBuilder = () => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
-
-  type CHORD_TYPE = {
-    chordArr: number[];
-    chordName: String;
-  };
 
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
@@ -50,7 +50,7 @@ export const SongBuilder = () => {
     const res = await axios.post("/api/songs/create", {
       data: { chords, songName },
     });
-    if (res.status == 200) {
+    if (res.status === 200) {
       console.log("submitted song successfully");
     }
   };
