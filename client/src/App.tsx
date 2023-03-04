@@ -8,7 +8,7 @@ import { About } from "./pages/about";
 import { Login } from "./pages/login";
 import { CreateAccount } from "./pages/createAccount";
 import { CurrentUserProvider } from "./context/context";
-import { Songs } from "./pages/songs";
+import { MySongs } from "./pages/mySongs";
 import { Profile } from "./pages/profile";
 import { SingleSong } from "./pages/singleSong";
 
@@ -22,7 +22,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createAccount" element={<CreateAccount />} />
-          <Route path="/mySongs" element={<Songs />} />
+          <Route path="/mySongs" element={<MySongs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/song/:songid" element={<SingleSong />} />
         </Routes>

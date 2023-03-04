@@ -2,6 +2,10 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { CHORD_TYPE } from "../components/songBuilder";
+import { Song } from "../components/song";
+import { Row, Col } from "react-bootstrap";
+import { useViewport } from "../hooks/useViewport";
+import { ViewMenu } from "../components/viewMenu";
 
 export const SingleSong = () => {
   const location = useLocation();
@@ -51,11 +55,42 @@ export const SingleSong = () => {
     fetchSong();
   }, [songid]);
 
+  const { width } = useViewport();
+  const breakpoint_mid_window = 1440;
+  const breakpoint_small_window = 1160;
+
   return !error && !loading ? (
     <div>
-      {chords[0].chordArr}
-      <br />
-      {song}
+      <Row className="gx-0">
+        <Col />
+        <Col
+          xs={
+            width > breakpoint_mid_window
+              ? 8
+              : width > breakpoint_small_window
+              ? 10
+              : 12
+          }
+        >
+          <div className="columns">
+            <div className="sectionTitles">
+              <header className="sectionTitlesText">{song}</header>
+            </div>
+
+            <div style={{ padding: 20 }}>
+              <div
+                style={{
+                  fontSize: "20px",
+                }}
+              >
+                <ViewMenu />
+                <Song chords={chords} />
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col />
+      </Row>
     </div>
   ) : (
     <div>

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
-import CurrentUserContext from "./../context/context";
+import CurrentUserContext from "../context/context";
 import { SongCard } from "../components/songCard";
 import { Row, Col } from "react-bootstrap";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { Songs } from "../components/songs";
 
 //THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
 
-export const Songs = () => {
+export type SONG_TYPE = {
+  songName: String;
+  songId: number;
+};
+
+export const MySongs = () => {
   const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
 
   // Creating type now as other elements will be added
-  type SONG_TYPE = {
-    songName: String;
-  };
 
   const [songs, setSongs] = useState<SONG_TYPE[]>([]);
   const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
@@ -29,6 +33,7 @@ export const Songs = () => {
         for (let i = 0; i < res.data.length; i++) {
           let song: SONG_TYPE = {
             songName: res.data[i].name,
+            songId: res.data[i].id,
           };
           dbSongs.push(song);
         }
@@ -74,22 +79,10 @@ export const Songs = () => {
                   >
                     <Row>
                       <Col>
-                        {half1.map((song, i) => {
-                          return (
-                            <div className="m-3" key={i}>
-                              <SongCard songName={song.songName} />
-                            </div>
-                          );
-                        })}
+                        <Songs songs={half1} />
                       </Col>
                       <Col>
-                        {half2.map((song, i) => {
-                          return (
-                            <div className="m-3" key={i}>
-                              <SongCard songName={song.songName} />
-                            </div>
-                          );
-                        })}
+                        <Songs songs={half2} />
                       </Col>
                     </Row>
                     <div>Welcome, {currentUser.email}</div>
