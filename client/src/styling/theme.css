@@ -83,3 +83,22 @@ body {
 a:link {
   text-decoration: none;
 }
+
+.buttons {
+  display: inline-block;
+  width: calc(50%);
+  margin: 0 auto;
+  padding-top: 1.5rem;
+}
+
+.viewMenuButton:hover {
+  background-color: #ffa973;
+}
+
+.viewMenuButton {
+  width: 50%;
+}
+
+.selected {
+  background-color: #ff914e;
+}

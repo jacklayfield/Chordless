@@ -1,15 +1,15 @@
 const fbSize = {
-  width: 830,
-  height: 108,
+  width: 498,
+  height: 65,
 };
 
-export const createStringPositions = () => {
+const createStringPositions = () => {
   return Array(6)
     .fill(0)
     .map((s, i) => ((5.5 - i) * fbSize.height) / 6);
 };
 
-export const createFretPositions = () => {
+const createFretPositions = () => {
   const frets = 20;
   const dMax = 0.95;
 

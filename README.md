@@ -10,3 +10,4 @@ Feature: Add Confirmations for deleting chords/songs <br />
 DONE Fix bug with selecting top string <br />
 Bug: Refresh tokens not generating token prior to loading page on refresh after real token expired. <br />
 Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
+Bug: Mute buttons with "-0" not showing up on song view. <br />

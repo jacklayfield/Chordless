@@ -15,6 +15,7 @@ export const SingleSong = () => {
   const [song, setSong] = useState<String>();
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
   const [error, setError] = useState<boolean>(false);
+  const [view, setView] = useState<String>("standard");
 
   useEffect(() => {
     const fetchSong = async () => {
@@ -55,42 +56,53 @@ export const SingleSong = () => {
     fetchSong();
   }, [songid]);
 
+  const handleViewChange = (view: String) => {
+    view === "standard" ? setView("standard") : setView("lgScope");
+  };
+
   const { width } = useViewport();
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
 
   return !error && !loading ? (
     <div>
-      <Row className="gx-0">
-        <Col />
-        <Col
-          xs={
-            width > breakpoint_mid_window
-              ? 8
-              : width > breakpoint_small_window
-              ? 10
-              : 12
-          }
-        >
-          <div className="columns">
-            <div className="sectionTitles">
-              <header className="sectionTitlesText">{song}</header>
-            </div>
+      <ViewMenu handleViewChange={handleViewChange} view={view} />
+      {view === "standard" ? (
+        <Row className="gx-0">
+          <Col />
+          <Col
+            xs={
+              width > breakpoint_mid_window
+                ? 8
+                : width > breakpoint_small_window
+                ? 10
+                : 12
+            }
+          >
+            <div className="columns">
+              <div className="sectionTitles">
+                <header className="sectionTitlesText">{song}</header>
+              </div>
 
-            <div style={{ padding: 20 }}>
-              <div
-                style={{
-                  fontSize: "20px",
-                }}
-              >
-                <ViewMenu />
-                <Song chords={chords} />
+              <div style={{ padding: 20 }}>
+                <div
+                  style={{
+                    fontSize: "20px",
+                  }}
+                >
+                  {view}
+                  <Song chords={chords} />
+                </div>
               </div>
             </div>
-          </div>
-        </Col>
-        <Col />
-      </Row>
+          </Col>
+          <Col />
+        </Row>
+      ) : (
+        <div>
+          <Song chords={chords} />
+        </div>
+      )}
     </div>
   ) : (
     <div>

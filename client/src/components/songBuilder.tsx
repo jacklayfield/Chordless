@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Fretboard } from "./guitarComponents/fretboard";
+import { Fretboard } from "./guitar/fretboard";
 import "../styling/guitar.css";
 import "../styling/theme.css";
-import { FretboardReadOnly } from "./guitarComponents/fretboardReadOnly";
+import { FretboardReadOnly } from "./guitarReadOnly/fretboardReadOnly";
 import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
 import axios from "axios";

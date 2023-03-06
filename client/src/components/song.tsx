@@ -1,4 +1,4 @@
-import { FretboardReadOnly } from "./guitarComponents/fretboardReadOnly";
+import { FretboardReadOnly } from "./guitarReadOnly/fretboardReadOnly";
 import { CHORD_TYPE } from "./songBuilder";
 
 interface CPROPS {
