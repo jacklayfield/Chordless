@@ -3,13 +3,16 @@ import {
   fbSize,
   fretPositions,
   stringPositions,
+  fretPositionsMini,
+  stringPositionsMini,
 } from "../../utils/fretboardValues";
 
 interface FPROPS {
   frets: number[];
+  miniFlag: boolean;
 }
 
-export const FretMarkersReadOnly: React.FC<FPROPS> = ({ frets }) => {
+export const FretMarkersReadOnly: React.FC<FPROPS> = ({ frets, miniFlag }) => {
   const isMuted = (fret: number) => {
     return fret < 0 || Object.is(fret, -0);
   };
@@ -21,13 +24,24 @@ export const FretMarkersReadOnly: React.FC<FPROPS> = ({ frets }) => {
           key={i}
           cx={
             f > 0
-              ? `${
-                  fretPositions[f] -
-                  0.5 * (fretPositions[f] - fretPositions[f - 1])
-                }`
-              : `${fretPositions[f] - 6}`
+              ? miniFlag === false
+                ? `${
+                    fretPositions[f] -
+                    0.5 * (fretPositions[f] - fretPositions[f - 1])
+                  }`
+                : `${
+                    fretPositionsMini[f] -
+                    0.5 * (fretPositionsMini[f] - fretPositionsMini[f - 1])
+                  }`
+              : miniFlag === false
+              ? `${fretPositions[f] - 6}`
+              : `${fretPositionsMini[f] - 6}`
           }
-          cy={`${stringPositions[i]}`}
+          cy={
+            miniFlag === false
+              ? `${stringPositions[i]}`
+              : `${stringPositionsMini[i]}`
+          }
           r="6"
           fill={f === 0 ? "#000" : "rgba(255,255,255,0.5)"}
           stroke={f === 0 ? "#fff" : "#fff"}
@@ -41,9 +55,15 @@ export const FretMarkersReadOnly: React.FC<FPROPS> = ({ frets }) => {
     <div className="fret-markers">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox={`0 0 ${fbSize.width} ${fbSize.height}`}
-        width={`${fbSize.width}`}
-        height={`${fbSize.height}`}
+        viewBox={
+          miniFlag === false
+            ? `0 0 ${fbSize.width} ${fbSize.height}`
+            : `0 0 ${fbSize.widthMini} ${fbSize.heightMini}`
+        }
+        width={miniFlag === false ? `${fbSize.width}` : `${fbSize.widthMini}`}
+        height={
+          miniFlag === false ? `${fbSize.height}` : `${fbSize.heightMini}`
+        }
       >
         {/* {string > -1 && fretMarker} */}
         {fretMarkers}

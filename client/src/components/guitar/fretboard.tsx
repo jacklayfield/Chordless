@@ -12,7 +12,7 @@ export const Fretboard: React.FC<FPROPS> = ({ currFrets, updateCurrFrets }) => {
   return (
     <div className="fretboard-container">
       <MuteBtns currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
-      <FretboardBg />
+      <FretboardBg miniFlag={false} />
       <FretMarkers currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
     </div>
   );

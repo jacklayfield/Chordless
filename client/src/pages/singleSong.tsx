@@ -91,7 +91,7 @@ export const SingleSong = () => {
                   }}
                 >
                   {view}
-                  <Song chords={chords} />
+                  <Song chords={chords} miniFlag={view === "lgScope"} />
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@ export const SingleSong = () => {
         </Row>
       ) : (
         <div>
-          <Song chords={chords} />
+          <Song chords={chords} miniFlag={view === "lgScope"} />
         </div>
       )}
     </div>

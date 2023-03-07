@@ -1,15 +1,17 @@
 const fbSize = {
   width: 830,
   height: 108,
+  widthMini: 630,
+  heightMini: 85,
 };
 
-export const createStringPositions = () => {
+const createStringPositions = (h: number) => {
   return Array(6)
     .fill(0)
-    .map((s, i) => ((5.5 - i) * fbSize.height) / 6);
+    .map((s, i) => ((5.5 - i) * h) / 6);
 };
 
-export const createFretPositions = () => {
+const createFretPositions = (w: number) => {
   const frets = 20;
   const dMax = 0.95;
 
@@ -19,10 +21,18 @@ export const createFretPositions = () => {
     .fill(0)
     .map((d, n) => scaleLen * (1 - Math.pow(2, -(n + 1) / 12)));
 
-  return perc.map((f) => f * fbSize.width);
+  return perc.map((f) => f * w);
 };
 
-const stringPositions = createStringPositions();
-const fretPositions = createFretPositions();
+const stringPositions = createStringPositions(fbSize.height);
+const fretPositions = createFretPositions(fbSize.width);
+const stringPositionsMini = createStringPositions(fbSize.heightMini);
+const fretPositionsMini = createFretPositions(fbSize.widthMini);
 
-export { fbSize, stringPositions, fretPositions };
+export {
+  fbSize,
+  stringPositions,
+  fretPositions,
+  stringPositionsMini,
+  fretPositionsMini,
+};

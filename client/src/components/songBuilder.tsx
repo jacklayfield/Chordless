@@ -90,7 +90,7 @@ export const SongBuilder = () => {
           {chords.map((chord, i) => {
             return (
               <div className="chords mb-4" key={i}>
-                <FretboardReadOnly frets={chord.chordArr} />
+                <FretboardReadOnly frets={chord.chordArr} miniFlag={false} />
                 <div className="center-div">
                   <span className="chord-name">
                     {chord.chordName !== "undefined" ? chord.chordName : ""}

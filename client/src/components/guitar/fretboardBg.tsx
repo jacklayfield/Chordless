@@ -1,19 +1,27 @@
 import React from "react";
 import {
   fbSize,
-  stringPositions,
   fretPositions,
+  stringPositions,
+  fretPositionsMini,
+  stringPositionsMini,
 } from "../../utils/fretboardValues";
 
-export const FretboardBg = () => {
-  const strings = stringPositions.map((pos, i) => {
+interface FPROPS {
+  miniFlag: boolean;
+}
+
+export const FretboardBg: React.FC<FPROPS> = ({ miniFlag }) => {
+  const strings = (
+    miniFlag === false ? stringPositions : stringPositionsMini
+  ).map((pos, i) => {
     return (
       <line
         key={`string-${i}`}
         id={`string-${i}`}
         x1="0"
         y1={pos}
-        x2={fbSize.width}
+        x2={miniFlag === false ? fbSize.width : fbSize.widthMini}
         y2={pos}
         stroke="#ddd"
         strokeWidth="2"
@@ -21,26 +29,28 @@ export const FretboardBg = () => {
     );
   });
 
-  const frets = fretPositions.map((pos, i) => {
-    return (
-      <line
-        key={`fret-${i}`}
-        id={`fret-${i}`}
-        x1={pos}
-        y1="0"
-        x2={pos}
-        y2={fbSize.height}
-        stroke="#b93"
-        strokeWidth="3"
-      />
-    );
-  });
+  const frets = (miniFlag === false ? fretPositions : fretPositionsMini).map(
+    (pos, i) => {
+      return (
+        <line
+          key={`fret-${i}`}
+          id={`fret-${i}`}
+          x1={pos}
+          y1="0"
+          x2={pos}
+          y2={miniFlag === false ? fbSize.height : fbSize.heightMini}
+          stroke="#b93"
+          strokeWidth="3"
+        />
+      );
+    }
+  );
   const nut = (
     <rect
       x="0"
       y="0"
-      width={fretPositions[0]}
-      height={fbSize.height}
+      width={miniFlag === false ? fretPositions[0] : fretPositionsMini[0]}
+      height={miniFlag === false ? fbSize.height : fbSize.heightMini}
       fill="rgba(0,0,0,0.5)"
     />
   );
@@ -52,14 +62,30 @@ export const FretboardBg = () => {
       return (
         <g key={`dot-${fret}`} id={`dots-${fret}`}>
           <circle
-            cx={(fretPositions[fret] + fretPositions[fret - 1]) / 2}
-            cy={(2 * fbSize.height) / 6}
+            cx={
+              miniFlag === false
+                ? (fretPositions[fret] + fretPositions[fret - 1]) / 2
+                : (fretPositionsMini[fret] + fretPositionsMini[fret - 1]) / 2
+            }
+            cy={
+              miniFlag === false
+                ? (2 * fbSize.height) / 6
+                : (2 * fbSize.heightMini) / 6
+            }
             r="3"
             fill="#a98"
           />
           <circle
-            cx={(fretPositions[fret] + fretPositions[fret - 1]) / 2}
-            cy={(4 * fbSize.height) / 6}
+            cx={
+              miniFlag === false
+                ? (fretPositions[fret] + fretPositions[fret - 1]) / 2
+                : (fretPositionsMini[fret] + fretPositionsMini[fret - 1]) / 2
+            }
+            cy={
+              miniFlag === false
+                ? (4 * fbSize.height) / 6
+                : (4 * fbSize.heightMini) / 6
+            }
             r="3"
             fill="#a98"
           />
@@ -70,8 +96,12 @@ export const FretboardBg = () => {
       <circle
         key={`dot-${fret}`}
         id={`dot-${fret}`}
-        cx={(fretPositions[fret] + fretPositions[fret - 1]) / 2}
-        cy={fbSize.height / 2}
+        cx={
+          miniFlag === false
+            ? (fretPositions[fret] + fretPositions[fret - 1]) / 2
+            : (fretPositionsMini[fret] + fretPositionsMini[fret - 1]) / 2
+        }
+        cy={miniFlag === false ? fbSize.height / 2 : fbSize.heightMini / 2}
         r="3"
         fill="#a98"
       />
@@ -82,9 +112,15 @@ export const FretboardBg = () => {
     <div className="fretboard-bg">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox={`0 0 ${fbSize.width} ${fbSize.height}`}
-        width={`${fbSize.width}`}
-        height={`${fbSize.height}`}
+        viewBox={
+          miniFlag === false
+            ? `0 0 ${fbSize.width} ${fbSize.height}`
+            : `0 0 ${fbSize.widthMini} ${fbSize.heightMini}`
+        }
+        width={miniFlag === false ? `${fbSize.width}` : `${fbSize.widthMini}`}
+        height={
+          miniFlag === false ? `${fbSize.height}` : `${fbSize.heightMini}`
+        }
       >
         {nut}
         {frets}
