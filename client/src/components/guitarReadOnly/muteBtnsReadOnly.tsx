@@ -2,11 +2,12 @@ import React from "react";
 
 interface FPROPS {
   frets: number[];
+  miniFlag: boolean;
 }
 
-export const MuteBtnsReadOnly: React.FC<FPROPS> = ({ frets }) => {
+export const MuteBtnsReadOnly: React.FC<FPROPS> = ({ frets, miniFlag }) => {
   return (
-    <div className="mute-btns">
+    <div className={miniFlag === false ? "mute-btns" : "mute-btns"}>
       {frets.map((fret, i) => {
         const isChecked = fret < 0 || Object.is(fret, -0);
 
@@ -14,7 +15,9 @@ export const MuteBtnsReadOnly: React.FC<FPROPS> = ({ frets }) => {
           <div key={i} className="mute-btn">
             <input type="checkbox" checked={isChecked} readOnly />
 
-            <label className="read-only"></label>
+            <label
+              className={miniFlag === false ? "read-only" : "read-only mini"}
+            ></label>
           </div>
         );
       })}

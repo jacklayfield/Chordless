@@ -11,7 +11,7 @@ interface FPROPS {
 export const FretboardReadOnly: React.FC<FPROPS> = ({ frets, miniFlag }) => {
   return (
     <div className="fretboard-container">
-      <MuteBtnsReadOnly frets={frets} />
+      <MuteBtnsReadOnly frets={frets} miniFlag={miniFlag} />
       <FretboardBg miniFlag={miniFlag} />
       <FretMarkersReadOnly frets={frets} miniFlag={miniFlag} />
     </div>

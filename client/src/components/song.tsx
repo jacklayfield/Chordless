@@ -49,9 +49,18 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag }) => {
               {chordSet.map((chord) => {
                 return (
                   <Col>
-                    <div>
-                      {i}
-                      {chord.chordArr}
+                    <div className="center-div">
+                      <FretboardReadOnly
+                        frets={chord.chordArr}
+                        miniFlag={miniFlag}
+                      />
+                      <div className="center-div">
+                        <span className="chord-name-small">
+                          {chord.chordName !== "undefined"
+                            ? chord.chordName
+                            : ""}
+                        </span>
+                      </div>
                     </div>
                   </Col>
                 );

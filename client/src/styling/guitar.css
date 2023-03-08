@@ -143,6 +143,10 @@
   cursor: default !important;
 }
 
+.mini {
+  height: 14px !important;
+}
+
 .chords {
   background: #e6e6e6;
   padding: 1rem;
@@ -152,4 +156,9 @@
 .chord-name {
   font-weight: bold;
   font-size: 2rem;
+}
+
+.chord-name-small {
+  font-weight: bold;
+  font-size: 1.5rem;
 }
