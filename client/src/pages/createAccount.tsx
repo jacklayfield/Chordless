@@ -14,15 +14,23 @@ export const CreateAccount = () => {
   const [error, setError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
   const [usernameError, setusernameError] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       setusernameError(false);
       setEmailError(false);
+      setSuccess(false);
       const res = await axios.post("/api/auth-standard/create", {
         data: { username, email, password },
       });
+      if (res.status == 200) {
+        setSuccess(true);
+        await new Promise((r) => setTimeout(r, 2000));
+        window.open("http://localhost:3000/login", "_self");
+        console.log("Success");
+      }
     } catch (error) {
       setError(true);
       console.log(error);
@@ -39,7 +47,19 @@ export const CreateAccount = () => {
     }
   };
 
-  return (
+  return success ? (
+    <div className="center">
+      <div className="cover">
+        <h1 className="login-text">Create Account</h1>
+        <div>
+          <h4 className="login-status success">
+            Account Created! Redirecting to login...
+          </h4>
+          <div className="loading-spinner mb-2"></div>
+        </div>
+      </div>
+    </div>
+  ) : (
     <div className="center">
       <form className="cover" onSubmit={handleSubmit}>
         <h1 className="login-text">Create Account</h1>

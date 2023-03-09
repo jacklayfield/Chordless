@@ -6,6 +6,9 @@ import { FretboardReadOnly } from "./guitarReadOnly/fretboardReadOnly";
 import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { isVoidExpression } from "typescript";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -47,11 +50,25 @@ export const SongBuilder = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await axios.post("/api/songs/create", {
-      data: { chords, songName },
-    });
-    if (res.status === 200) {
-      console.log("submitted song successfully");
+    try {
+      const res = await axios.post("/api/songs/create", {
+        data: { chords, songName },
+      });
+      if (res.status === 200) {
+        console.log("submitted song successfully");
+
+        toast.success("Song has been created!", {
+          autoClose: 3000,
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        setChords([]);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save song...", {
+        autoClose: 3000,
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
   };
 
@@ -60,6 +77,7 @@ export const SongBuilder = () => {
 
   return width > breakpoint_mobile ? (
     <div className="center-div">
+      <ToastContainer autoClose={8000} />
       <h3>Song Name</h3>
       <input
         className="mb-4"

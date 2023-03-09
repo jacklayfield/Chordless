@@ -44,11 +44,11 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag }) => {
     <div>
       {chunkedChords.map((chordSet, i) => {
         return (
-          <div>
+          <div key={i}>
             <Row>
-              {chordSet.map((chord) => {
+              {chordSet.map((chord, i) => {
                 return (
-                  <Col>
+                  <Col key={i}>
                     <div className="center-div">
                       <FretboardReadOnly
                         frets={chord.chordArr}

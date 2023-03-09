@@ -1,7 +1,7 @@
 const fbSize = {
   width: 830,
   height: 108,
-  widthMini: 580,
+  widthMini: 564,
   heightMini: 84,
 };
 

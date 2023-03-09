@@ -11,6 +11,7 @@ import { CurrentUserProvider } from "./context/context";
 import { MySongs } from "./pages/mySongs";
 import { Profile } from "./pages/profile";
 import { SingleSong } from "./pages/singleSong";
+import { Test } from "./pages/test";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/createAccount" element={<CreateAccount />} />
           <Route path="/mySongs" element={<MySongs />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/test" element={<Test />} />
           <Route path="/song/:songid" element={<SingleSong />} />
         </Routes>
       </Router>

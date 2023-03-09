@@ -37,8 +37,6 @@ export const Login = () => {
     }
   };
 
-  if (success) {
-  }
   return success ? (
     <div className="center">
       <div className="cover">
