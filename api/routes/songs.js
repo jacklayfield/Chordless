@@ -120,4 +120,37 @@ router.get("/allChords/id=:id", async (req, res) => {
   }
 });
 
+router.delete("/deleteSong/id=:id", async (req, res) => {
+  try {
+    const decoded = jwt.verify(req.cookies.token, config.secret);
+    const user_id = decoded.id;
+
+    const songId = req.params.id;
+
+    const song = await Song.findOne({
+      where: { id: songId },
+    });
+
+    if (song.dataValues.userId != user_id) {
+      return res
+        .status(403)
+        .send("attempt to delete a song that you don't own has been denied");
+    }
+
+    const song1 = await Song.destroy({
+      where: { id: songId },
+    });
+    const song2 = await Chord.destroy({
+      where: { songid: songId },
+    });
+
+    res.status(200).send();
+
+    // Fetch a single song based on song id
+    // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

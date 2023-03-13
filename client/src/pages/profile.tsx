@@ -35,7 +35,9 @@ export const Profile = () => {
     setEditName(false);
   };
 
-  return (
+  return currentUser?.username === undefined ? (
+    <div>Not signed in</div>
+  ) : (
     <div>
       <Row className="gx-0">
         <Col />

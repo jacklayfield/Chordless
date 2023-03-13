@@ -12,7 +12,7 @@ Bug: Refresh tokens not generating token prior to loading page on refresh after 
 Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
 Bug: Mute buttons with "-0" not showing up on song view. <br />
 DONE General: "Create account" window redirection and popup after submit <br />
-Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
-General: If user not signed in, do NOT let them create a song <br />
+DONE Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
+DONE General: If user not signed in, do NOT let them create a song <br />
 DONE General: "Create song" window redirection and popup after submit <br />
 Improvement: If user not logged in, try to handle context more efficiently (Already configured to not waste a DB query, but no api call at all would be better). <br />

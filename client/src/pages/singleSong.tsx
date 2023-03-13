@@ -6,6 +6,8 @@ import { Song } from "../components/song";
 import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/viewMenu";
+import { DeleteConfirmation } from "../components/deleteConfirmation";
+import "../styling/theme.css";
 
 export const SingleSong = () => {
   const location = useLocation();
@@ -16,6 +18,9 @@ export const SingleSong = () => {
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [view, setView] = useState<String>("standard");
+  const [displayConfirmationModal, setDisplayConfirmationModal] =
+    useState<boolean>(false);
+  const [deleteMessage, setDeleteMessage] = useState<String>("");
 
   useEffect(() => {
     const fetchSong = async () => {
@@ -60,6 +65,29 @@ export const SingleSong = () => {
     view === "standard" ? setView("standard") : setView("lgScope");
   };
 
+  const showDeleteModal = () => {
+    setDeleteMessage("Are you sure you want to delete '" + song + "'?");
+
+    setDisplayConfirmationModal(true);
+  };
+
+  const hideConfirmationModal = () => {
+    setDisplayConfirmationModal(false);
+  };
+
+  const submitDelete = async () => {
+    try {
+      const res = await axios.delete("/api/songs/deleteSong/id=" + songid);
+      if (res.status === 200) {
+        window.open("http://localhost:3000/mySongs", "_self");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setDisplayConfirmationModal(false);
+  };
+
   const { width } = useViewport();
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
@@ -80,17 +108,38 @@ export const SingleSong = () => {
             }
           >
             <div className="columns">
-              <div className="sectionTitles">
+              <div className="sectionTitles songOptions">
                 <header className="sectionTitlesText">{song}</header>
+                <div className="songOptions">
+                  <div
+                    style={{
+                      color: "gray",
+                      cursor: "not-allowed",
+                      marginRight: "1rem",
+                    }}
+                  >
+                    {" "}
+                    <i className="fa-solid fa-edit fa-lg"></i> Edit
+                  </div>
+                  <div
+                    style={{
+                      color: "darkred",
+                      cursor: "pointer",
+                      marginRight: "1rem",
+                    }}
+                    onClick={() => showDeleteModal()}
+                  >
+                    <i className="fa-solid fa-trash-can fa-lg"></i> Delete
+                  </div>
+                </div>
               </div>
 
-              <div style={{ padding: 20 }}>
+              <div style={{ paddingTop: "1rem" }}>
                 <div
                   style={{
                     fontSize: "20px",
                   }}
                 >
-                  {view}
                   <Song chords={chords} miniFlag={view === "lgScope"} />
                 </div>
               </div>
@@ -103,6 +152,12 @@ export const SingleSong = () => {
           <Song chords={chords} miniFlag={view === "lgScope"} />
         </div>
       )}
+      <DeleteConfirmation
+        showModal={displayConfirmationModal}
+        confirmModal={submitDelete}
+        hideModal={hideConfirmationModal}
+        message={deleteMessage}
+      />
     </div>
   ) : (
     <div>

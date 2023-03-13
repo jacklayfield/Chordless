@@ -15,7 +15,11 @@ export type CHORD_TYPE = {
   chordName: String;
 };
 
-export const SongBuilder = () => {
+interface SPROPS {
+  userFlag: boolean;
+}
+
+export const SongBuilder: React.FC<SPROPS> = ({ userFlag }) => {
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
@@ -28,7 +32,11 @@ export const SongBuilder = () => {
     setCurrFrets(newFrets);
   };
 
-  const updateChords = (currChord: number[]) => {
+  const updateChords = async (currChord: number[]) => {
+    if (!userFlag) {
+      window.open("http://localhost:3000/login", "_self");
+      return;
+    }
     let newChords = [...chords];
     let chordObj: CHORD_TYPE = {
       chordArr: currChord,
@@ -62,6 +70,8 @@ export const SongBuilder = () => {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setChords([]);
+        setCurrFrets([0, 0, 0, 0, 0, 0]);
+        (document.getElementById("song-name") as HTMLInputElement).value = "";
       }
     } catch (error) {
       console.error(error);
@@ -80,6 +90,7 @@ export const SongBuilder = () => {
       <ToastContainer autoClose={8000} />
       <h3>Song Name</h3>
       <input
+        id="song-name"
         className="mb-4"
         type="text"
         placeholder="my song"

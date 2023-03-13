@@ -1,15 +1,21 @@
+import React from "react";
 import "../styling/theme.css";
 import { SongBuilder } from "../components/songBuilder";
 import { Col, Row } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { useState } from "react";
+import CurrentUserContext from "../context/context";
 
 export const CreateSong = () => {
   const { width } = useViewport();
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
 
-  return (
+  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
+  console.log(currentUser);
+  return authIsLoading ? (
+    <div>Loading</div>
+  ) : (
     <div>
       <Row className="gx-0">
         <Col />
@@ -33,7 +39,7 @@ export const CreateSong = () => {
                   fontSize: "20px",
                 }}
               >
-                <SongBuilder />
+                <SongBuilder userFlag={currentUser?.id !== undefined} />
                 <div>
                   * Please note that chords with a "~" preceding them denote
                   chords that are not their true form, but are inferred. For
