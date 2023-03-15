@@ -8,8 +8,12 @@ import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/viewMenu";
 import { DeleteConfirmation } from "../components/deleteConfirmation";
 import "../styling/theme.css";
+import CurrentUserContext from "../context/context";
+import React from "react";
 
 export const SingleSong = () => {
+  const { authIsLoading } = React.useContext(CurrentUserContext);
+
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
@@ -25,41 +29,43 @@ export const SingleSong = () => {
   useEffect(() => {
     const fetchSong = async () => {
       setLoading(true);
-      try {
-        // WE WILL ALSO NEED TO FETCH CHORDS!
-        const resSong = await axios.get(
-          "/api/songs/singleSong/id=" + String(songid)
-        );
-        setSong(resSong.data.name);
+      if (!authIsLoading) {
+        try {
+          // WE WILL ALSO NEED TO FETCH CHORDS!
+          const resSong = await axios.get(
+            "/api/songs/singleSong/id=" + String(songid)
+          );
+          setSong(resSong.data.name);
 
-        const resChords = await axios.get(
-          "/api/songs/allChords/id=" + String(songid)
-        );
+          const resChords = await axios.get(
+            "/api/songs/allChords/id=" + String(songid)
+          );
 
-        let dbChords: CHORD_TYPE[] = [];
+          let dbChords: CHORD_TYPE[] = [];
 
-        for (const chord of resChords.data) {
-          let chordObj: CHORD_TYPE = {
-            chordArr: chord.chordNotes,
-            chordName: chord.chordName,
-          };
-          dbChords.push(chordObj);
+          for (const chord of resChords.data) {
+            let chordObj: CHORD_TYPE = {
+              chordArr: chord.chordNotes,
+              chordName: chord.chordName,
+            };
+            dbChords.push(chordObj);
+          }
+          setChords(dbChords);
+        } catch (error) {
+          setError(true);
+          console.log(`${(error as AxiosError)?.response?.data}`);
+          if (
+            `${(error as AxiosError)?.response?.data}` ===
+            "user not permitted to view song"
+          ) {
+            console.error(error);
+          }
         }
-        setChords(dbChords);
-      } catch (error) {
-        setError(true);
-        console.log(`${(error as AxiosError)?.response?.data}`);
-        if (
-          `${(error as AxiosError)?.response?.data}` ===
-          "user not permitted to view song"
-        ) {
-          console.error(error);
-        }
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchSong();
-  }, [songid]);
+  }, [songid, authIsLoading]);
 
   const handleViewChange = (view: String) => {
     view === "standard" ? setView("standard") : setView("lgScope");

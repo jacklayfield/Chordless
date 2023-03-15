@@ -24,27 +24,29 @@ export const MySongs = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       setLoadingSongs(true);
-      try {
-        const res = await axios.get("/api/songs/userSongs");
-        console.log(res);
+      if (!authIsLoading) {
+        try {
+          const res = await axios.get("/api/songs/userSongs");
+          console.log(res);
 
-        let dbSongs: SONG_TYPE[] = [];
+          let dbSongs: SONG_TYPE[] = [];
 
-        for (let i = 0; i < res.data.length; i++) {
-          let song: SONG_TYPE = {
-            songName: res.data[i].name,
-            songId: res.data[i].id,
-          };
-          dbSongs.push(song);
+          for (let i = 0; i < res.data.length; i++) {
+            let song: SONG_TYPE = {
+              songName: res.data[i].name,
+              songId: res.data[i].id,
+            };
+            dbSongs.push(song);
+          }
+          setSongs(dbSongs);
+        } catch (error) {
+          console.error(error);
         }
-        setSongs(dbSongs);
-      } catch (error) {
-        console.error(error);
+        setLoadingSongs(false);
       }
-      setLoadingSongs(false);
     };
     fetchSongs();
-  }, []);
+  }, [authIsLoading]);
 
   let half: number, half1: SONG_TYPE[], half2: SONG_TYPE[];
 

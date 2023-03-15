@@ -35,8 +35,8 @@ export const Profile = () => {
     setEditName(false);
   };
 
-  return currentUser?.username === undefined ? (
-    <div>Not signed in</div>
+  return authIsLoading || currentUser?.username === undefined ? (
+    <div>{authIsLoading ? <div>Loading</div> : <div>Not signed in</div>}</div>
   ) : (
     <div>
       <Row className="gx-0">
