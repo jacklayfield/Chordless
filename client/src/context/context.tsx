@@ -96,7 +96,7 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   const handleLogout = async () => {
     localStorage.removeItem("username");
     setCurrentUser({} as UserType);
-    axios.get("/api/auth-standard/logout").catch((error) => {
+    await axios.get("/api/auth-standard/logout").catch((error) => {
       console.error(error);
     });
     window.location.reload();

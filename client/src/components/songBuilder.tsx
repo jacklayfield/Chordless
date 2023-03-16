@@ -28,7 +28,7 @@ export const SongBuilder: React.FC<SPROPS> = ({ userFlag }) => {
 
   const updateCurrFrets = (string: number, fret: number) => {
     let newFrets = [...currFrets];
-    newFrets[string] = fret !== undefined ? fret : newFrets[string] * -1;
+    newFrets[string] = fret !== undefined ? fret : -1;
     setCurrFrets(newFrets);
   };
 
