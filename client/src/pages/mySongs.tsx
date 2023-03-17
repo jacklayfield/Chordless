@@ -88,6 +88,14 @@ export const MySongs = () => {
                             navigation bar to make your first song!
                           </div>
                         )}
+                        <Row>
+                          <Col>
+                            <Songs songs={half1} />
+                          </Col>
+                          <Col>
+                            <Songs songs={half2} />
+                          </Col>
+                        </Row>
                       </div>
                     ) : (
                       <div>
@@ -99,15 +107,6 @@ export const MySongs = () => {
                         to make an account (It's easy).
                       </div>
                     )}
-
-                    <Row>
-                      <Col>
-                        <Songs songs={half1} />
-                      </Col>
-                      <Col>
-                        <Songs songs={half2} />
-                      </Col>
-                    </Row>
                   </div>
                 </div>
               </div>

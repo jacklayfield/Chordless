@@ -108,3 +108,25 @@ a:link {
 .selected {
   background-color: #ff914e;
 }
+
+.img404 {
+  width: 300px;
+  height: 250px;
+}
+
+.code404 {
+  font-size: 100px;
+  color: #ff914e;
+}
+
+.error404 {
+  font-size: 50px;
+  color: #ff914e;
+}
+
+.msg404Container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-shadow: 2px 2px 2px gray;
+}

@@ -77,7 +77,7 @@ export const NavBar = () => {
                   ></i>
                   Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
+                <NavDropdown.Item>
                   <i
                     style={{ color: "gray", paddingRight: "10px" }}
                     className="fa-solid fa-gear"
@@ -85,7 +85,7 @@ export const NavBar = () => {
                   Preferences
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout} href="#action/3.4">
+                <NavDropdown.Item onClick={handleLogout}>
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>

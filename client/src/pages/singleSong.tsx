@@ -10,6 +10,7 @@ import { DeleteConfirmation } from "../components/deleteConfirmation";
 import "../styling/theme.css";
 import CurrentUserContext from "../context/context";
 import React from "react";
+import { Error404 } from "../components/error404";
 
 export const SingleSong = () => {
   const { authIsLoading } = React.useContext(CurrentUserContext);
@@ -169,7 +170,8 @@ export const SingleSong = () => {
     <div>
       {!loading ? (
         <div>
-          Sorry, this song either doesn't exist or doesn't belong to you!
+          {/* To-do: Actually check return code for 404 */}
+          <Error404 />
         </div>
       ) : (
         <div>Loading...</div>
