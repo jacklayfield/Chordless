@@ -7,9 +7,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import "../styling/navbar.css";
 import React, { useState } from "react";
 import CurrentUserContext from "./../context/context";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Containter from "react-bootstrap/Container";
 
 export const NavBar = () => {
   const { currentUser, authIsLoading, handleLogout } =
@@ -65,7 +62,7 @@ export const NavBar = () => {
                 className="fa-solid fa-user"
               ></i>
             </Nav.Link>
-            {localStorage.getItem("username") != "undefined" && (
+            {localStorage.getItem("username") !== "undefined" && (
               <NavDropdown
                 title={localStorage.getItem("username")}
                 className="m-0"
@@ -91,7 +88,7 @@ export const NavBar = () => {
               </NavDropdown>
             )}
 
-            {localStorage.getItem("username") == "undefined" && (
+            {localStorage.getItem("username") === "undefined" && (
               <Nav.Link eventKey={2} href="/login">
                 <> </> Login
               </Nav.Link>

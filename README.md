@@ -16,3 +16,5 @@ DONE Bug: Odd logout bug that occours when trying to logout from CreateSong page
 DONE General: If user not signed in, do NOT let them create a song <br />
 DONE General: "Create song" window redirection and popup after submit <br />
 Improvement: If user not logged in, try to handle context more efficiently (Already configured to not waste a DB query, but no api call at all would be better). <br />
+Cleanup: Organize css files <br />
+Cleanup: Create a place to put universal constants <br />

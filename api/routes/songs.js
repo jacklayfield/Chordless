@@ -90,6 +90,10 @@ router.get("/singleSong/id=:id", async (req, res) => {
       where: { id: songId },
     });
 
+    if (song == null) {
+      return res.status(404).send("Song was not found");
+    }
+
     if (song.dataValues.userId != user_id) {
       return res.status(403).send("user not permitted to view song");
     }

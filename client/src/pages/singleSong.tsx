@@ -18,10 +18,15 @@ export const SingleSong = () => {
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
+  const ERROR_GENERAL = 1;
+  const SUCCESS = 0;
+  const ERROR_404 = 404;
+  const ERROR_403 = 403;
+
   const [loading, setLoading] = useState<boolean>(true);
   const [song, setSong] = useState<String>();
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<number>(SUCCESS);
   const [view, setView] = useState<String>("standard");
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState<boolean>(false);
@@ -30,6 +35,7 @@ export const SingleSong = () => {
   useEffect(() => {
     const fetchSong = async () => {
       setLoading(true);
+      setError(SUCCESS);
       if (!authIsLoading) {
         try {
           // WE WILL ALSO NEED TO FETCH CHORDS!
@@ -53,13 +59,14 @@ export const SingleSong = () => {
           }
           setChords(dbChords);
         } catch (error) {
-          setError(true);
-          console.log(`${(error as AxiosError)?.response?.data}`);
-          if (
-            `${(error as AxiosError)?.response?.data}` ===
-            "user not permitted to view song"
-          ) {
+          if (`${(error as AxiosError)?.response?.status}` === "403") {
             console.error(error);
+            setError(ERROR_403);
+          } else if (`${(error as AxiosError)?.response?.status}` === "404") {
+            console.log("got into 404");
+            setError(ERROR_404);
+          } else {
+            setError(ERROR_GENERAL);
           }
         }
         setLoading(false);
@@ -99,7 +106,7 @@ export const SingleSong = () => {
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
 
-  return !error && !loading ? (
+  return error == SUCCESS && !loading ? (
     <div>
       <ViewMenu handleViewChange={handleViewChange} view={view} />
       {view === "standard" ? (
@@ -170,8 +177,16 @@ export const SingleSong = () => {
     <div>
       {!loading ? (
         <div>
-          {/* To-do: Actually check return code for 404 */}
-          <Error404 />
+          {error == ERROR_404 && <Error404 />}
+          {error == ERROR_403 && (
+            <div>
+              This song does not belong to you! It is possible you are logged
+              out!
+            </div>
+          )}
+          {error == ERROR_GENERAL && (
+            <div>An error has occured fetching this song...</div>
+          )}
         </div>
       ) : (
         <div>Loading...</div>
