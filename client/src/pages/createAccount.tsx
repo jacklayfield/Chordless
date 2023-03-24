@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Google from "../google.png";
-import "../styling/login.css";
-import "../styling/theme.css";
+import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
 
 export const CreateAccount = () => {
@@ -11,7 +9,6 @@ export const CreateAccount = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
   const [emailError, setEmailError] = useState<boolean>(false);
   const [usernameError, setusernameError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
@@ -25,22 +22,21 @@ export const CreateAccount = () => {
       const res = await axios.post("/api/auth-standard/create", {
         data: { username, email, password },
       });
-      if (res.status == 200) {
+      if (res.status === 200) {
         setSuccess(true);
         await new Promise((r) => setTimeout(r, 2000));
         window.open("http://localhost:3000/login", "_self");
         console.log("Success");
       }
     } catch (error) {
-      setError(true);
       console.log(error);
       if (
-        `${(error as AxiosError)?.response?.data}` == "email must be unique"
+        `${(error as AxiosError)?.response?.data}` === "email must be unique"
       ) {
         setEmailError(true);
       }
       if (
-        `${(error as AxiosError)?.response?.data}` == "username must be unique"
+        `${(error as AxiosError)?.response?.data}` === "username must be unique"
       ) {
         setusernameError(true);
       }

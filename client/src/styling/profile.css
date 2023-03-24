@@ -14,3 +14,12 @@
   margin-right: auto;
   text-align: center;
 }
+
+.edit-button {
+  border: 0px;
+  background: white;
+}
+
+.profile-titles {
+  text-align: center;
+}

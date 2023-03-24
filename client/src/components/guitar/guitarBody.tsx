@@ -1,6 +1,4 @@
 import React from "react";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import "../../styling/guitar.css";
 
 interface FPROPS {
   currFrets: number[];

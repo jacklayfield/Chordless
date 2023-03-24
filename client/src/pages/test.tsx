@@ -1,7 +1,5 @@
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../styling/theme.css";
 
 export function Test() {
   const songNotif = () =>
@@ -13,7 +11,7 @@ export function Test() {
   return (
     <div>
       <div className="songOptions">
-        <div>Howdy</div>
+        <div>{songNotif()}</div>
         <div>Hi</div>
       </div>
     </div>

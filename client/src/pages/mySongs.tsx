@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import CurrentUserContext from "../context/context";
-import { SongCard } from "../components/songCard";
 import { Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import { Songs } from "../components/songs";
+import "../styling/song.css";
 
 //THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
 
@@ -69,45 +68,39 @@ export const MySongs = () => {
             <Col />
             <Col xs={8}>
               <div className="columns">
-                <div className="sectionTitles">
-                  <header className="sectionTitlesText">My Songs</header>
+                <div className="section-titles">
+                  <header className="section-titles-text">My Songs</header>
                 </div>
 
-                <div style={{ padding: 20 }}>
-                  <div
-                    style={{
-                      fontSize: "20px",
-                    }}
-                  >
-                    {currentUser.id !== undefined ? (
-                      <div>
-                        Hey there {currentUser.username}! Here are your songs:{" "}
-                        {songs.length === 0 && (
-                          <div className="chords">
-                            No songs 😢 Click "Create Song" in the top
-                            navigation bar to make your first song!
-                          </div>
-                        )}
-                        <Row>
-                          <Col>
-                            <Songs songs={half1} />
-                          </Col>
-                          <Col>
-                            <Songs songs={half2} />
-                          </Col>
-                        </Row>
-                      </div>
-                    ) : (
-                      <div>
-                        It appears you are not signed in! Please tap "Login" in
-                        the top right or{" "}
-                        <a href="http://localhost:3000/createAccount">
-                          click here
-                        </a>{" "}
-                        to make an account (It's easy).
-                      </div>
-                    )}
-                  </div>
+                <div className="inner-div">
+                  {currentUser.id !== undefined ? (
+                    <div>
+                      Hey there {currentUser.username}! Here are your songs:{" "}
+                      {songs.length === 0 && (
+                        <div className="chords">
+                          No songs 😢 Click "Create Song" in the top navigation
+                          bar to make your first song!
+                        </div>
+                      )}
+                      <Row>
+                        <Col>
+                          <Songs songs={half1} />
+                        </Col>
+                        <Col>
+                          <Songs songs={half2} />
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : (
+                    <div>
+                      It appears you are not signed in! Please tap "Login" in
+                      the top right or{" "}
+                      <a href="http://localhost:3000/createAccount">
+                        click here
+                      </a>{" "}
+                      to make an account (It's easy).
+                    </div>
+                  )}
                 </div>
               </div>
             </Col>

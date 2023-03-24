@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { Fretboard } from "./guitar/fretboard";
-import "../styling/guitar.css";
-import "../styling/theme.css";
 import { FretboardReadOnly } from "./guitarReadOnly/fretboardReadOnly";
 import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { isVoidExpression } from "typescript";
+import "../styling/guitar.css";
 
 export type CHORD_TYPE = {
   chordArr: number[];

@@ -7,7 +7,6 @@ import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/viewMenu";
 import { DeleteConfirmation } from "../components/deleteConfirmation";
-import "../styling/theme.css";
 import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/error404";
@@ -106,7 +105,7 @@ export const SingleSong = () => {
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
 
-  return error == SUCCESS && !loading ? (
+  return error === SUCCESS && !loading ? (
     <div>
       <ViewMenu handleViewChange={handleViewChange} view={view} />
       {view === "standard" ? (
@@ -122,40 +121,23 @@ export const SingleSong = () => {
             }
           >
             <div className="columns">
-              <div className="sectionTitles songOptions">
-                <header className="sectionTitlesText">{song}</header>
-                <div className="songOptions">
-                  <div
-                    style={{
-                      color: "gray",
-                      cursor: "not-allowed",
-                      marginRight: "1rem",
-                    }}
-                  >
+              <div className="section-titles song-options">
+                <header className="section-titles-text">{song}</header>
+                <div className="song-options">
+                  <div className="song-options-edit">
                     {" "}
                     <i className="fa-solid fa-edit fa-lg"></i> Edit
                   </div>
                   <div
-                    style={{
-                      color: "darkred",
-                      cursor: "pointer",
-                      marginRight: "1rem",
-                    }}
+                    className="song-options-delete"
                     onClick={() => showDeleteModal()}
                   >
                     <i className="fa-solid fa-trash-can fa-lg"></i> Delete
                   </div>
                 </div>
               </div>
-
-              <div style={{ paddingTop: "1rem" }}>
-                <div
-                  style={{
-                    fontSize: "20px",
-                  }}
-                >
-                  <Song chords={chords} miniFlag={view === "lgScope"} />
-                </div>
+              <div className="inner-div">
+                <Song chords={chords} miniFlag={view === "lgScope"} />
               </div>
             </div>
           </Col>
@@ -177,14 +159,14 @@ export const SingleSong = () => {
     <div>
       {!loading ? (
         <div>
-          {error == ERROR_404 && <Error404 />}
-          {error == ERROR_403 && (
+          {error === ERROR_404 && <Error404 />}
+          {error === ERROR_403 && (
             <div>
               This song does not belong to you! It is possible you are logged
               out!
             </div>
           )}
-          {error == ERROR_GENERAL && (
+          {error === ERROR_GENERAL && (
             <div>An error has occured fetching this song...</div>
           )}
         </div>

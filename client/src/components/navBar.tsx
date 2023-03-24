@@ -1,12 +1,12 @@
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import logo from "./../logo.png";
-import text from "../text.png";
+import logo from "../images/logo.png";
+import text from "../images/text.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import "../styling/navbar.css";
-import React, { useState } from "react";
+import React from "react";
 import CurrentUserContext from "./../context/context";
+import "../styling/navbar.css";
 
 export const NavBar = () => {
   const { currentUser, authIsLoading, handleLogout } =
@@ -25,7 +25,7 @@ export const NavBar = () => {
     >
       <Container>
         <Navbar.Brand>
-          <a href="/">
+          <a href="/createSong">
             <img
               alt=""
               src={logo}

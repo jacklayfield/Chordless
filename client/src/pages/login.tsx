@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import Google from "../google.png";
-import "../styling/login.css";
-import "../styling/theme.css";
+import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
+import "../styling/login.css";
 
 export const Login = () => {
   const google = () => {
@@ -20,7 +19,7 @@ export const Login = () => {
       const res = await axios.post("/api/auth-standard/login", {
         data: { username, password },
       });
-      if (res.status == 200) {
+      if (res.status === 200) {
         setSuccess(true);
         //Store the username in localStorage for setting NavBar
         localStorage.setItem("username", String(username));
@@ -31,7 +30,7 @@ export const Login = () => {
     } catch (error) {
       setError(true);
       console.log(`${(error as AxiosError)?.response?.data}`);
-      if (`${(error as AxiosError)?.response?.data}` == "Wrong credentials!") {
+      if (`${(error as AxiosError)?.response?.data}` === "Wrong credentials!") {
         console.error(error);
       }
     }

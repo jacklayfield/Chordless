@@ -1,3 +1,5 @@
+import "../styling/viewMenu.css";
+
 interface VPROPS {
   handleViewChange: Function;
   view: String;
@@ -9,7 +11,9 @@ export const ViewMenu: React.FC<VPROPS> = ({ handleViewChange, view }) => {
       <div className="buttons">
         <button
           className={
-            view === "standard" ? "viewMenuButton selected" : "viewMenuButton"
+            view === "standard"
+              ? "view-menu-button selected"
+              : "view-menu-button"
           }
           onClick={() => {
             handleViewChange("standard");
@@ -19,7 +23,9 @@ export const ViewMenu: React.FC<VPROPS> = ({ handleViewChange, view }) => {
         </button>
         <button
           className={
-            view === "lgScope" ? "viewMenuButton selected" : "viewMenuButton"
+            view === "lgScope"
+              ? "view-menu-button selected"
+              : "view-menu-button"
           }
           onClick={() => {
             handleViewChange("lgScope");
