@@ -5,8 +5,6 @@ import axios from "axios";
 import { Songs } from "../components/songs";
 import "../styling/song.css";
 
-//THIS PAGE FOR TESTING PURPOSES ONLY AS OF RIGHT NOW
-
 export type SONG_TYPE = {
   songName: String;
   songId: number;
@@ -14,8 +12,6 @@ export type SONG_TYPE = {
 
 export const MySongs = () => {
   const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
-
-  // Creating type now as other elements will be added
 
   const [songs, setSongs] = useState<SONG_TYPE[]>([]);
   const [loadingSongs, setLoadingSongs] = useState<boolean>(true);

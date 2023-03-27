@@ -10,7 +10,6 @@ const RefreshToken = require("../models/RefreshToken");
 // CREATE USER
 router.post("/create", async (req, res) => {
   try {
-    console.log(req.body.data.password);
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(req.body.data.password, salt);
     const username = req.body.data.username;
@@ -21,8 +20,6 @@ router.post("/create", async (req, res) => {
       { bind: [username, email, hashedPass], type: QueryTypes.INSERT }
     );
 
-    console.log(results);
-
     res.json(results);
   } catch (error) {
     console.error(error);
@@ -32,7 +29,6 @@ router.post("/create", async (req, res) => {
 
 // LOGIN
 router.post("/login", async (req, res) => {
-  console.log(req.headers);
   try {
     // Grab user from DB and validate
     const user = await User.findOne({
@@ -40,7 +36,6 @@ router.post("/login", async (req, res) => {
     });
 
     if (!user) {
-      console.log("failed to find user");
       return res.status(400).json("Wrong credentials!");
     }
 
@@ -50,7 +45,6 @@ router.post("/login", async (req, res) => {
     );
 
     if (!validated) {
-      console.log("failed to verify password");
       return res.status(400).json("Wrong credentials!");
     }
 
@@ -64,14 +58,11 @@ router.post("/login", async (req, res) => {
     });
 
     // Put the refresh token in the DB
-    try {
-      const [results, meta] = await sequelize.query(
-        "INSERT INTO refreshtokens (tokenvalue) VALUES($1) RETURNING *",
-        { bind: [token_refresh], type: QueryTypes.INSERT }
-      );
-    } catch (error) {
-      console.error(error.message);
-    }
+
+    const [results, meta] = await sequelize.query(
+      "INSERT INTO refreshtokens (tokenvalue) VALUES($1) RETURNING *",
+      { bind: [token_refresh], type: QueryTypes.INSERT }
+    );
 
     // Set cookies
     res.cookie("token", token, { httpOnly: true });
@@ -103,48 +94,42 @@ router.post("/refresh", async (req, res) => {
     });
 
     if (!tokenFromDB) return res.sendStatus(403);
-  } catch (error) {
-    res.status(500).send(error);
-    console.error(error);
-  }
 
-  // Verify token with secret
-  jwt.verify(refreshToken, config.refresh_secret, async (error, user) => {
-    if (error) {
-      // If there is an error, token is no longer valid, delete it from DB and return
-      try {
+    // Verify token with secret
+    jwt.verify(refreshToken, config.refresh_secret, async (error, user) => {
+      if (error) {
+        // If there is an error, token is no longer valid, delete it from DB and return
         const [results, meta] = await sequelize.query(
           "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
           { bind: [refreshToken], type: QueryTypes.INSERT }
         );
-      } catch (error) {
-        console.error(error.message);
+        res.clearCookie("token");
+        res.clearCookie("refreshToken");
+        return res.status(403).send("token auth failed");
       }
-      res.clearCookie("token");
-      res.clearCookie("refreshToken");
-      return res.status(403).send("token auth failed");
-    }
-    //otherwise let's sign the new access token for the user
-    var token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: "900s",
+      //otherwise let's sign the new access token for the user
+      var token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: "900s",
+      });
+      // Set cookie
+      res.cookie("token", token, { httpOnly: true });
+      res.json({ accessToken: token });
     });
-    // Set cookie
-    res.cookie("token", token, { httpOnly: true });
-    res.json({ accessToken: token });
-  });
+  } catch (error) {
+    res.status(500).send(error);
+    console.error(error);
+  }
 });
 
 router.get("/logout", async (req, res) => {
   try {
     //delete the refresh token from the DB
-    try {
-      const [results, meta] = await sequelize.query(
-        "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
-        { bind: [req.cookies.refreshToken], type: QueryTypes.INSERT }
-      );
-    } catch (error) {
-      console.error(error.message);
-    }
+
+    const [results, meta] = await sequelize.query(
+      "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
+      { bind: [req.cookies.refreshToken], type: QueryTypes.INSERT }
+    );
+
     //clear all user cookies
     res.clearCookie("token");
     res.clearCookie("refreshToken");

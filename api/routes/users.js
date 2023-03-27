@@ -42,17 +42,10 @@ router.put("/updateBio", async (req, res) => {
 
     const bio = req.body.data.bio;
 
-    console.log("hello" + bio);
-
-    try {
-      const [results, meta] = await sequelize.query(
-        "UPDATE users SET bio = ($1) WHERE id = ($2) RETURNING *",
-        { bind: [bio, user.id], type: QueryTypes.UPDATE }
-      );
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send(error);
-    }
+    const [results, meta] = await sequelize.query(
+      "UPDATE users SET bio = ($1) WHERE id = ($2) RETURNING *",
+      { bind: [bio, user.id], type: QueryTypes.UPDATE }
+    );
   } catch (error) {
     console.error(error);
     res.status(403).send(error);
@@ -70,17 +63,10 @@ router.put("/updateName", async (req, res) => {
 
     const name = req.body.data.name;
 
-    console.log("hello" + name);
-
-    try {
-      const [results, meta] = await sequelize.query(
-        "UPDATE users SET name = ($1) WHERE id = ($2) RETURNING *",
-        { bind: [name, user.id], type: QueryTypes.UPDATE }
-      );
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send(error);
-    }
+    const [results, meta] = await sequelize.query(
+      "UPDATE users SET name = ($1) WHERE id = ($2) RETURNING *",
+      { bind: [name, user.id], type: QueryTypes.UPDATE }
+    );
   } catch (error) {
     console.error(error);
     res.status(403).send(error);
