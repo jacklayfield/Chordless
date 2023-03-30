@@ -101,6 +101,10 @@ export const SingleSong = () => {
     setDisplayConfirmationModal(false);
   };
 
+  const updateSong = async (newSong: CHORD_TYPE[]) => {
+    console.log("in update song");
+  };
+
   const { width } = useViewport();
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
@@ -122,12 +126,13 @@ export const SingleSong = () => {
           >
             <div className="columns">
               <div className="section-titles song-options">
-                <header className="section-titles-text">{song}</header>
                 <div className="song-options">
+                  <header className="section-titles-text">{song}</header>
                   <div className="song-options-edit">
-                    {" "}
-                    <i className="fa-solid fa-edit fa-lg"></i> Edit
+                    <i className="fa-solid fa-edit fa-lg"></i>
                   </div>
+                </div>
+                <div className="song-options">
                   <div
                     className="song-options-delete"
                     onClick={() => showDeleteModal()}
@@ -137,7 +142,11 @@ export const SingleSong = () => {
                 </div>
               </div>
               <div className="inner-div">
-                <Song chords={chords} miniFlag={view === "lgScope"} />
+                <Song
+                  chords={chords}
+                  miniFlag={view === "lgScope"}
+                  updateSong={updateSong}
+                />
               </div>
             </div>
           </Col>
@@ -145,7 +154,11 @@ export const SingleSong = () => {
         </Row>
       ) : (
         <div>
-          <Song chords={chords} miniFlag={view === "lgScope"} />
+          <Song
+            chords={chords}
+            miniFlag={view === "lgScope"}
+            updateSong={updateSong}
+          />
         </div>
       )}
       <DeleteConfirmation

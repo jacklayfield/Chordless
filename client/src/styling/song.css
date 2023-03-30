@@ -31,13 +31,29 @@
 }
 
 .song-options-delete {
-  color: darkred;
+  color: rgb(133, 0, 0);
   cursor: pointer;
   margin-right: 1rem;
 }
 
 .song-options-edit {
-  color: gray;
+  color: rgb(78, 120, 255);
   cursor: pointer;
   margin-right: 1rem;
+  margin-left: 1rem;
+}
+
+.edit-chords {
+  background-color: #e6e6e6;
+}
+
+.edit-chords:hover {
+  background-color: #d3d3d3;
+}
+
+.song-options-save {
+  color: rgb(0, 211, 11);
+  cursor: pointer;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
