@@ -10,6 +10,7 @@ import { DeleteConfirmation } from "../components/deleteConfirmation";
 import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/error404";
+import { deepCloneChords } from "../utils/general";
 
 export const SingleSong = () => {
   const { authIsLoading } = React.useContext(CurrentUserContext);
@@ -31,13 +32,14 @@ export const SingleSong = () => {
     useState<boolean>(false);
   const [deleteMessage, setDeleteMessage] = useState<String>("");
 
+  let chordsMutable: CHORD_TYPE[] = [];
+
   useEffect(() => {
     const fetchSong = async () => {
       setLoading(true);
       setError(SUCCESS);
       if (!authIsLoading) {
         try {
-          // WE WILL ALSO NEED TO FETCH CHORDS!
           const resSong = await axios.get(
             "/api/songs/singleSong/id=" + String(songid)
           );
@@ -68,11 +70,19 @@ export const SingleSong = () => {
             setError(ERROR_GENERAL);
           }
         }
+        // Deep clone here, else deep clone may be executed more times than neccessary.
+
         setLoading(false);
       }
     };
     fetchSong();
   }, [songid, authIsLoading]);
+
+  if (!loading) {
+    chordsMutable = deepCloneChords(chords);
+  }
+
+  console.log("parent refreshes");
 
   const handleViewChange = (view: String) => {
     view === "standard" ? setView("standard") : setView("lgScope");
@@ -102,7 +112,9 @@ export const SingleSong = () => {
   };
 
   const updateSong = async (newSong: CHORD_TYPE[]) => {
-    console.log("in update song");
+    // console.log(newSong[0].chordArr);
+    // chordsMutable = newSong;
+    // setChords(newSong);
   };
 
   const { width } = useViewport();
