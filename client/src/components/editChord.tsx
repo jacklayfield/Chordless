@@ -8,12 +8,14 @@ interface SPROPS {
   initialFrets: number[];
   chordPosition: number;
   updateChords: Function;
+  chordId: number;
 }
 
 export const EditChord: React.FC<SPROPS> = ({
   initialFrets,
   chordPosition,
   updateChords,
+  chordId,
 }) => {
   const [currFrets, setCurrFrets] = useState<number[]>(initialFrets);
 
@@ -21,8 +23,8 @@ export const EditChord: React.FC<SPROPS> = ({
     let newFrets = [...currFrets];
     newFrets[string] = fret !== undefined ? fret : -1;
     setCurrFrets(newFrets);
-    // Callback to tell actual chord array to update upon changes in "song" component
-    updateChords(newFrets, chordPosition, findChord(newFrets));
+    // Callback to tell actual chord array to update upon changes to the chord
+    updateChords(newFrets, chordPosition, findChord(newFrets), chordId);
   };
 
   const { width } = useViewport();
@@ -30,7 +32,11 @@ export const EditChord: React.FC<SPROPS> = ({
 
   return width > breakpoint_mobile ? (
     <div className="center-div">
-      <Fretboard currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
+      <Fretboard
+        currFrets={currFrets}
+        updateCurrFrets={updateCurrFrets}
+        chordIdentifier={chordId}
+      />
     </div>
   ) : (
     <div className="chords" style={{ color: "red", fontWeight: "bold" }}>

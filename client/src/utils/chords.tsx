@@ -11,7 +11,7 @@ export function findChord(arr: number[]) {
 
   const chordStr = arrCopyReversed.toString();
 
-  console.log(chordStr);
+  // console.log(chordStr);
 
   const chordMap = new Map([
     ["-1,0,2,2,2,0", "A"],

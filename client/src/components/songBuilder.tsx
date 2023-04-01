@@ -11,6 +11,7 @@ import "../styling/guitar.css";
 export type CHORD_TYPE = {
   chordArr: number[];
   chordName: String;
+  chordId: number;
 };
 
 interface SPROPS {
@@ -39,6 +40,8 @@ export const SongBuilder: React.FC<SPROPS> = ({ userFlag }) => {
     let chordObj: CHORD_TYPE = {
       chordArr: currChord,
       chordName: String(findChord(currChord)),
+      // chordId is not relevant here, setting to an invalid index (-1)
+      chordId: -1,
     };
     newChords.push(chordObj);
     setChords(newChords);
@@ -56,6 +59,14 @@ export const SongBuilder: React.FC<SPROPS> = ({ userFlag }) => {
   };
 
   const handleSubmit = async () => {
+    if (chords.length > 50) {
+      toast.warning("Please limit a song to 50 or less chords!", {
+        autoClose: 3000,
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return;
+    }
+
     try {
       const res = await axios.post("/api/songs/create", {
         data: { chords, songName },
@@ -96,7 +107,11 @@ export const SongBuilder: React.FC<SPROPS> = ({ userFlag }) => {
         onChange={(event) => setSongName(event.target.value)}
       ></input>
 
-      <Fretboard currFrets={currFrets} updateCurrFrets={updateCurrFrets} />
+      <Fretboard
+        currFrets={currFrets}
+        updateCurrFrets={updateCurrFrets}
+        chordIdentifier={0}
+      />
 
       <button
         className="chordless-btn m-4"

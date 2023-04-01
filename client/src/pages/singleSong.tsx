@@ -10,7 +10,6 @@ import { DeleteConfirmation } from "../components/deleteConfirmation";
 import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/error404";
-import { deepCloneChords } from "../utils/general";
 
 export const SingleSong = () => {
   const { authIsLoading } = React.useContext(CurrentUserContext);
@@ -31,8 +30,7 @@ export const SingleSong = () => {
   const [displayConfirmationModal, setDisplayConfirmationModal] =
     useState<boolean>(false);
   const [deleteMessage, setDeleteMessage] = useState<String>("");
-
-  let chordsMutable: CHORD_TYPE[] = [];
+  const [editName, setEditName] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchSong = async () => {
@@ -55,6 +53,7 @@ export const SingleSong = () => {
             let chordObj: CHORD_TYPE = {
               chordArr: chord.chordNotes,
               chordName: chord.chordName,
+              chordId: chord.id,
             };
             dbChords.push(chordObj);
           }
@@ -70,19 +69,11 @@ export const SingleSong = () => {
             setError(ERROR_GENERAL);
           }
         }
-        // Deep clone here, else deep clone may be executed more times than neccessary.
-
         setLoading(false);
       }
     };
     fetchSong();
   }, [songid, authIsLoading]);
-
-  if (!loading) {
-    chordsMutable = deepCloneChords(chords);
-  }
-
-  console.log("parent refreshes");
 
   const handleViewChange = (view: String) => {
     view === "standard" ? setView("standard") : setView("lgScope");
@@ -112,9 +103,15 @@ export const SingleSong = () => {
   };
 
   const updateSong = async (newSong: CHORD_TYPE[]) => {
-    // console.log(newSong[0].chordArr);
-    // chordsMutable = newSong;
-    // setChords(newSong);
+    // Make call to api here to update song
+    // Get the new chords (This is neccessary since indexing may change, and we want to be consistent)
+
+    // Temp code for testing
+    setChords(newSong);
+  };
+
+  const handleUpdateName = async (event: React.FormEvent<HTMLFormElement>) => {
+    setEditName(false);
   };
 
   const { width } = useViewport();
@@ -138,12 +135,34 @@ export const SingleSong = () => {
           >
             <div className="columns">
               <div className="section-titles song-options">
-                <div className="song-options">
-                  <header className="section-titles-text">{song}</header>
-                  <div className="song-options-edit">
-                    <i className="fa-solid fa-edit fa-lg"></i>
+                {editName ? (
+                  <div className="flex-container">
+                    <input
+                      className="song-name-input m-1"
+                      type="text"
+                      id="title"
+                      defaultValue={String(song)}
+                      onChange={(event) => setSong(event.target.value)}
+                    />
+                    <div
+                      className="song-options-save name-save"
+                      onClick={() => setEditName(false)}
+                    >
+                      <i className="fa-solid fa-check fa-lg"></i>{" "}
+                    </div>{" "}
                   </div>
-                </div>
+                ) : (
+                  <div className="song-options">
+                    <header className="section-titles-text">{song}</header>
+                    <div className="song-options-edit">
+                      <i
+                        className="fa-solid fa-edit fa-lg"
+                        onClick={() => setEditName(true)}
+                      ></i>
+                    </div>{" "}
+                  </div>
+                )}
+
                 <div className="song-options">
                   <div
                     className="song-options-delete"

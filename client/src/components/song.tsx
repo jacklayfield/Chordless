@@ -35,15 +35,18 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const updateChords = (
     newFrets: number[],
     chordPosition: number,
-    newChordName: string
+    newChordName: string,
+    chordId: number
   ) => {
     let chordObj: CHORD_TYPE = {
       chordArr: newFrets,
       chordName: newChordName,
+      chordId: chordId,
     };
     let newChords = [...localChords];
     newChords.splice(chordPosition, 1, chordObj);
     setLocalChords(newChords);
+    console.log("id: " + chordId);
   };
 
   const saveChanges = () => {
@@ -106,6 +109,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
                 <EditChord
                   initialFrets={chord.chordArr}
                   chordPosition={i}
+                  chordId={chord.chordId}
                   updateChords={updateChords}
                 />
                 <div className="center-div">

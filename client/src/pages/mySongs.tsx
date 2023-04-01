@@ -22,7 +22,7 @@ export const MySongs = () => {
       if (!authIsLoading) {
         try {
           const res = await axios.get("/api/songs/userSongs");
-          console.log(res);
+          // console.log(res);
 
           let dbSongs: SONG_TYPE[] = [];
 
