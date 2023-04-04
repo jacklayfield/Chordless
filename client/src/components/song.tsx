@@ -11,6 +11,11 @@ interface CPROPS {
   updateSong: Function;
 }
 
+// These arrays represent the flagged chordIds for the specified action.
+let updatedChords: number[] = [];
+let deletedChords: number[] = [];
+let createdChords: number[] = [];
+
 export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const perChunk = 3;
 
@@ -32,6 +37,13 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     []
   );
 
+  const constructUpdatedChordsList = () => {
+    updatedChords.forEach((chordId) => {
+      const index = localChords.map((e) => e.chordId).indexOf(chordId);
+      console.log(index);
+    });
+  };
+
   const updateChords = (
     newFrets: number[],
     chordPosition: number,
@@ -43,6 +55,14 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
       chordName: newChordName,
       chordId: chordId,
     };
+
+    // If the chordId is not already flagged, add it to the list
+    if (updatedChords.indexOf(chordId) === -1) {
+      updatedChords.push(chordId);
+      console.log("pushed: " + chordId);
+      console.log(updatedChords.length);
+    }
+
     let newChords = [...localChords];
     newChords.splice(chordPosition, 1, chordObj);
     setLocalChords(newChords);
@@ -52,6 +72,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const saveChanges = () => {
     //SET EDITABLE TO FALSE
     //ISSUE CALLBACK WITH CHORDS PASSED BACK UP THE CHAIN
+    constructUpdatedChordsList();
     updateSong(localChords);
     setEditMode(false);
   };
@@ -62,7 +83,17 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
      *  also allows a "fresh" state upon re-editing.
      * */
     setLocalChords(deepCloneChords(chords));
+
     setEditMode(true);
+  };
+
+  const cancel = () => {
+    // Clear our flagged chords arrays
+    updatedChords = [];
+    deletedChords = [];
+    createdChords = [];
+
+    setEditMode(false);
   };
 
   return miniFlag === false ? (
@@ -81,7 +112,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
           </div>
           <div
             className="chordless-btn edit-chords m-4"
-            onClick={() => setEditMode(false)}
+            onClick={() => cancel()}
           >
             <div className="song-options-cancel">
               {" "}
