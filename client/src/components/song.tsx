@@ -12,9 +12,9 @@ interface CPROPS {
 }
 
 // These arrays represent the flagged chordIds for the specified action.
-let updatedChords: number[] = [];
+let updatedChords: CHORD_TYPE[] = [];
 let deletedChords: number[] = [];
-let createdChords: number[] = [];
+let createdChords: CHORD_TYPE[] = []; // Development to come
 
 export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const perChunk = 3;
@@ -37,13 +37,6 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     []
   );
 
-  const constructUpdatedChordsList = () => {
-    updatedChords.forEach((chordId) => {
-      const index = localChords.map((e) => e.chordId).indexOf(chordId);
-      console.log(index);
-    });
-  };
-
   const updateChords = (
     newFrets: number[],
     chordPosition: number,
@@ -56,12 +49,16 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
       chordId: chordId,
     };
 
-    // If the chordId is not already flagged, add it to the list
-    if (updatedChords.indexOf(chordId) === -1) {
-      updatedChords.push(chordId);
-      console.log("pushed: " + chordId);
-      console.log(updatedChords.length);
+    const index = updatedChords.map((e) => e.chordId).indexOf(chordId);
+
+    if (index !== -1) {
+      updatedChords.splice(index, 1, chordObj);
+    } else {
+      updatedChords.push(chordObj);
     }
+
+    console.log("size of update list: " + updatedChords.length);
+    console.log("first element of list: " + updatedChords[0].chordArr);
 
     let newChords = [...localChords];
     newChords.splice(chordPosition, 1, chordObj);
@@ -69,10 +66,30 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     console.log("id: " + chordId);
   };
 
+  const deleteChord = (chordIndex: number, chordId: number) => {
+    deletedChords.push(chordId);
+    console.log("size of delete list: " + deletedChords.length);
+    console.log("first element of list: " + deletedChords);
+    let newChords = [...localChords];
+    newChords.splice(chordIndex, 1);
+    setLocalChords(newChords);
+  };
+
+  const addChord = (chordIndex: number) => {
+    let chordObj: CHORD_TYPE = {
+      chordArr: [0, 0, 0, 0, 0, 0],
+      chordName: "",
+      chordId: -1,
+    };
+
+    let newChords = [...localChords];
+    newChords.splice(chordIndex + 1, 0, chordObj);
+    setLocalChords(newChords);
+  };
+
   const saveChanges = () => {
     //SET EDITABLE TO FALSE
     //ISSUE CALLBACK WITH CHORDS PASSED BACK UP THE CHAIN
-    constructUpdatedChordsList();
     updateSong(localChords);
     setEditMode(false);
   };
@@ -134,19 +151,43 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
       {editMode ? (
         <div>
           {" "}
+          <div className="center-div mb-2">
+            <div onClick={() => addChord(-1)} className="new-chord-btn">
+              <i className="fa-solid fa-plus fa-lg"></i>
+            </div>
+          </div>
           {localChords.map((chord, i) => {
             return (
-              <div className="chords mb-4" key={i}>
-                <EditChord
-                  initialFrets={chord.chordArr}
-                  chordPosition={i}
-                  chordId={chord.chordId}
-                  updateChords={updateChords}
-                />
-                <div className="center-div">
-                  <span className="chord-name">
-                    {chord.chordName !== "undefined" ? chord.chordName : ""}
-                  </span>
+              <div>
+                <div className="chords mb-2" key={i}>
+                  {chord.chordId === -1 && (
+                    <div className="new-label shimmer">
+                      <i className="fa-solid fa-star-of-life"></i> New
+                    </div>
+                  )}
+                  <EditChord
+                    initialFrets={chord.chordArr}
+                    chordPosition={i}
+                    chordId={chord.chordId}
+                    updateChords={updateChords}
+                  />
+
+                  <div className="center-div">
+                    <span className="chord-name">
+                      {chord.chordName !== "undefined" ? chord.chordName : ""}
+                    </span>
+                    <button
+                      className="chordless-btn delete-chord"
+                      onClick={() => deleteChord(i, chord.chordId)}
+                    >
+                      Delete Chord
+                    </button>
+                  </div>
+                </div>{" "}
+                <div className="center-div mb-2">
+                  <div onClick={() => addChord(i)} className="new-chord-btn">
+                    <i className="fa-solid fa-plus fa-lg"></i>
+                  </div>
                 </div>
               </div>
             );
