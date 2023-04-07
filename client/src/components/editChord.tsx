@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Fretboard } from "./guitar/fretboard";
 import { findChord } from "./../utils/chords";
 import { useViewport } from "../hooks/useViewport";
@@ -19,6 +19,7 @@ export const EditChord: React.FC<SPROPS> = ({
 }) => {
   const [currFrets, setCurrFrets] = useState<number[]>(initialFrets);
 
+  console.log("current chord for " + chordId + ": " + currFrets);
   const updateCurrFrets = (string: number, fret: number) => {
     let newFrets = [...currFrets];
     newFrets[string] = fret !== undefined ? fret : -1;

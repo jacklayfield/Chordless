@@ -14,6 +14,10 @@ module.exports = sequelize.define(
       type: Sequelize.INTEGER,
       primaryKey: true,
     },
+    chordIndex: {
+      field: "chordindex",
+      type: Sequelize.INTEGER,
+    },
     chordNotes: {
       field: "chordnotes",
       type: Sequelize.STRING,

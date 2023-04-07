@@ -21,6 +21,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
 
   const [localChords, setLocalChords] = useState<CHORD_TYPE[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
+  let newChordsCount = 0;
 
   const chunkedChords = chords.reduce(
     (resultArray: CHORD_TYPE[][], item: CHORD_TYPE, index: number) => {
@@ -43,6 +44,9 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     newChordName: string,
     chordId: number
   ) => {
+    if (chordId == -1) {
+      return;
+    }
     let chordObj: CHORD_TYPE = {
       chordArr: newFrets,
       chordName: newChordName,
@@ -76,10 +80,12 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   };
 
   const addChord = (chordIndex: number) => {
+    newChordsCount++;
+
     let chordObj: CHORD_TYPE = {
       chordArr: [0, 0, 0, 0, 0, 0],
       chordName: "",
-      chordId: -1,
+      chordId: -1 * newChordsCount,
     };
 
     let newChords = [...localChords];
@@ -90,7 +96,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const saveChanges = () => {
     //SET EDITABLE TO FALSE
     //ISSUE CALLBACK WITH CHORDS PASSED BACK UP THE CHAIN
-    updateSong(localChords);
+    updateSong(localChords, updatedChords, deletedChords);
     setEditMode(false);
   };
 
@@ -158,13 +164,15 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
           </div>
           {localChords.map((chord, i) => {
             return (
-              <div>
-                <div className="chords mb-2" key={i}>
+              <div key={chord.chordId}>
+                <div className="chords mb-2">
                   {chord.chordId === -1 && (
-                    <div className="new-label shimmer">
+                    <div className="new-label">
                       <i className="fa-solid fa-star-of-life"></i> New
                     </div>
                   )}
+
+                  {chord.chordArr}
                   <EditChord
                     initialFrets={chord.chordArr}
                     chordPosition={i}

@@ -7,12 +7,15 @@ var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 
 const constructSqlState = (chords, id) => {
-  let sqlState = "INSERT INTO chords(songId, chordNotes, chordName) VALUES";
+  let sqlState =
+    "INSERT INTO chords(songId, chordIndex, chordNotes, chordName) VALUES";
   for (let i = 0; i < chords.length - 1; i++) {
     sqlState =
       sqlState +
       "(" +
       id +
+      ", " +
+      i +
       ", '{" +
       String(chords[i].chordArr) +
       "}', '" +
@@ -23,6 +26,8 @@ const constructSqlState = (chords, id) => {
     sqlState +
     "(" +
     id +
+    ", " +
+    (chords.length - 1) +
     ", '{" +
     String(chords[chords.length - 1].chordArr) +
     "}', '" +
@@ -114,6 +119,7 @@ router.get("/allChords/id=:id", async (req, res) => {
 
     const chords = await Chord.findAll({
       where: { songid: songId },
+      order: [["chordindex", "ASC"]],
     });
 
     res.json(chords);

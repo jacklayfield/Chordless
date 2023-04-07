@@ -102,9 +102,24 @@ export const SingleSong = () => {
     setDisplayConfirmationModal(false);
   };
 
-  const updateSong = async (newSong: CHORD_TYPE[]) => {
-    // Make call to api here to update song
-    // Get the new chords (This is neccessary since indexing may change, and we want to be consistent)
+  const updateSong = async (
+    newSong: CHORD_TYPE[],
+    updatedChords: CHORD_TYPE[],
+    deletedChords: number[]
+  ) => {
+    if (updatedChords.length > 0) {
+      // put request for updating chords
+    }
+
+    if (deletedChords.length > 0) {
+      // delete request for deleting chords
+    }
+
+    // if (newSong.map((e) => e.chordId).includes(-1)) {
+    //   // post request to create new chords
+    //   // put request to update ordering
+    //   console.log("Found a new chord");
+    // }
 
     // Temp code for testing
     setChords(newSong);
