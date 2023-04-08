@@ -44,7 +44,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     newChordName: string,
     chordId: number
   ) => {
-    if (chordId == -1) {
+    if (chordId === -1) {
       return;
     }
     let chordObj: CHORD_TYPE = {
@@ -72,8 +72,19 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
 
   const deleteChord = (chordIndex: number, chordId: number) => {
     deletedChords.push(chordId);
-    console.log("size of delete list: " + deletedChords.length);
-    console.log("first element of list: " + deletedChords);
+
+    // Remove from the updatedChords list if it exists there
+    const index = updatedChords.map((e) => e.chordId).indexOf(chordId);
+    if (index !== -1) {
+      updatedChords.splice(index, 1);
+    }
+
+    console.log("cur size of update list: " + updatedChords.length);
+    updatedChords.forEach((e) => {
+      console.log(e.chordArr);
+    });
+
+    // Remove from the local list
     let newChords = [...localChords];
     newChords.splice(chordIndex, 1);
     setLocalChords(newChords);

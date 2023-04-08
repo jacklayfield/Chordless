@@ -19,7 +19,6 @@ export const EditChord: React.FC<SPROPS> = ({
 }) => {
   const [currFrets, setCurrFrets] = useState<number[]>(initialFrets);
 
-  console.log("current chord for " + chordId + ": " + currFrets);
   const updateCurrFrets = (string: number, fret: number) => {
     let newFrets = [...currFrets];
     newFrets[string] = fret !== undefined ? fret : -1;
