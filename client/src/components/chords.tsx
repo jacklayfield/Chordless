@@ -16,12 +16,13 @@ let updatedChords: CHORD_TYPE[] = [];
 let deletedChords: number[] = [];
 let createdChords: CHORD_TYPE[] = []; // Development to come
 
-export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
+let newChordsCount = 0;
+
+export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   const perChunk = 3;
 
   const [localChords, setLocalChords] = useState<CHORD_TYPE[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
-  let newChordsCount = 0;
 
   const chunkedChords = chords.reduce(
     (resultArray: CHORD_TYPE[][], item: CHORD_TYPE, index: number) => {
@@ -96,7 +97,7 @@ export const Song: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     let chordObj: CHORD_TYPE = {
       chordArr: [0, 0, 0, 0, 0, 0],
       chordName: "",
-      chordId: -1 * newChordsCount,
+      chordId: -1 * (newChordsCount + 1),
     };
 
     let newChords = [...localChords];
