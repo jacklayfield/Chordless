@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { CHORD_TYPE } from "../components/songBuilder";
 import { Chords } from "../components/chords";
 import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
@@ -10,6 +9,7 @@ import { DeleteConfirmation } from "../components/deleteConfirmation";
 import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/error404";
+import { CHORD_TYPE } from "./createSong";
 
 export const SingleSong = () => {
   const { authIsLoading } = React.useContext(CurrentUserContext);

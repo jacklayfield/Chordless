@@ -1,4 +1,4 @@
-import { CHORD_TYPE } from "../components/songBuilder";
+import { CHORD_TYPE } from "../pages/createSong";
 
 export function deepCloneChords(inputChords: CHORD_TYPE[]) {
   const clonedChords: CHORD_TYPE[] = [];

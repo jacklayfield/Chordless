@@ -35,6 +35,8 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 **Cleanup: Change unnececessary div wrappers to fragments** <br />
 **Cleanup: Shorthands for bool/strings in props** <br />
 **Cleanup: Group imports** <br />
-**Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated)** <br />
+-DONE Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
 **Improvement: Break down larger components into smaller sub-components** <br />
 **Improvement: Create components for general styling** <br />
+**Cleanup: Change conditional rendering to be if else when more than 2 possibilities** <br />
+**Cleanup: Create 'Edit mode' conditional render, do not conditionally render all items'** <br />
