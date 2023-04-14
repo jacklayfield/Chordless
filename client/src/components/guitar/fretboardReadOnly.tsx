@@ -1,5 +1,5 @@
 import React from "react";
-import { FretboardBg } from "../guitar/fretboardBg";
+import { FretboardBg } from "./fretboardBg";
 import { FretMarkersReadOnly } from "./fretMarkersReadOnly";
 import { MuteBtnsReadOnly } from "./muteBtnsReadOnly";
 

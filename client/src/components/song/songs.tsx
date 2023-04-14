@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { SongCard } from "./songCard";
-import { SONG_TYPE } from "../pages/mySongs";
+import { SONG_TYPE } from "../../pages/mySongs";
 
 interface SMPROPS {
   songs: SONG_TYPE[];

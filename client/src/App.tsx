@@ -3,7 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { CreateSong } from "./pages/createSong";
-import { NavBar } from "./components/navBar";
+import { NavBar } from "./components/theme/navBar";
 import { About } from "./pages/about";
 import { Login } from "./pages/login";
 import { CreateAccount } from "./pages/createAccount";
@@ -12,7 +12,7 @@ import { MySongs } from "./pages/mySongs";
 import { Profile } from "./pages/profile";
 import { SingleSong } from "./pages/singleSong";
 import { Test } from "./pages/test";
-import { Error404 } from "./components/error404";
+import { Error404 } from "./components/general/error404";
 
 function App() {
   return (

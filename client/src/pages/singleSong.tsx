@@ -1,14 +1,14 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { Chords } from "../components/chords";
+import { Chords } from "../components/song/chords";
 import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
-import { ViewMenu } from "../components/viewMenu";
-import { DeleteConfirmation } from "../components/deleteConfirmation";
+import { ViewMenu } from "../components/general/viewMenu";
+import { DeleteConfirmation } from "../components/general/deleteConfirmation";
 import CurrentUserContext from "../context/context";
 import React from "react";
-import { Error404 } from "../components/error404";
+import { Error404 } from "../components/general/error404";
 import { CHORD_TYPE } from "./createSong";
 
 export const SingleSong = () => {

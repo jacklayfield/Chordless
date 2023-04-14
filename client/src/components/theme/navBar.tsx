@@ -5,7 +5,7 @@ import logo from "../images/logo.png";
 import text from "../images/text.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import React from "react";
-import CurrentUserContext from "./../context/context";
+import CurrentUserContext from "../../context/context";
 import "../styling/navbar.css";
 
 export const NavBar = () => {

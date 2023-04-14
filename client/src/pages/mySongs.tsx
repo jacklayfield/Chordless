@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CurrentUserContext from "../context/context";
 import { Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { Songs } from "../components/songs";
+import { Songs } from "../components/song/songs";
 import "../styling/song.css";
 
 export type SONG_TYPE = {

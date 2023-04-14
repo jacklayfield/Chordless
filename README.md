@@ -14,9 +14,47 @@ addresses this need. <br />
 
 This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 
+## Structure
+
+### API:
+
+#### config: contains temporary values for encoding
+
+#### database: contains sequilize init for database
+
+#### models: database models
+
+#### routes: api endpoints
+
+#### <index.js>: server
+
+### Client:
+
+#### components: Directory for all components
+
+##### ↳ general: Components that don't fit a specific category
+
+##### ↳ guitar: Components used to build the guitar interface/display
+
+##### ↳ song: Components related to song editing / creation / display
+
+##### ↳ theme: Components used to build universal app features
+
+#### context: User context for retrieiving the user if logged in
+
+#### hooks: Custom hooks
+
+#### images: App images (not user)
+
+#### pages: App pages (highest level)
+
+#### styling: CSS styling
+
+#### utils: Helper functions, constants, etc.
+
 ## Notes:
 
-### TODO
+#### TODO
 
 -DONE Transfer page related elements out of guitar component <br />
 -DONE Cleanup: profile/about page styling <br />

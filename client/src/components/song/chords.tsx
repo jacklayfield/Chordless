@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { EditChord } from "./editChord";
-import { FretboardReadOnly } from "./guitarReadOnly/fretboardReadOnly";
-import { deepCloneChords } from "../utils/general";
-import { CHORD_TYPE } from "../pages/createSong";
+import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
+import { deepCloneChords } from "../../utils/general";
+import { CHORD_TYPE } from "../../pages/createSong";
 
 interface CPROPS {
   chords: CHORD_TYPE[];

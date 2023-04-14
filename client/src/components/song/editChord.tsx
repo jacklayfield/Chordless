@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Fretboard } from "./guitar/fretboard";
-import { findChord } from "./../utils/chords";
-import { useViewport } from "../hooks/useViewport";
+import { Fretboard } from "../guitar/fretboard";
+import { findChord } from "../../utils/chords";
+import { useViewport } from "../../hooks/useViewport";
 import "../styling/guitar.css";
 
 interface SPROPS {

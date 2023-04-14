@@ -5,7 +5,7 @@ import CurrentUserContext from "../context/context";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Fretboard } from "../components/guitar/fretboard";
-import { FretboardReadOnly } from "../components/guitarReadOnly/fretboardReadOnly";
+import { FretboardReadOnly } from "../components/guitar/fretboardReadOnly";
 import { findChord } from "../utils/chords";
 
 export type CHORD_TYPE = {
