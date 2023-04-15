@@ -1,5 +1,5 @@
-import searchguy from "../images/searchguy.png";
-import "../styling/error.css";
+import searchguy from "../../images/searchguy.png";
+import "../../styling/error.css";
 
 export const Error404 = () => {
   return (

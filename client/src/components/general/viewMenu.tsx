@@ -1,4 +1,4 @@
-import "../styling/viewMenu.css";
+import "../../styling/viewMenu.css";
 
 interface VPROPS {
   handleViewChange: Function;

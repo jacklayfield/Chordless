@@ -6,37 +6,6 @@ const { QueryTypes } = require("sequelize");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 
-const constructSqlState = (chords, id) => {
-  let sqlState =
-    "INSERT INTO chords(songId, chordIndex, chordNotes, chordName) VALUES";
-  for (let i = 0; i < chords.length - 1; i++) {
-    sqlState =
-      sqlState +
-      "(" +
-      id +
-      ", " +
-      i +
-      ", '{" +
-      String(chords[i].chordArr) +
-      "}', '" +
-      String(chords[i].chordName) +
-      "'),";
-  }
-  sqlState =
-    sqlState +
-    "(" +
-    id +
-    ", " +
-    (chords.length - 1) +
-    ", '{" +
-    String(chords[chords.length - 1].chordArr) +
-    "}', '" +
-    String(chords[chords.length - 1].chordName) +
-    "')";
-
-  return sqlState;
-};
-
 router.get("/", function (request, response) {
   Song.findAll().then((songs) => {
     response.json(songs);
@@ -56,11 +25,19 @@ router.post("/create", async (req, res) => {
       { bind: [user_id, name], type: QueryTypes.INSERT }
     );
 
-    const sqlState = constructSqlState(chords, results[0].id);
+    const statements = [];
+    const tableName = "chords";
 
-    const [results1, meta1] = await sequelize.query(sqlState, {
-      type: QueryTypes.INSERT,
+    chords.forEach((chord, i) => {
+      statements.push(
+        sequelize.query(
+          `INSERT INTO ${tableName}(songId, chordIndex, chordNotes, chordName) VALUES(${results[0].id}, ${i}, '{${chord.chordArr}}', '${chord.chordName}') RETURNING *`
+        )
+      );
     });
+    const results1 = await Promise.all(statements);
+
+    console.log(results1);
 
     res.json(results);
   } catch (error) {
