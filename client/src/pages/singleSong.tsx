@@ -105,24 +105,49 @@ export const SingleSong = () => {
   const updateSong = async (
     newSong: CHORD_TYPE[],
     updatedChords: CHORD_TYPE[],
-    deletedChords: number[]
+    deletedChordIndicies: number[]
   ) => {
     if (updatedChords.length > 0) {
       // put request for updating chords
+      try {
+        const res = await axios.put("/api/songs/updateChords", {
+          data: { updatedChords },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    if (deletedChords.length > 0) {
-      // delete request for deleting chords
+    if (deletedChordIndicies.length > 0) {
+      console.log("del" + deletedChordIndicies);
+      try {
+        const res = await axios.put("/api/songs/deleteChords", {
+          data: { deletedChordIndicies },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    // if (newSong.map((e) => e.chordId).includes(-1)) {
-    //   // post request to create new chords
-    //   // put request to update ordering
-    //   console.log("Found a new chord");
-    // }
+    // If we find a chord with a negative id, we know there are new chords to be inserted
+    if (newSong.map((e) => e.chordId).some((x) => x < 0)) {
+      console.log("negative found");
+      try {
+        const res = await axios.post("/api/songs/insertChords", {
+          data: { newSong, songid },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-    // Temp code for testing
-    setChords(newSong);
+    /** Do a page refresh. Yes I know, bad practice for React, but in this case for now we want
+     * to just re-issue the retrieval of the correct DB version due to potential indexing
+     * changes, and we DO NOT want to just update the chordArray with what we have on client.
+     *
+     * TODO: Look into better ways of handling this.
+     **/
+    window.location.reload();
   };
 
   const handleUpdateName = async (event: React.FormEvent<HTMLFormElement>) => {

@@ -140,4 +140,94 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
   }
 });
 
+router.put("/updateChords", async (req, res) => {
+  try {
+    jwt.verify(req.cookies.token, config.secret);
+
+    const updatedChords = req.body.data.updatedChords;
+
+    const statements = [];
+    const tableName = "chords";
+
+    updatedChords.forEach((chord) => {
+      statements.push(
+        sequelize.query(
+          `UPDATE ${tableName} SET chordNotes='{${chord.chordArr}}', chordName='${chord.chordName}' WHERE id=${chord.chordId} RETURNING *`
+        )
+      );
+    });
+    const results = await Promise.all(statements);
+
+    console.log(results);
+
+    res.json(results);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+router.put("/deleteChords", async (req, res) => {
+  try {
+    jwt.verify(req.cookies.token, config.secret);
+
+    const deletedChordIndicies = req.body.data.deletedChordIndicies;
+
+    const statements = [];
+    const tableName = "chords";
+
+    deletedChordIndicies.forEach((chordIndex) => {
+      statements.push(
+        sequelize.query(
+          `DELETE FROM ${tableName} WHERE id=${chordIndex} RETURNING *`
+        )
+      );
+    });
+    const results = await Promise.all(statements);
+
+    console.log(results);
+
+    res.json(results);
+  } catch (error) {
+    console.error("msg" + error.message);
+  }
+});
+
+router.post("/insertChords", async (req, res) => {
+  try {
+    jwt.verify(req.cookies.token, config.secret);
+
+    const newSong = req.body.data.newSong;
+    const songId = req.body.data.songid;
+
+    const statements = [];
+    const tableName = "chords";
+
+    newSong.forEach((chord, i) => {
+      // In the case of a chord that exists, we want to simply update it's index
+      if (chord.chordId > -1) {
+        statements.push(
+          sequelize.query(
+            `UPDATE ${tableName} SET chordIndex=${i} WHERE id=${chord.chordId} RETURNING *`
+          )
+        );
+      }
+      // Otherwise, we want to insert the new chord
+      else {
+        statements.push(
+          sequelize.query(
+            `INSERT INTO ${tableName}(songId, chordIndex, chordNotes, chordName) VALUES(${songId}, ${i}, '{${chord.chordArr}}', '${chord.chordName}') RETURNING *`
+          )
+        );
+      }
+    });
+    const results = await Promise.all(statements);
+
+    console.log(results);
+
+    res.json(results);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 module.exports = router;

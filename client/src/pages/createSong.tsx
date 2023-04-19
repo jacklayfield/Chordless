@@ -25,7 +25,6 @@ export const CreateSong = () => {
   const breakpoint_mobile = 957;
 
   const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
-  console.log(currentUser);
 
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 

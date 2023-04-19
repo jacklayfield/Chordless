@@ -45,9 +45,6 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     newChordName: string,
     chordId: number
   ) => {
-    if (chordId === -1) {
-      return;
-    }
     let chordObj: CHORD_TYPE = {
       chordArr: newFrets,
       chordName: newChordName,
@@ -56,14 +53,18 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
 
     const index = updatedChords.map((e) => e.chordId).indexOf(chordId);
 
+    // If this item already exists in the UPDATED CHORDS list - update it, else push
     if (index !== -1) {
       updatedChords.splice(index, 1, chordObj);
     } else {
-      updatedChords.push(chordObj);
+      // If this chord is "new" don't add it to the list of chords to be updated in DB.
+      if (chordId > -1) {
+        updatedChords.push(chordObj);
+      }
     }
 
     console.log("size of update list: " + updatedChords.length);
-    console.log("first element of list: " + updatedChords[0].chordArr);
+    // console.log("first element of list: " + updatedChords[0].chordArr);
 
     let newChords = [...localChords];
     newChords.splice(chordPosition, 1, chordObj);
@@ -72,9 +73,12 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
   };
 
   const deleteChord = (chordIndex: number, chordId: number) => {
-    deletedChords.push(chordId);
+    // So long as this isn't a "new" chord, add it to the list of chords to be deleted from DB.
+    if (chordId > 0) {
+      deletedChords.push(chordId);
+    }
 
-    // Remove from the updatedChords list if it exists there
+    // Remove from the updatedChords list if it exists there. No need to update it anymore!
     const index = updatedChords.map((e) => e.chordId).indexOf(chordId);
     if (index !== -1) {
       updatedChords.splice(index, 1);
