@@ -109,7 +109,12 @@ router.get("/allChords/id=:id", async (req, res) => {
 
 router.delete("/deleteSong/id=:id", async (req, res) => {
   try {
+    console.log("decodeeddd");
+
     const decoded = jwt.verify(req.cookies.token, config.secret);
+
+    console.log(decoded + "decodeeddd");
+
     const user_id = decoded.id;
 
     const songId = req.params.id;
@@ -136,7 +141,11 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    res.status(500).send(error);
+    if (error.message === "jwt expired") {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 

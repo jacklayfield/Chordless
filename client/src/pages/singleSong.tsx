@@ -12,7 +12,7 @@ import { Error404 } from "../components/general/error404";
 import { CHORD_TYPE } from "./createSong";
 
 export const SingleSong = () => {
-  const { authIsLoading } = React.useContext(CurrentUserContext);
+  const { authIsLoading, checkLogin } = React.useContext(CurrentUserContext);
 
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
@@ -90,14 +90,41 @@ export const SingleSong = () => {
   };
 
   const submitDelete = async () => {
-    try {
-      const res = await axios.delete("/api/songs/deleteSong/id=" + songid);
-      if (res.status === 200) {
-        window.open("http://localhost:3000/mySongs", "_self");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    axios
+      .delete("/api/songs/deleteSong/id=" + songid)
+      .then((response) => {
+        if (response.status === 200) {
+          window.open("http://localhost:3000/mySongs", "_self");
+        }
+      })
+      .catch((error) => {
+        // in the case that our error was related to an expired token
+        if (`${(error as AxiosError)?.response?.status}` === "403") {
+          console.log("JWT WAS INVALID!");
+          //refresh our token
+
+          // const newfunc = async () => {
+          checkLogin(false).then((response) =>
+            axios
+              .delete("/api/songs/deleteSong/id=" + songid)
+              .then((response) => {
+                if (response.status === 200) {
+                  window.open("http://localhost:3000/mySongs", "_self");
+                }
+              })
+              .catch((error) => {
+                //failed again. Exit
+                console.log(error);
+              })
+          );
+          // };
+
+          // try again
+        } else {
+          //otherwise, just log the error
+          console.log(error);
+        }
+      });
 
     setDisplayConfirmationModal(false);
   };

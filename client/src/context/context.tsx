@@ -11,7 +11,7 @@ export type UserType = {
 export type UserContext = {
   currentUser?: UserType;
   setCurrentUser: (user: UserType) => void;
-  checkLogin: () => void;
+  checkLogin: (allowReload: boolean) => Promise<unknown>;
   setAuthIsLoading: (isLoading: boolean) => void;
   authIsLoading: boolean;
   handleLogout: () => void;
@@ -30,67 +30,72 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   const [authIsLoading, setAuthIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    checkLogin();
+    checkLogin(true);
   }, []);
 
-  const checkLogin = async () => {
-    setAuthIsLoading(true);
+  const checkLogin = async (allowReload: boolean) => {
+    return new Promise((resolve) =>
+      setTimeout(() => {
+        allowReload && setAuthIsLoading(true);
 
-    /* Here let's first check the users token. If it has expired,
-     * we can refresh it using the refresh token and try once more.
-     */
-    axios
-      .get("/api/users/userdata")
-      .then((response) => {
-        console.log("user: ", String(response.data.username));
-        const user: UserType = {
-          id: response.data.id,
-          username: String(response.data.username),
-          email: String(response.data.email),
-          name: String(response.data.name),
-          bio: String(response.data.bio),
-        };
-        setCurrentUser(user);
-        setAuthIsLoading(false);
-      })
-      .catch((error) => {
-        // Here we failed the regular token check, so we will now attempt to refresh the token
-        console.error(error);
+        /* Here let's first check the users token. If it has expired,
+         * we can refresh it using the refresh token and try once more.
+         */
         axios
-          .post("/api/auth-standard/refresh")
+          .get("/api/users/userdata")
           .then((response) => {
-            if (response.data.accessToken) {
-              console.log("Token refreshed");
-            }
-            // If we made it here then we have refreshed properly, so auth again
-            axios
-              .get("/api/users/userdata")
-              .then((response) => {
-                console.log("user: ", String(response.data.username));
-                const user: UserType = {
-                  id: response.data.id,
-                  username: String(response.data.username),
-                  email: String(response.data.email),
-                  name: String(response.data.name),
-                  bio: String(response.data.bio),
-                };
-                setCurrentUser(user);
-                setAuthIsLoading(false);
-              })
-              .catch((error) => {
-                console.error(error);
-                localStorage.removeItem("username");
-                setCurrentUser({} as UserType);
-                setAuthIsLoading(false);
-              });
+            console.log("user: ", String(response.data.username));
+            const user: UserType = {
+              id: response.data.id,
+              username: String(response.data.username),
+              email: String(response.data.email),
+              name: String(response.data.name),
+              bio: String(response.data.bio),
+            };
+            setCurrentUser(user);
+            allowReload && setAuthIsLoading(false);
           })
           .catch((error) => {
-            localStorage.removeItem("username");
+            // Here we failed the regular token check, so we will now attempt to refresh the token
             console.error(error);
-            setCurrentUser({} as UserType);
-            setAuthIsLoading(false);
+            axios
+              .post("/api/auth-standard/refresh")
+              .then((response) => {
+                if (response.data.accessToken) {
+                  console.log("Token refreshed");
+                }
+                // If we made it here then we have refreshed properly, so auth again
+                axios
+                  .get("/api/users/userdata")
+                  .then((response) => {
+                    console.log("user: ", String(response.data.username));
+                    const user: UserType = {
+                      id: response.data.id,
+                      username: String(response.data.username),
+                      email: String(response.data.email),
+                      name: String(response.data.name),
+                      bio: String(response.data.bio),
+                    };
+                    setCurrentUser(user);
+                    allowReload && setAuthIsLoading(false);
+                  })
+                  .catch((error) => {
+                    console.error(error);
+                    localStorage.removeItem("username");
+                    setCurrentUser({} as UserType);
+                    allowReload && setAuthIsLoading(false);
+                  });
+              })
+              .catch((error) => {
+                localStorage.removeItem("username");
+                console.error(error);
+                setCurrentUser({} as UserType);
+                allowReload && setAuthIsLoading(false);
+              });
           });
-      });
+        resolve(true);
+      }, 2000)
+    );
   };
 
   const handleLogout = async () => {
