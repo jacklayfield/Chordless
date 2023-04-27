@@ -78,5 +78,6 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 **Improvement: Create components for general styling** <br />
 **Cleanup: Change conditional rendering to be if else when more than 2 possibilities** <br />
 **Cleanup: Create 'Edit mode' conditional render, do not conditionally render all items'** <br />
-**Bug: During editing, a token may expire which would cause a subsequent "save changes" request to fail.: THIS NOW HAS A "FIX", JUST NEED TO FINISH EVERYTHING** <br />
+-DONE Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
 **General: Find a better way of handling the page update after updating a song** <br />
+**General: Apply the token bug error to all post requests and perhaps create a general function for this behavior** <br />

@@ -54,7 +54,7 @@ router.post("/login", async (req, res) => {
     });
 
     var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
-      expiresIn: "604800s",
+      expiresIn: "30s",
     });
 
     // Put the refresh token in the DB

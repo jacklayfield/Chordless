@@ -28,6 +28,7 @@ export const refreshToken = async () => {
   try {
     const res = await axios.post("/api/auth-standard/refresh");
     if (res.status == 200) {
+      console.log("token refreshed");
       return true;
     }
   } catch (error) {
@@ -94,7 +95,6 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
               });
           } else {
             localStorage.removeItem("username");
-            console.error(error);
             setCurrentUser({} as UserType);
             setAuthIsLoading(false);
           }

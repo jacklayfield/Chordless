@@ -13,7 +13,7 @@ import { CHORD_TYPE } from "./createSong";
 import { refreshToken } from "../context/context";
 
 export const SingleSong = () => {
-  const { authIsLoading, checkLogin } = React.useContext(CurrentUserContext);
+  const { authIsLoading, handleLogout } = React.useContext(CurrentUserContext);
 
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
@@ -101,11 +101,10 @@ export const SingleSong = () => {
       .catch((error) => {
         // in the case that our error was related to an expired token
         if (`${(error as AxiosError)?.response?.status}` === "403") {
-          console.log("JWT WAS INVALID!");
-          //refresh our token
-
           (async () => {
+            // Refresh our token
             const tokenRefreshed = await refreshToken();
+            // If successfully refreshed, retry request.
             if (tokenRefreshed) {
               axios
                 .delete("/api/songs/deleteSong/id=" + songid)
@@ -115,17 +114,16 @@ export const SingleSong = () => {
                   }
                 })
                 .catch((error) => {
-                  //failed again. Exit
+                  // Something else went wrong, exit.
                   console.log(error);
                 });
+            } else {
+              // This user has an invalid refresh and access token, log this user out immediately.
+              handleLogout();
             }
           })();
-
-          // };
-
-          // try again
         } else {
-          //otherwise, just log the error
+          // Something else went wrong, exit.
           console.log(error);
         }
       });

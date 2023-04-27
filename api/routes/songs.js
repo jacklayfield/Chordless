@@ -41,7 +41,14 @@ router.post("/create", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.error(error.message);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -57,7 +64,14 @@ router.get("/userSongs", async (req, res) => {
     res.json(songs);
     // This will only fetch from the song table, returning name, id , etc. (for song cards)
   } catch (error) {
-    res.status(500).send(error);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -83,7 +97,14 @@ router.get("/singleSong/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    res.status(500).send(error);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -103,17 +124,20 @@ router.get("/allChords/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    res.status(500).send(error);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
 router.delete("/deleteSong/id=:id", async (req, res) => {
   try {
-    console.log("decodeeddd");
-
     const decoded = jwt.verify(req.cookies.token, config.secret);
-
-    console.log(decoded + "decodeeddd");
 
     const user_id = decoded.id;
 
@@ -141,7 +165,10 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    if (error.message === "jwt expired") {
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
       res.status(403).send(error);
     } else {
       res.status(500).send(error);
@@ -171,7 +198,14 @@ router.put("/updateChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.error(error.message);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -197,7 +231,14 @@ router.put("/deleteChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.error("msg" + error.message);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
@@ -235,7 +276,14 @@ router.post("/insertChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.error(error.message);
+    if (
+      error.message === "jwt expired" ||
+      error.message === "jwt must be provided"
+    ) {
+      res.status(403).send(error);
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
