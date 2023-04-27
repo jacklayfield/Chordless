@@ -10,6 +10,7 @@ import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/general/error404";
 import { CHORD_TYPE } from "./createSong";
+import { refreshToken } from "../context/context";
 
 export const SingleSong = () => {
   const { authIsLoading, checkLogin } = React.useContext(CurrentUserContext);
@@ -103,20 +104,23 @@ export const SingleSong = () => {
           console.log("JWT WAS INVALID!");
           //refresh our token
 
-          // const newfunc = async () => {
-          checkLogin(false).then((response) =>
-            axios
-              .delete("/api/songs/deleteSong/id=" + songid)
-              .then((response) => {
-                if (response.status === 200) {
-                  window.open("http://localhost:3000/mySongs", "_self");
-                }
-              })
-              .catch((error) => {
-                //failed again. Exit
-                console.log(error);
-              })
-          );
+          (async () => {
+            const tokenRefreshed = await refreshToken();
+            if (tokenRefreshed) {
+              axios
+                .delete("/api/songs/deleteSong/id=" + songid)
+                .then((response) => {
+                  if (response.status === 200) {
+                    window.open("http://localhost:3000/mySongs", "_self");
+                  }
+                })
+                .catch((error) => {
+                  //failed again. Exit
+                  console.log(error);
+                });
+            }
+          })();
+
           // };
 
           // try again
