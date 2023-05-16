@@ -83,5 +83,6 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 **Improvement: Add TimeStamps to songs** <br />
 **Improvement: (Extra): Apply chordManager to createSong** <br />
 **Improvement: Add some automated testing** <br />
+**Improvement: Handle JWT token confirmation better (add designated middleware section)** <br />
 
 **Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed)** <br/>
