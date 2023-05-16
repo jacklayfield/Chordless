@@ -84,5 +84,7 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 **Improvement: (Extra): Apply chordManager to createSong** <br />
 **Improvement: Add some automated testing** <br />
 **Improvement: Handle JWT token confirmation better (add designated middleware section)** <br />
+**Cleanup: clean up inserts and use model** <br />
+**Cleanup: get rid of create flag in manager** <br />
 
 **Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed)** <br/>
