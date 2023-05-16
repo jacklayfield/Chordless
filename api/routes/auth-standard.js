@@ -50,11 +50,11 @@ router.post("/login", async (req, res) => {
 
     // Sign the new tokens for the now verified user
     var token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: "15s",
+      expiresIn: "900s",
     });
 
     var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
-      expiresIn: "30s",
+      expiresIn: "86400s",
     });
 
     // Put the refresh token in the DB
@@ -109,7 +109,7 @@ router.post("/refresh", async (req, res) => {
       }
       //otherwise let's sign the new access token for the user
       var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: "15s",
+        expiresIn: "900s",
       });
       // Set cookie
       res.cookie("token", token, { httpOnly: true });

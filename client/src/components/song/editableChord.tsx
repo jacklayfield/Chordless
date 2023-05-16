@@ -11,7 +11,7 @@ interface SPROPS {
   chordId: number;
 }
 
-export const EditChord: React.FC<SPROPS> = ({
+export const EditableChord: React.FC<SPROPS> = ({
   initialFrets,
   chordPosition,
   updateChords,

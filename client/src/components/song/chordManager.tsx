@@ -1,43 +1,31 @@
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { EditChord } from "./editChord";
+import { EditableChord } from "./editableChord";
 import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
 import { deepCloneChords } from "../../utils/general";
 import { CHORD_TYPE } from "../../pages/createSong";
+import { ChordEditor } from "./chordEditor";
+import { OptionsMenu } from "./optionsMenu";
 
 interface CPROPS {
   chords: CHORD_TYPE[];
-  miniFlag: boolean;
   updateSong: Function;
+  createFlag: boolean;
 }
 
 // These arrays represent the flagged chordIds for the specified action.
 let updatedChords: CHORD_TYPE[] = [];
 let deletedChords: number[] = [];
-let createdChords: CHORD_TYPE[] = []; // Development to come
 
 let newChordsCount = 0;
 
-export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
-  const perChunk = 3;
-
+export const ChordManager: React.FC<CPROPS> = ({
+  chords,
+  updateSong,
+  createFlag,
+}) => {
   const [localChords, setLocalChords] = useState<CHORD_TYPE[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
-
-  const chunkedChords = chords.reduce(
-    (resultArray: CHORD_TYPE[][], item: CHORD_TYPE, index: number) => {
-      const chunkIndex = Math.floor(index / perChunk);
-
-      if (!resultArray[chunkIndex]) {
-        resultArray[chunkIndex] = [];
-      }
-
-      resultArray[chunkIndex].push(item);
-
-      return resultArray;
-    },
-    []
-  );
 
   const updateChords = (
     newFrets: number[],
@@ -66,10 +54,15 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     console.log("size of update list: " + updatedChords.length);
     // console.log("first element of list: " + updatedChords[0].chordArr);
 
+    // Update our local copy of the chords list
+    updateChordsLocally(chordPosition, chordObj);
+    console.log("id: " + chordId);
+  };
+
+  const updateChordsLocally = (chordPosition: number, chordObj: CHORD_TYPE) => {
     let newChords = [...localChords];
     newChords.splice(chordPosition, 1, chordObj);
     setLocalChords(newChords);
-    console.log("id: " + chordId);
   };
 
   const deleteChord = (chordIndex: number, chordId: number) => {
@@ -90,6 +83,10 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     });
 
     // Remove from the local list
+    deleteChordsLocally(chordIndex);
+  };
+
+  const deleteChordsLocally = (chordIndex: number) => {
     let newChords = [...localChords];
     newChords.splice(chordIndex, 1);
     setLocalChords(newChords);
@@ -130,35 +127,30 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
     // Clear our flagged chords arrays
     updatedChords = [];
     deletedChords = [];
-    createdChords = [];
 
     setEditMode(false);
   };
 
-  return miniFlag === false ? (
+  return createFlag ? (
+    <div>
+      <ChordEditor
+        chords={localChords}
+        addChord={addChord}
+        updateChords={updateChordsLocally}
+        deleteChord={deleteChordsLocally}
+      />
+    </div>
+  ) : (
     <div className="center-div">
       {editMode ? (
-        <div className="flex-container">
-          {" "}
-          <div
-            className="chordless-btn edit-chords m-4"
-            onClick={() => saveChanges()}
-          >
-            <div className="song-options-save">
-              {" "}
-              <i className="fa-solid fa-floppy-disk fa-lg"></i> Save Changes
-            </div>
-          </div>
-          <div
-            className="chordless-btn edit-chords m-4"
-            onClick={() => cancel()}
-          >
-            <div className="song-options-cancel">
-              {" "}
-              <i className="fa-solid fa-xmark fa-lg"></i> Cancel
-            </div>
-          </div>
-        </div>
+        <>
+          <OptionsMenu
+            confirmFunction={saveChanges}
+            cancelFunction={cancel}
+            confirmText={"Save Changes"}
+            cancelText={"Cancel"}
+          />
+        </>
       ) : (
         <div
           className="chordless-btn edit-chords mb-4"
@@ -172,57 +164,19 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
       )}
       {editMode ? (
         <div>
-          {" "}
-          <div className="center-div mb-2">
-            <div onClick={() => addChord(-1)} className="new-chord-btn">
-              <i className="fa-solid fa-plus fa-lg"></i>
-            </div>
-          </div>
-          {localChords.map((chord, i) => {
-            return (
-              <div key={chord.chordId}>
-                <div className="chords mb-2">
-                  {chord.chordId === -1 && (
-                    <div className="new-label">
-                      <i className="fa-solid fa-star-of-life"></i> New
-                    </div>
-                  )}
-
-                  {chord.chordArr}
-                  <EditChord
-                    initialFrets={chord.chordArr}
-                    chordPosition={i}
-                    chordId={chord.chordId}
-                    updateChords={updateChords}
-                  />
-
-                  <div className="center-div">
-                    <span className="chord-name">
-                      {chord.chordName !== "undefined" ? chord.chordName : ""}
-                    </span>
-                    <button
-                      className="chordless-btn delete-chord"
-                      onClick={() => deleteChord(i, chord.chordId)}
-                    >
-                      Delete Chord
-                    </button>
-                  </div>
-                </div>{" "}
-                <div className="center-div mb-2">
-                  <div onClick={() => addChord(i)} className="new-chord-btn">
-                    <i className="fa-solid fa-plus fa-lg"></i>
-                  </div>
-                </div>
-              </div>
-            );
-          })}{" "}
+          <ChordEditor
+            chords={localChords}
+            addChord={addChord}
+            updateChords={updateChords}
+            deleteChord={deleteChord}
+          />
         </div>
       ) : (
         <div>
           {chords.map((chord, i) => {
             return (
               <div className="chords mb-4" key={i}>
-                <FretboardReadOnly frets={chord.chordArr} miniFlag={miniFlag} />
+                <FretboardReadOnly frets={chord.chordArr} miniFlag={false} />
                 <div className="center-div">
                   <span className="chord-name">
                     {chord.chordName !== "undefined" ? chord.chordName : ""}
@@ -233,36 +187,6 @@ export const Chords: React.FC<CPROPS> = ({ chords, miniFlag, updateSong }) => {
           })}{" "}
         </div>
       )}
-    </div>
-  ) : (
-    <div>
-      {chunkedChords.map((chordSet, i) => {
-        return (
-          <div key={i}>
-            <Row>
-              {chordSet.map((chord, i) => {
-                return (
-                  <Col key={i}>
-                    <div className="center-div">
-                      <FretboardReadOnly
-                        frets={chord.chordArr}
-                        miniFlag={miniFlag}
-                      />
-                      <div className="center-div">
-                        <span className="chord-name-small">
-                          {chord.chordName !== "undefined"
-                            ? chord.chordName
-                            : ""}
-                        </span>
-                      </div>
-                    </div>
-                  </Col>
-                );
-              })}
-            </Row>
-          </div>
-        );
-      })}
     </div>
   );
 };

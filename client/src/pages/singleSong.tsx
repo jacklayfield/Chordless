@@ -1,7 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { Chords } from "../components/song/chords";
+import { ChordManager } from "../components/song/chordManager";
+import { MiniChords } from "../components/song/miniChords";
 import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/general/viewMenu";
@@ -242,10 +243,10 @@ export const SingleSong = () => {
                 </div>
               </div>
               <div className="inner-div">
-                <Chords
+                <ChordManager
                   chords={chords}
-                  miniFlag={view === "lgScope"}
                   updateSong={updateSong}
+                  createFlag={false}
                 />
               </div>
             </div>
@@ -254,11 +255,7 @@ export const SingleSong = () => {
         </Row>
       ) : (
         <div>
-          <Chords
-            chords={chords}
-            miniFlag={view === "lgScope"}
-            updateSong={updateSong}
-          />
+          <MiniChords chords={chords} />
         </div>
       )}
       <DeleteConfirmation

@@ -7,6 +7,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { Fretboard } from "../components/guitar/fretboard";
 import { FretboardReadOnly } from "../components/guitar/fretboardReadOnly";
 import { findChord } from "../utils/chords";
+import { ChordEditor } from "../components/song/chordEditor";
+import { OptionsMenu } from "../components/song/optionsMenu";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -17,6 +19,8 @@ export type CHORD_TYPE = {
 interface SPROPS {
   userFlag: boolean;
 }
+
+let newChordsCount = 0;
 
 export const CreateSong = () => {
   const { width } = useViewport();
@@ -38,19 +42,37 @@ export const CreateSong = () => {
     setCurrFrets(newFrets);
   };
 
-  const updateChords = async (currChord: number[]) => {
+  const updateChords = async (
+    newFrets: number[],
+    chordPosition: number,
+    newChordName: string,
+    chordId: number
+  ) => {
     if (!currentUser?.name) {
       window.open("http://localhost:3000/login", "_self");
       return;
     }
-    let newChords = [...chords];
     let chordObj: CHORD_TYPE = {
-      chordArr: currChord,
-      chordName: String(findChord(currChord)),
-      // chordId is not relevant here, setting to an invalid index (-1)
-      chordId: -1,
+      chordArr: newFrets,
+      chordName: newChordName,
+      chordId: chordId,
     };
-    newChords.push(chordObj);
+    let newChords = [...chords];
+    newChords.splice(chordPosition, 1, chordObj);
+    setChords(newChords);
+  };
+
+  const addChord = (chordIndex: number) => {
+    newChordsCount++;
+
+    let chordObj: CHORD_TYPE = {
+      chordArr: [0, 0, 0, 0, 0, 0],
+      chordName: "",
+      chordId: -1 * (newChordsCount + 1),
+    };
+
+    let newChords = [...chords];
+    newChords.splice(chordIndex + 1, 0, chordObj);
     setChords(newChords);
   };
 
@@ -135,64 +157,28 @@ export const CreateSong = () => {
                     onChange={(event) => setSongName(event.target.value)}
                   ></input>
 
-                  <Fretboard
-                    currFrets={currFrets}
-                    updateCurrFrets={updateCurrFrets}
-                    chordIdentifier={0}
-                  />
-
-                  <button
-                    className="chordless-btn m-4"
-                    onClick={() => updateChords(currFrets)}
-                  >
-                    Add Chord
-                  </button>
-                  <h1>Chords</h1>
-
                   {chords.length > 0 ? (
                     <div className="center-div">
-                      <button
-                        className="chordless-btn delete-chord mb-2"
-                        onClick={() => restartSong()}
-                      >
-                        Clear All Chords
-                      </button>
-                      {chords.map((chord, i) => {
-                        return (
-                          <div className="chords mb-4" key={i}>
-                            <FretboardReadOnly
-                              frets={chord.chordArr}
-                              miniFlag={false}
-                            />
-                            <div className="center-div">
-                              <span className="chord-name">
-                                {chord.chordName !== "undefined"
-                                  ? chord.chordName
-                                  : ""}
-                              </span>
-                              <button
-                                className="chordless-btn delete-chord"
-                                onClick={() => deleteChord(i)}
-                              >
-                                Delete Chord
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}{" "}
-                      <button
-                        className="chordless-btn mb-2"
-                        onClick={() => handleSubmit()}
-                      >
-                        Save Song
-                      </button>
+                      <OptionsMenu
+                        confirmFunction={handleSubmit}
+                        cancelFunction={restartSong}
+                        confirmText={"Save Song"}
+                        cancelText={"Restart / Cancel"}
+                      />
                     </div>
                   ) : (
                     <div className="chords">
-                      No chords added to this song yet! Select the strings on
-                      the guitar and once finished click "Add Chord".{" "}
+                      No chords added to this song yet! Click the plus (+)
+                      button to add your first chord!{" "}
                     </div>
                   )}
+
+                  <ChordEditor
+                    chords={chords}
+                    addChord={addChord}
+                    updateChords={updateChords}
+                    deleteChord={deleteChord}
+                  />
                 </div>
                 <div>
                   * Please note that chords with a "~" preceding them denote
