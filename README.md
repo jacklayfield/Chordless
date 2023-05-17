@@ -54,6 +54,37 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 
 ## Notes:
 
+#### API requests
+
+I am not using a tool like Redux w/ RTK query for this app. In the future, if this app grows I will consider replacing the current infrastructure. For now I will do the following for api requests which I found to be the most simple, clean, and concise: <br />
+
+```javascript
+let res = await FUNCTION(DATA);
+if (isForbidden(res)) {
+  const tokenRefreshed = await refreshToken();
+  if (tokenRefreshed) {
+    res = await FUNCTION(DATA);
+  }
+}
+
+if (res.status === 200) {
+  doSuccess();
+} else {
+  doFailure();
+}
+```
+
+<br />
+Anything in all caps is a parameter to this structure. <br />
+
+So 'FUNCTION' is going to be the function that contains the actual axios request. These functions are defined in their category dependant api files on the frontend (ex. apiSong.tsx). <br />
+
+'DATA' is any of the data you are passing to the axios call within 'FUNCTION'. <br />
+
+This structure works by defining a 'res' variable housing the result of the axios query passed in from 'FUNCTION'. Then, this res is checked to see if it returning a 'forbidden' (403) status. If so, we want to then refresh our token. If this returns success, we can try our 'FUNCTION' again, assigning 'res' again to be the updated result from this second call. After this we can simply check 'res.status' and call the appropriate code (like we normally would) <br />
+
+And that's it! <br />
+
 #### TODO
 
 -DONE Transfer page related elements out of guitar component <br />

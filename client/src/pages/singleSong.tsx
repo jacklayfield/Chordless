@@ -12,6 +12,13 @@ import React from "react";
 import { Error404 } from "../components/general/error404";
 import { CHORD_TYPE } from "./createSong";
 import { refreshToken } from "../context/context";
+import { isForbidden } from "../utils/general";
+import {
+  deleteChordsRequest,
+  deleteSongRequest,
+  insertChordsRequest,
+  updateChordsRequest,
+} from "../utils/apiSong";
 
 export const SingleSong = () => {
   const { authIsLoading, handleLogout } = React.useContext(CurrentUserContext);
@@ -61,7 +68,7 @@ export const SingleSong = () => {
           }
           setChords(dbChords);
         } catch (error) {
-          if (`${(error as AxiosError)?.response?.status}` === "403") {
+          if (isForbidden(error)) {
             console.error(error);
             setError(ERROR_403);
           } else if (`${(error as AxiosError)?.response?.status}` === "404") {
@@ -92,44 +99,21 @@ export const SingleSong = () => {
   };
 
   const submitDelete = async () => {
-    axios
-      .delete("/api/songs/deleteSong/id=" + songid)
-      .then((response) => {
-        if (response.status === 200) {
-          window.open("http://localhost:3000/mySongs", "_self");
-        }
-      })
-      .catch((error) => {
-        // in the case that our error was related to an expired token
-        if (`${(error as AxiosError)?.response?.status}` === "403") {
-          (async () => {
-            // Refresh our token
-            const tokenRefreshed = await refreshToken();
-            // If successfully refreshed, retry request.
-            if (tokenRefreshed) {
-              axios
-                .delete("/api/songs/deleteSong/id=" + songid)
-                .then((response) => {
-                  if (response.status === 200) {
-                    window.open("http://localhost:3000/mySongs", "_self");
-                  }
-                })
-                .catch((error) => {
-                  // Something else went wrong, exit.
-                  console.log(error);
-                });
-            } else {
-              // This user has an invalid refresh and access token, log this user out immediately.
-              handleLogout();
-            }
-          })();
-        } else {
-          // Something else went wrong, exit.
-          console.log(error);
-        }
-      });
+    let res = await deleteSongRequest(songid);
+    if (isForbidden(res)) {
+      const tokenRefreshed = await refreshToken();
+      if (tokenRefreshed) {
+        res = await deleteSongRequest(songid);
+      }
+    }
 
-    setDisplayConfirmationModal(false);
+    if (res.status === 200) {
+      console.log("SUCCESS");
+      setDisplayConfirmationModal(false);
+      window.open("http://localhost:3000/mySongs", "_self");
+    } else {
+      console.log("FAIL");
+    }
   };
 
   const updateSong = async (
@@ -139,35 +123,35 @@ export const SingleSong = () => {
   ) => {
     if (updatedChords.length > 0) {
       // put request for updating chords
-      try {
-        const res = await axios.put("/api/songs/updateChords", {
-          data: { updatedChords },
-        });
-      } catch (error) {
-        console.error(error);
+      let res = await updateChordsRequest(updatedChords);
+      if (isForbidden(res)) {
+        const tokenRefreshed = await refreshToken();
+        if (tokenRefreshed) {
+          res = await updateChordsRequest(updatedChords);
+        }
       }
     }
 
     if (deletedChordIndicies.length > 0) {
       console.log("del" + deletedChordIndicies);
-      try {
-        const res = await axios.put("/api/songs/deleteChords", {
-          data: { deletedChordIndicies },
-        });
-      } catch (error) {
-        console.error(error);
+      let res = await deleteChordsRequest(deletedChordIndicies);
+      if (isForbidden(res)) {
+        const tokenRefreshed = await refreshToken();
+        if (tokenRefreshed) {
+          res = await deleteChordsRequest(deletedChordIndicies);
+        }
       }
     }
 
     // If we find a chord with a negative id, we know there are new chords to be inserted
     if (newSong.map((e) => e.chordId).some((x) => x < 0)) {
       console.log("negative found");
-      try {
-        const res = await axios.post("/api/songs/insertChords", {
-          data: { newSong, songid },
-        });
-      } catch (error) {
-        console.error(error);
+      let res = await insertChordsRequest(newSong, songid);
+      if (isForbidden(res)) {
+        const tokenRefreshed = await refreshToken();
+        if (tokenRefreshed) {
+          res = await insertChordsRequest(newSong, songid);
+        }
       }
     }
 

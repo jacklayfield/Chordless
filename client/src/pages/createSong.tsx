@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
-import CurrentUserContext from "../context/context";
-import axios from "axios";
+import CurrentUserContext, { refreshToken } from "../context/context";
+import axios, { AxiosError } from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Fretboard } from "../components/guitar/fretboard";
 import { FretboardReadOnly } from "../components/guitar/fretboardReadOnly";
 import { findChord } from "../utils/chords";
 import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
+import { createSongRequest } from "../utils/apiSong";
+import { isForbidden } from "../utils/general";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -28,7 +30,8 @@ export const CreateSong = () => {
   const breakpoint_small_window = 1160;
   const breakpoint_mobile = 957;
 
-  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
+  const { currentUser, authIsLoading, handleLogout } =
+    React.useContext(CurrentUserContext);
 
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
@@ -96,27 +99,40 @@ export const CreateSong = () => {
       return;
     }
 
-    try {
-      const res = await axios.post("/api/songs/create", {
-        data: { chords, songName },
-      });
-      if (res.status === 200) {
-        console.log("submitted song successfully");
-
-        toast.success("Song has been created!", {
-          autoClose: 3000,
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setChords([]);
-        setCurrFrets([0, 0, 0, 0, 0, 0]);
-        (document.getElementById("song-name") as HTMLInputElement).value = "";
+    // API fetching (See README.md for explanation)
+    let res = await createSongRequest(songName, chords);
+    if (isForbidden(res)) {
+      const tokenRefreshed = await refreshToken();
+      if (tokenRefreshed) {
+        res = await createSongRequest(songName, chords);
       }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to save song...", {
+    }
+
+    // On success
+    if (res.status === 200) {
+      toast.success("Song has been created!", {
         autoClose: 3000,
         position: toast.POSITION.BOTTOM_RIGHT,
       });
+      setChords([]);
+      setCurrFrets([0, 0, 0, 0, 0, 0]);
+      (document.getElementById("song-name") as HTMLInputElement).value = "";
+
+      console.log(res);
+    }
+    // On failure
+    else {
+      if (isForbidden(res)) {
+        toast.error("Failed to save song... (Please login!)", {
+          autoClose: 3000,
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      } else {
+        toast.error("Failed to save song... (Server error :/)", {
+          autoClose: 3000,
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+      }
     }
   };
 

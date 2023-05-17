@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { CHORD_TYPE } from "../pages/createSong";
 
 export function deepCloneChords(inputChords: CHORD_TYPE[]) {
@@ -20,4 +21,8 @@ export function deepCloneChords(inputChords: CHORD_TYPE[]) {
   console.log("deep clone made");
 
   return clonedChords;
+}
+
+export function isForbidden(res: any) {
+  return `${(res as AxiosError)?.response?.status}` === "403";
 }

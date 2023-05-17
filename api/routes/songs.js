@@ -17,6 +17,8 @@ router.post("/create", async (req, res) => {
     const decoded = jwt.verify(req.cookies.token, config.secret);
     const user_id = decoded.id;
 
+    console.log(req.body.data);
+
     const name = req.body.data.songName;
     const chords = req.body.data.chords;
 
