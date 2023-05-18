@@ -1,5 +1,7 @@
 import * as React from "react";
 import axios from "axios";
+import { apiRequest } from "../api/request";
+import { userDataRequest } from "../api/apiUser";
 
 export type UserType = {
   id: number;
@@ -49,59 +51,25 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   const checkLogin = async () => {
     setAuthIsLoading(true);
 
-    /* Here let's first check the users token. If it has expired,
-     * we can refresh it using the refresh token and try once more.
-     */
-    axios
-      .get("/api/users/userdata")
-      .then((response) => {
-        console.log("user: ", String(response.data.username));
-        const user: UserType = {
-          id: response.data.id,
-          username: String(response.data.username),
-          email: String(response.data.email),
-          name: String(response.data.name),
-          bio: String(response.data.bio),
-        };
-        setCurrentUser(user);
-        setAuthIsLoading(false);
-      })
-      .catch((error) => {
-        // Here we failed the regular token check, so we will now attempt to refresh the token
-        console.error(error);
+    const res = await apiRequest(() => userDataRequest());
 
-        (async () => {
-          const tokenRefreshed = await refreshToken();
-          if (tokenRefreshed) {
-            axios
-              .get("/api/users/userdata")
-              .then((response) => {
-                console.log("user: ", String(response.data.username));
-                const user: UserType = {
-                  id: response.data.id,
-                  username: String(response.data.username),
-                  email: String(response.data.email),
-                  name: String(response.data.name),
-                  bio: String(response.data.bio),
-                };
-                setCurrentUser(user);
-                setAuthIsLoading(false);
-              })
-              .catch((error) => {
-                console.error(error);
-                localStorage.removeItem("username");
-                setCurrentUser({} as UserType);
-                setAuthIsLoading(false);
-              });
-          } else {
-            localStorage.removeItem("username");
-            setCurrentUser({} as UserType);
-            setAuthIsLoading(false);
-          }
-        })();
-
-        // If we made it here then we have refreshed properly, so auth again
-      });
+    if (res.status === 200) {
+      // Successfully fetched user data
+      const user: UserType = {
+        id: res.data.id,
+        username: String(res.data.username),
+        email: String(res.data.email),
+        name: String(res.data.name),
+        bio: String(res.data.bio),
+      };
+      setCurrentUser(user);
+      setAuthIsLoading(false);
+    } else {
+      // Unsuccessful fetch, remove any existing data
+      localStorage.removeItem("username");
+      setCurrentUser({} as UserType);
+      setAuthIsLoading(false);
+    }
   };
 
   const handleLogout = async () => {

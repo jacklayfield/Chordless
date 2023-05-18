@@ -56,32 +56,30 @@ This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
 
 #### API requests
 
-I am not using a tool like Redux w/ RTK query for this app. In the future, if this app grows I will consider replacing the current infrastructure. For now I will do the following for api requests which I found to be the most simple, clean, and concise: <br />
+I am not using a tool like Redux w/ RTK query for this app. In the future, if this app grows I will consider replacing the current infrastructure. For now I use the following for api requests which I found to be the most simple, clean, and concise: <br />
 
 ```javascript
-let res = await FUNCTION(DATA);
-if (isForbidden(res)) {
-  const tokenRefreshed = await refreshToken();
-  if (tokenRefreshed) {
-    res = await FUNCTION(DATA);
+export const apiRequest = async (reqFunction: Function) => {
+  let res = await reqFunction();
+  if (isForbidden(res)) {
+    const tokenRes = await refreshToken();
+    if (tokenRes.status === 200) {
+      res = await reqFunction();
+    }
   }
-}
-
-if (res.status === 200) {
-  doSuccess();
-} else {
-  doFailure();
-}
+  return res;
+};
 ```
 
-<br />
-Anything in all caps is a parameter to this structure. <br />
+'reqFunction' is going to be the function that contains the actual axios request. These functions are defined in their category dependant api files on the frontend (ex. apiSong.tsx). <br />
 
-So 'FUNCTION' is going to be the function that contains the actual axios request. These functions are defined in their category dependant api files on the frontend (ex. apiSong.tsx). <br />
+This structure works by defining a 'res' variable housing the result of the axios query passed in from 'reqFunction'. Then, this res is checked to see if it returning a 'forbidden' (403) status. If so, we want to then refresh our token. If this returns success, we can try our 'reqFunction' again, assigning 'res' again to be the updated result from this second call. After this we can simply check 'res.status' and call the appropriate code (like we normally would). <br />
 
-'DATA' is any of the data you are passing to the axios call within 'FUNCTION'. <br />
+Here is an example of how we could invoke this using the "createSongRequest" api request function defined in "apiSong.tsx": <br />
 
-This structure works by defining a 'res' variable housing the result of the axios query passed in from 'FUNCTION'. Then, this res is checked to see if it returning a 'forbidden' (403) status. If so, we want to then refresh our token. If this returns success, we can try our 'FUNCTION' again, assigning 'res' again to be the updated result from this second call. After this we can simply check 'res.status' and call the appropriate code (like we normally would) <br />
+```javascript
+let res = await apiRequest(() => createSongRequest(songName, chords));
+```
 
 And that's it! <br />
 
@@ -117,5 +115,6 @@ And that's it! <br />
 **Improvement: Handle JWT token confirmation better (add designated middleware section)** <br />
 **Cleanup: clean up inserts and use model** <br />
 **Cleanup: get rid of create flag in manager** <br />
+**Bug: bio/name do not get updated upon token refresh** <br/>
 
 **Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed)** <br/>

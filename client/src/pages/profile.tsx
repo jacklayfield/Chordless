@@ -5,6 +5,8 @@ import CurrentUserContext from "./../context/context";
 import React, { useState } from "react";
 import axios from "axios";
 import "../styling/profile.css";
+import { apiRequest } from "../api/request";
+import { updateBioRequest, updateNameRequest } from "../api/apiUser";
 
 export const Profile = () => {
   const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
@@ -14,24 +16,14 @@ export const Profile = () => {
   const [name, setName] = useState<string>("");
 
   const handleUpdateBio = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      await axios.put("/api/users/updateBio", {
-        data: { bio },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    setEditBio(false);
+    console.log("before " + bio);
+    let res = await apiRequest(() => updateBioRequest(bio));
+    console.log("after " + bio);
+    //setEditBio(false);
   };
 
   const handleUpdateName = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      await axios.put("/api/users/updateName", {
-        data: { name },
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    let res = await apiRequest(() => updateNameRequest(name));
     setEditName(false);
   };
 

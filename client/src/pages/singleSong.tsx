@@ -11,14 +11,14 @@ import CurrentUserContext from "../context/context";
 import React from "react";
 import { Error404 } from "../components/general/error404";
 import { CHORD_TYPE } from "./createSong";
-import { refreshToken } from "../context/context";
 import { isForbidden } from "../utils/general";
 import {
   deleteChordsRequest,
   deleteSongRequest,
   insertChordsRequest,
   updateChordsRequest,
-} from "../utils/apiSong";
+} from "../api/apiSong";
+import { apiRequest } from "../api/request";
 
 export const SingleSong = () => {
   const { authIsLoading, handleLogout } = React.useContext(CurrentUserContext);
@@ -99,13 +99,7 @@ export const SingleSong = () => {
   };
 
   const submitDelete = async () => {
-    let res = await deleteSongRequest(songid);
-    if (isForbidden(res)) {
-      const tokenRefreshed = await refreshToken();
-      if (tokenRefreshed) {
-        res = await deleteSongRequest(songid);
-      }
-    }
+    const res = await apiRequest(() => deleteSongRequest(songid));
 
     if (res.status === 200) {
       console.log("SUCCESS");
@@ -123,35 +117,27 @@ export const SingleSong = () => {
   ) => {
     if (updatedChords.length > 0) {
       // put request for updating chords
-      let res = await updateChordsRequest(updatedChords);
-      if (isForbidden(res)) {
-        const tokenRefreshed = await refreshToken();
-        if (tokenRefreshed) {
-          res = await updateChordsRequest(updatedChords);
-        }
+      const res = await apiRequest(() => updateChordsRequest(updatedChords));
+      if (res.status !== 200) {
+        /*Failmsg */
       }
     }
 
     if (deletedChordIndicies.length > 0) {
-      console.log("del" + deletedChordIndicies);
-      let res = await deleteChordsRequest(deletedChordIndicies);
-      if (isForbidden(res)) {
-        const tokenRefreshed = await refreshToken();
-        if (tokenRefreshed) {
-          res = await deleteChordsRequest(deletedChordIndicies);
-        }
+      const res = await apiRequest(() =>
+        deleteChordsRequest(deletedChordIndicies)
+      );
+      if (res.status !== 200) {
+        /*Failmsg */
       }
     }
 
     // If we find a chord with a negative id, we know there are new chords to be inserted
     if (newSong.map((e) => e.chordId).some((x) => x < 0)) {
       console.log("negative found");
-      let res = await insertChordsRequest(newSong, songid);
-      if (isForbidden(res)) {
-        const tokenRefreshed = await refreshToken();
-        if (tokenRefreshed) {
-          res = await insertChordsRequest(newSong, songid);
-        }
+      const res = await apiRequest(() => insertChordsRequest(newSong, songid));
+      if (res.status !== 200) {
+        /*Failmsg */
       }
     }
 

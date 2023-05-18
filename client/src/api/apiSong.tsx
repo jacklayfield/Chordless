@@ -1,10 +1,10 @@
 import axios from "axios";
 import { CHORD_TYPE } from "../pages/createSong";
 
-export async function createSongRequest(
+export const createSongRequest = async (
   songName: String,
   chords: CHORD_TYPE[]
-) {
+) => {
   return axios
     .post("/api/songs/create", {
       data: { songName, chords },
@@ -13,16 +13,16 @@ export async function createSongRequest(
       console.error(err);
       return err;
     });
-}
+};
 
-export async function deleteSongRequest(songid: String) {
+export const deleteSongRequest = async (songid: String) => {
   return axios.delete("/api/songs/deleteSong/id=" + songid).catch((err) => {
     console.error(err);
     return err;
   });
-}
+};
 
-export async function updateChordsRequest(updatedChords: CHORD_TYPE[]) {
+export const updateChordsRequest = async (updatedChords: CHORD_TYPE[]) => {
   return axios
     .put("/api/songs/updateChords", {
       data: { updatedChords },
@@ -31,12 +31,12 @@ export async function updateChordsRequest(updatedChords: CHORD_TYPE[]) {
       console.error(err);
       return err;
     });
-}
+};
 
-export async function insertChordsRequest(
+export const insertChordsRequest = async (
   newSong: CHORD_TYPE[],
   songid: String
-) {
+) => {
   return axios
     .post("/api/songs/insertChords", {
       data: { newSong, songid },
@@ -45,9 +45,9 @@ export async function insertChordsRequest(
       console.error(err);
       return err;
     });
-}
+};
 
-export async function deleteChordsRequest(deletedChordIndicies: number[]) {
+export const deleteChordsRequest = async (deletedChordIndicies: number[]) => {
   return axios
     .put("/api/songs/deleteChords", {
       data: { deletedChordIndicies },
@@ -56,4 +56,4 @@ export async function deleteChordsRequest(deletedChordIndicies: number[]) {
       console.error(err);
       return err;
     });
-}
+};

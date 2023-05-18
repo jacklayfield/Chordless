@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
-import CurrentUserContext, { refreshToken } from "../context/context";
+import CurrentUserContext from "../context/context";
 import axios, { AxiosError } from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { Fretboard } from "../components/guitar/fretboard";
@@ -9,8 +9,9 @@ import { FretboardReadOnly } from "../components/guitar/fretboardReadOnly";
 import { findChord } from "../utils/chords";
 import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
-import { createSongRequest } from "../utils/apiSong";
+import { createSongRequest } from "../api/apiSong";
 import { isForbidden } from "../utils/general";
+import { apiRequest } from "../api/request";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -99,14 +100,7 @@ export const CreateSong = () => {
       return;
     }
 
-    // API fetching (See README.md for explanation)
-    let res = await createSongRequest(songName, chords);
-    if (isForbidden(res)) {
-      const tokenRefreshed = await refreshToken();
-      if (tokenRefreshed) {
-        res = await createSongRequest(songName, chords);
-      }
-    }
+    let res = await apiRequest(() => createSongRequest(songName, chords));
 
     // On success
     if (res.status === 200) {
