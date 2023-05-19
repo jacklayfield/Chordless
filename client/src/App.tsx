@@ -13,6 +13,7 @@ import { Profile } from "./pages/profile";
 import { SingleSong } from "./pages/singleSong";
 import { Test } from "./pages/test";
 import { ErrorView } from "./components/general/errorView";
+import { Layout } from "./components/theme/layout";
 
 function App() {
   return (
@@ -20,15 +21,30 @@ function App() {
       <Router>
         <NavBar />
         <Routes>
-          <Route path="/createSong" element={<CreateSong />} />
-          <Route path="/about" element={<About />} />
+          <Route
+            path="/createSong"
+            element={<Layout children={<CreateSong />} name={"Create Song"} />}
+          />
+          <Route
+            path="/about"
+            element={<Layout children={<About />} name={"About"} />}
+          />
+          <Route
+            path="/mySongs"
+            element={<Layout children={<MySongs />} name={"My Songs"} />}
+          />
+          <Route
+            path="/profile"
+            element={<Layout children={<Profile />} name={"Profile"} />}
+          />
+          <Route
+            path="/song/:songid"
+            element={<Layout children={<SingleSong />} name={"Song View"} />}
+          />
+          <Route path="/test" element={<Test />} />
+          <Route path="*" element={<ErrorView errType={404} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/createAccount" element={<CreateAccount />} />
-          <Route path="/mySongs" element={<MySongs />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/song/:songid" element={<SingleSong />} />
-          <Route path="*" element={<ErrorView errType={404} />} />
         </Routes>
       </Router>
     </CurrentUserProvider>

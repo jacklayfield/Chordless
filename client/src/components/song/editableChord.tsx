@@ -41,7 +41,7 @@ export const EditableChord: React.FC<SPROPS> = ({
   ) : (
     <div className="chords" style={{ color: "red", fontWeight: "bold" }}>
       Mobile Version coming Soon! Please use a window size with a width greater
-      than 960px for now!
+      than 960px for now! (You may use a landscape iPad / iPad Mini!)
     </div>
   );
 };

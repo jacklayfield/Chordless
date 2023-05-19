@@ -4,6 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Songs } from "../components/song/songs";
 import "../styling/song.css";
+import { Loading } from "../components/general/loading";
 
 export type SONG_TYPE = {
   songName: String;
@@ -53,55 +54,37 @@ export const MySongs = () => {
 
   const content = () => {
     if (authIsLoading || loadingSongs) {
-      return <div>Loading...</div>;
-    } else if (!currentUser) {
-      return <div>no user</div>;
+      return <Loading />;
     } else {
       splitSongs();
       return (
-        <div>
-          <Row className="gx-0">
-            <Col />
-            <Col xs={8}>
-              <div className="columns">
-                <div className="section-titles">
-                  <header className="section-titles-text">My Songs</header>
+        <div className="inner-div">
+          {currentUser?.id !== undefined ? (
+            <div>
+              Hey there {currentUser?.username}! Here are your songs:{" "}
+              {songs.length === 0 && (
+                <div className="chords">
+                  No songs 😢 Click "Create Song" in the top navigation bar to
+                  make your first song!
                 </div>
-
-                <div className="inner-div">
-                  {currentUser.id !== undefined ? (
-                    <div>
-                      Hey there {currentUser.username}! Here are your songs:{" "}
-                      {songs.length === 0 && (
-                        <div className="chords">
-                          No songs 😢 Click "Create Song" in the top navigation
-                          bar to make your first song!
-                        </div>
-                      )}
-                      <Row>
-                        <Col>
-                          <Songs songs={half1} />
-                        </Col>
-                        <Col>
-                          <Songs songs={half2} />
-                        </Col>
-                      </Row>
-                    </div>
-                  ) : (
-                    <div>
-                      It appears you are not signed in! Please tap "Login" in
-                      the top right or{" "}
-                      <a href="http://localhost:3000/createAccount">
-                        click here
-                      </a>{" "}
-                      to make an account (It's easy).
-                    </div>
-                  )}
-                </div>
-              </div>
-            </Col>
-            <Col />
-          </Row>
+              )}
+              <Row>
+                <Col>
+                  <Songs songs={half1} />
+                </Col>
+                <Col>
+                  <Songs songs={half2} />
+                </Col>
+              </Row>
+            </div>
+          ) : (
+            <div>
+              It appears you are not signed in! Please tap "Login" in the top
+              right or{" "}
+              <a href="http://localhost:3000/createAccount">click here</a> to
+              make an account (It's easy).
+            </div>
+          )}
         </div>
       );
     }

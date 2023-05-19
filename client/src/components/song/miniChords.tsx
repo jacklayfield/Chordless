@@ -7,7 +7,7 @@ interface MPROPS {
 }
 
 export const MiniChords: React.FC<MPROPS> = ({ chords }) => {
-  const perChunk = 3;
+  const perChunk = 2;
 
   const chunkedChords = chords.reduce(
     (resultArray: CHORD_TYPE[][], item: CHORD_TYPE, index: number) => {

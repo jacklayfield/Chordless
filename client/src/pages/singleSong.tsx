@@ -142,94 +142,34 @@ export const SingleSong = () => {
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
 
-  return error === SUCCESS && !loading ? (
-    <div>
-      <ViewMenu handleViewChange={handleViewChange} view={view} />
-      {view === "standard" ? (
-        <Row className="gx-0">
-          <Col />
-          <Col
-            xs={
-              width > breakpoint_mid_window
-                ? 8
-                : width > breakpoint_small_window
-                ? 10
-                : 12
-            }
-          >
-            <div className="columns">
-              <div className="section-titles song-options">
-                {editName ? (
-                  <div className="flex-container">
-                    <input
-                      className="song-name-input m-1"
-                      type="text"
-                      id="title"
-                      defaultValue={String(song)}
-                      onChange={(event) => setSong(event.target.value)}
-                    />
-                    <div
-                      className="song-options-save name-save"
-                      onClick={() => setEditName(false)}
-                    >
-                      <i className="fa-solid fa-check fa-lg"></i>{" "}
-                    </div>{" "}
-                  </div>
-                ) : (
-                  <div className="song-options">
-                    <header className="section-titles-text">{song}</header>
-                    <div className="song-options-edit">
-                      <i
-                        className="fa-solid fa-edit fa-lg"
-                        onClick={() => setEditName(true)}
-                      ></i>
-                    </div>{" "}
-                  </div>
-                )}
-
-                <div className="song-options">
-                  <div
-                    className="song-options-delete"
-                    onClick={() => showDeleteModal()}
-                  >
-                    <i className="fa-solid fa-trash-can fa-lg"></i> Delete
-                  </div>
-                </div>
-              </div>
-              <div className="inner-div">
-                <ChordManager
-                  chords={chords}
-                  updateSong={updateSong}
-                  createFlag={false}
-                />
-              </div>
-            </div>
-          </Col>
-          <Col />
-        </Row>
-      ) : (
-        <div>
-          <MiniChords chords={chords} />
-        </div>
-      )}
-      <DeleteConfirmation
-        showModal={displayConfirmationModal}
-        confirmModal={submitDelete}
-        hideModal={hideConfirmationModal}
-        message={deleteMessage}
-      />
-    </div>
-  ) : (
-    <>
-      {loading ? (
-        <>
-          <Loading />
-        </>
-      ) : (
-        <>
-          <ErrorView errType={error} />
-        </>
-      )}
-    </>
-  );
+  if (loading) {
+    return <Loading />;
+  } else if (error !== SUCCESS) {
+    return <ErrorView errType={error} />;
+  } else {
+    return (
+      <div>
+        <ViewMenu handleViewChange={handleViewChange} view={view} />
+        {view === "standard" ? (
+          <div className="inner-div">
+            <ChordManager
+              chords={chords}
+              updateSong={updateSong}
+              createFlag={false}
+            />
+          </div>
+        ) : (
+          <div>
+            <MiniChords chords={chords} />
+          </div>
+        )}
+        <DeleteConfirmation
+          showModal={displayConfirmationModal}
+          confirmModal={submitDelete}
+          hideModal={hideConfirmationModal}
+          message={deleteMessage}
+        />
+      </div>
+    );
+  }
 };

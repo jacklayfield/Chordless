@@ -85,36 +85,33 @@ And that's it! <br />
 
 #### TODO
 
--DONE Transfer page related elements out of guitar component <br />
--DONE Cleanup: profile/about page styling <br />
--DONE Feature: Add Confirmations for deleting chords/songs <br />
--DONE Bug: Fix bug with selecting top string <br />
--DONE Bug: Refresh tokens not generating token prior to loading page on refresh after real token expired. <br />
--DONE Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
--DONE Bug: Mute buttons with "-0" not showing up on song view. <br />
--DONE General: "Create account" window redirection and popup after submit <br />
--DONE Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
--DONE General: If user not signed in, do NOT let them create a song <br />
--DONE General: "Create song" window redirection and popup after submit <br />
-**Improvement: If user not logged in, try to handle context more efficiently (Already configured to not waste a DB query, but no api call at all would be better).** <br />
--DONE Cleanup: Organize css files <br />
-**Cleanup: Change unnececessary div wrappers to fragments** <br />
-**Cleanup: Shorthands for bool/strings in props** <br />
-**Cleanup: Group imports** <br />
--DONE Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
--DONE Improvement: Break down larger components into smaller sub-components<br />
-**Improvement: Create components for general styling** <br />
-**Cleanup: Change conditional rendering to be if else when more than 2 possibilities** <br />
-**Cleanup: Create 'Edit mode' conditional render, do not conditionally render all items'** <br />
--DONE Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
-**General: Find a better way of handling the page update after updating a song** <br />
-**General: Apply the token bug error to all post requests and perhaps create a general function for this behavior** <br />
-**Improvement: Add TimeStamps to songs** <br />
-**Improvement: (Extra): Apply chordManager to createSong** <br />
-**Improvement: Add some automated testing** <br />
-**Improvement: Handle JWT token confirmation better (add designated middleware section)** <br />
-**Cleanup: clean up inserts and use model** <br />
-**Cleanup: get rid of create flag in manager** <br />
-**Bug: bio/name do not get updated upon token refresh** <br/>
+[X] Transfer page related elements out of guitar component <br />
+[X] Cleanup: profile/about page styling <br />
+[X] Feature: Add Confirmations for deleting chords/songs <br />
+[X] Bug: Fix bug with selecting top string <br />
+[X] Bug: Refresh tokens not generating token prior to loading page on refresh after real token expired. <br />
+[X] Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
+[X] Bug: Mute buttons with "-0" not showing up on song view. <br />
+[X] General: "Create account" window redirection and popup after submit <br />
+[X] Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
+[X] General: If user not signed in, do NOT let them create a song <br />
+[X] General: "Create song" window redirection and popup after submit <br />
+[] Improvement: If user not logged in, try to handle context more efficiently (Already configured to not waste a DB query, but no api call at all would be better). <br />
+[X] Cleanup: Organize css files <br />
+[] Cleanup: Change unnececessary div wrappers to fragments <br />
+[] Cleanup: Group imports <br />
+[X] Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
+[X] Improvement: Break down larger components into smaller sub-components<br />
+[X] Improvement: Create components for general styling <br />
+[] Cleanup: Change conditional rendering to be if else when more than 2 possibilities <br />
+[X] Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
+[] General: Find a better way of handling the page update after updating a song <br />
+[X]General: Apply the token bug error to all post requests and perhaps create a general function for this behavior <br />
+[] Improvement: Add TimeStamps to songs <br />
+[] Improvement: Add some automated testing <br />
+[] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
+[] Cleanup: clean up inserts and use model <br />
+[X]Cleanup: get rid of create flag in manager <br />
+[] Bug: bio/name do not get updated upon token refresh <br/>
 
-**Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed)** <br/>
+[] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>
