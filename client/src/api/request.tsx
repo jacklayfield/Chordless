@@ -1,9 +1,9 @@
 import axios from "axios";
-import { isForbidden } from "../utils/general";
+import { findError } from "./error";
 
 export const apiRequest = async (reqFunction: Function) => {
   let res = await reqFunction();
-  if (isForbidden(res)) {
+  if (findError(res) === 403) {
     const tokenRes = await refreshToken();
     if (tokenRes.status === 200) {
       res = await reqFunction();

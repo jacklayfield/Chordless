@@ -1,5 +1,4 @@
 import axios from "axios";
-import { CHORD_TYPE } from "../pages/createSong";
 
 export const updateNameRequest = async (name: String) => {
   return axios

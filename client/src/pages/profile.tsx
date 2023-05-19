@@ -3,7 +3,6 @@ import Col from "react-bootstrap/Col";
 import defaultImg from "../images/defaultProfile.png";
 import CurrentUserContext from "./../context/context";
 import React, { useState } from "react";
-import axios from "axios";
 import "../styling/profile.css";
 import { apiRequest } from "../api/request";
 import { updateBioRequest, updateNameRequest } from "../api/apiUser";

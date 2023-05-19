@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { ChordManager } from "../components/song/chordManager";
@@ -7,29 +6,26 @@ import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/general/viewMenu";
 import { DeleteConfirmation } from "../components/general/deleteConfirmation";
-import CurrentUserContext from "../context/context";
 import React from "react";
-import { Error404 } from "../components/general/error404";
+import { ErrorView } from "../components/general/errorView";
 import { CHORD_TYPE } from "./createSong";
-import { isForbidden } from "../utils/general";
 import {
+  allChordsRequest,
   deleteChordsRequest,
   deleteSongRequest,
   insertChordsRequest,
+  singleSongRequest,
   updateChordsRequest,
 } from "../api/apiSong";
 import { apiRequest } from "../api/request";
+import { findError } from "../api/error";
+import { Loading } from "../components/general/loading";
 
 export const SingleSong = () => {
-  const { authIsLoading, handleLogout } = React.useContext(CurrentUserContext);
-
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
-  const ERROR_GENERAL = 1;
   const SUCCESS = 0;
-  const ERROR_404 = 404;
-  const ERROR_403 = 403;
 
   const [loading, setLoading] = useState<boolean>(true);
   const [song, setSong] = useState<String>();
@@ -45,44 +41,32 @@ export const SingleSong = () => {
     const fetchSong = async () => {
       setLoading(true);
       setError(SUCCESS);
-      if (!authIsLoading) {
-        try {
-          const resSong = await axios.get(
-            "/api/songs/singleSong/id=" + String(songid)
-          );
-          setSong(resSong.data.name);
 
-          const resChords = await axios.get(
-            "/api/songs/allChords/id=" + String(songid)
-          );
+      const resSong = await apiRequest(() => singleSongRequest(songid));
+      const resChords = await apiRequest(() => allChordsRequest(songid));
 
-          let dbChords: CHORD_TYPE[] = [];
+      if (resSong.status === 200 && resChords.status === 200) {
+        setSong(resSong.data.name);
 
-          for (const chord of resChords.data) {
-            let chordObj: CHORD_TYPE = {
-              chordArr: chord.chordNotes,
-              chordName: chord.chordName,
-              chordId: chord.id,
-            };
-            dbChords.push(chordObj);
-          }
-          setChords(dbChords);
-        } catch (error) {
-          if (isForbidden(error)) {
-            console.error(error);
-            setError(ERROR_403);
-          } else if (`${(error as AxiosError)?.response?.status}` === "404") {
-            console.log("got into 404");
-            setError(ERROR_404);
-          } else {
-            setError(ERROR_GENERAL);
-          }
+        let dbChords: CHORD_TYPE[] = [];
+
+        for (const chord of resChords.data) {
+          let chordObj: CHORD_TYPE = {
+            chordArr: chord.chordNotes,
+            chordName: chord.chordName,
+            chordId: chord.id,
+          };
+          dbChords.push(chordObj);
         }
-        setLoading(false);
+        setChords(dbChords);
+      } else {
+        setError(findError(resSong));
       }
+
+      setLoading(false);
     };
     fetchSong();
-  }, [songid, authIsLoading]);
+  }, [songid]);
 
   const handleViewChange = (view: String) => {
     view === "standard" ? setView("standard") : setView("lgScope");
@@ -236,23 +220,16 @@ export const SingleSong = () => {
       />
     </div>
   ) : (
-    <div>
-      {!loading ? (
-        <div>
-          {error === ERROR_404 && <Error404 />}
-          {error === ERROR_403 && (
-            <div>
-              This song does not belong to you! It is possible you are logged
-              out!
-            </div>
-          )}
-          {error === ERROR_GENERAL && (
-            <div>An error has occured fetching this song...</div>
-          )}
-        </div>
+    <>
+      {loading ? (
+        <>
+          <Loading />
+        </>
       ) : (
-        <div>Loading...</div>
+        <>
+          <ErrorView errType={error} />
+        </>
       )}
-    </div>
+    </>
   );
 };

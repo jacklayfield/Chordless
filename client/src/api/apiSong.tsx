@@ -57,3 +57,19 @@ export const deleteChordsRequest = async (deletedChordIndicies: number[]) => {
       return err;
     });
 };
+
+export const singleSongRequest = async (songid: String) => {
+  return axios
+    .get("/api/songs/singleSong/id=" + String(songid))
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
+
+export const allChordsRequest = async (songid: String) => {
+  return axios.get("/api/songs/allChords/id=" + String(songid)).catch((err) => {
+    console.error(err);
+    return err;
+  });
+};

@@ -12,7 +12,7 @@ import { MySongs } from "./pages/mySongs";
 import { Profile } from "./pages/profile";
 import { SingleSong } from "./pages/singleSong";
 import { Test } from "./pages/test";
-import { Error404 } from "./components/general/error404";
+import { ErrorView } from "./components/general/errorView";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/test" element={<Test />} />
           <Route path="/song/:songid" element={<SingleSong />} />
-          <Route path="*" element={<Error404 />} />
+          <Route path="*" element={<ErrorView errType={404} />} />
         </Routes>
       </Router>
     </CurrentUserProvider>

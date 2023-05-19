@@ -2,16 +2,12 @@ import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import CurrentUserContext from "../context/context";
-import axios, { AxiosError } from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import { Fretboard } from "../components/guitar/fretboard";
-import { FretboardReadOnly } from "../components/guitar/fretboardReadOnly";
-import { findChord } from "../utils/chords";
 import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
 import { createSongRequest } from "../api/apiSong";
-import { isForbidden } from "../utils/general";
 import { apiRequest } from "../api/request";
+import { findError } from "../api/error";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -116,7 +112,7 @@ export const CreateSong = () => {
     }
     // On failure
     else {
-      if (isForbidden(res)) {
+      if (findError(res) == 403) {
         toast.error("Failed to save song... (Please login!)", {
           autoClose: 3000,
           position: toast.POSITION.BOTTOM_RIGHT,
