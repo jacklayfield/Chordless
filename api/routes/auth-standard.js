@@ -22,7 +22,6 @@ router.post("/create", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    console.error(error);
     res.status(500).send(error.errors[0].message);
   }
 });
@@ -50,11 +49,11 @@ router.post("/login", async (req, res) => {
 
     // Sign the new tokens for the now verified user
     var token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: "900",
+      expiresIn: "9s",
     });
 
     var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
-      expiresIn: "10080s",
+      expiresIn: "20s",
     });
 
     // Put the refresh token in the DB
@@ -109,7 +108,7 @@ router.post("/refresh", async (req, res) => {
       }
       //otherwise let's sign the new access token for the user
       var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: "900s",
+        expiresIn: "9s",
       });
       // Set cookie
       res.cookie("token", token, { httpOnly: true });
@@ -117,7 +116,6 @@ router.post("/refresh", async (req, res) => {
     });
   } catch (error) {
     res.status(500).send(error);
-    console.error(error);
   }
 });
 

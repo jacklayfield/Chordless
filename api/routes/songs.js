@@ -5,6 +5,12 @@ const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
+const verifyJWT = require("../middleware/verifyJWT");
+
+const NOTFOUND = 1;
+const FORBIDDEN = 2;
+
+router.use(verifyJWT);
 
 router.get("/", function (request, response) {
   Song.findAll().then((songs) => {
@@ -14,17 +20,13 @@ router.get("/", function (request, response) {
 
 router.post("/create", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    const user_id = decoded.id;
-
-    console.log(req.body.data);
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
     const name = req.body.data.songName;
     const chords = req.body.data.chords;
 
     const [results, meta] = await sequelize.query(
       "INSERT INTO songs (userId, name) VALUES($1, $2) RETURNING *",
-      { bind: [user_id, name], type: QueryTypes.INSERT }
+      { bind: [userId, name], type: QueryTypes.INSERT }
     );
 
     const statements = [];
@@ -43,45 +45,28 @@ router.post("/create", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.get("/userSongs", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    const user_id = decoded.id;
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
 
     // Fetch songs based on user id
     const songs = await Song.findAll({
-      where: { userid: user_id },
+      where: { userid: userId },
     });
     res.json(songs);
     // This will only fetch from the song table, returning name, id , etc. (for song cards)
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.get("/singleSong/id=:id", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    const user_id = decoded.id;
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
     const songId = req.params.id;
 
     const song = await Song.findOne({
@@ -92,30 +77,30 @@ router.get("/singleSong/id=:id", async (req, res) => {
       return res.status(404).send("Song was not found");
     }
 
-    if (song.dataValues.userId != user_id) {
-      return res.status(403).send("user not permitted to view song");
+    if (song.dataValues.userId != userId) {
+      return res.status(403).send("Insufficient permissions! Nice try!");
     }
     res.json(song);
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.get("/allChords/id=:id", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    const user_id = decoded.id;
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
     const songId = req.params.id;
+
+    const status = confirmUserToSong(songId, userId);
+
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
+    }
 
     const chords = await Chord.findAll({
       where: { songid: songId },
@@ -126,33 +111,22 @@ router.get("/allChords/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.delete("/deleteSong/id=:id", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-
-    const user_id = decoded.id;
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
     const songId = req.params.id;
 
-    const song = await Song.findOne({
-      where: { id: songId },
-    });
+    const status = confirmUserToSong(songId, userId);
 
-    if (song.dataValues.userId != user_id) {
-      return res
-        .status(403)
-        .send("attempt to delete a song that you don't own has been denied");
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
     }
 
     const song1 = await Song.destroy({
@@ -167,22 +141,24 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
     // Fetch a single song based on song id
     // This will fetch from the chord table, returning a list of elements containing chord name, and note array (for single song view)
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.put("/updateChords", async (req, res) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const songId = req.params.id;
     const updatedChords = req.body.data.updatedChords;
+
+    const status = confirmUserToSong(songId, userId);
+
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
+    }
 
     const statements = [];
     const tableName = "chords";
@@ -200,22 +176,24 @@ router.put("/updateChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.put("/deleteChords", async (req, res) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const songId = req.params.id;
     const deletedChordIndicies = req.body.data.deletedChordIndicies;
+
+    const status = confirmUserToSong(songId, userId);
+
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
+    }
 
     const statements = [];
     const tableName = "chords";
@@ -233,23 +211,24 @@ router.put("/deleteChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
 
 router.post("/insertChords", async (req, res) => {
   try {
-    jwt.verify(req.cookies.token, config.secret);
-
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const songId = req.params.id;
     const newSong = req.body.data.newSong;
-    const songId = req.body.data.songid;
+
+    const status = confirmUserToSong(songId, userId);
+
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
+    }
 
     const statements = [];
     const tableName = "chords";
@@ -278,15 +257,22 @@ router.post("/insertChords", async (req, res) => {
 
     res.json(results);
   } catch (error) {
-    if (
-      error.message === "jwt expired" ||
-      error.message === "jwt must be provided"
-    ) {
-      res.status(403).send(error);
-    } else {
-      res.status(500).send(error);
-    }
+    res.status(500).send(error);
   }
 });
+
+const confirmUserToSong = async (userId, songId) => {
+  const song = await Song.findOne({
+    where: { id: songId },
+  });
+
+  if (song == null) {
+    return NOTFOUND;
+  }
+
+  if (song.dataValues.userId != userId) {
+    return FORBIDDEN;
+  }
+};
 
 module.exports = router;

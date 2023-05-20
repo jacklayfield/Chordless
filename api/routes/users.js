@@ -5,16 +5,18 @@ const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
+const verifyJWT = require("../middleware/verifyJWT");
 
 module.exports = router;
 
+router.use(verifyJWT);
+
 router.get("/userdata", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    user_id = decoded.id;
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
 
     const user = await User.findOne({
-      where: { id: user_id },
+      where: { id: userId },
     });
 
     const id = user.id;
@@ -26,15 +28,13 @@ router.get("/userdata", async (req, res) => {
 
     res.json(parsedUser);
   } catch (error) {
-    console.error(error);
     res.status(403).send(error);
   }
 });
 
 router.put("/updateBio", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    user_id = decoded.id;
+    const user_id = req.body.data.user_id;
 
     const user = await User.findOne({
       where: { id: user_id },
@@ -47,15 +47,13 @@ router.put("/updateBio", async (req, res) => {
       { bind: [bio, user.id], type: QueryTypes.UPDATE }
     );
   } catch (error) {
-    console.error(error);
     res.status(403).send(error);
   }
 });
 
 router.put("/updateName", async (req, res) => {
   try {
-    const decoded = jwt.verify(req.cookies.token, config.secret);
-    user_id = decoded.id;
+    const user_id = req.body.data.user_id;
 
     const user = await User.findOne({
       where: { id: user_id },
@@ -68,7 +66,6 @@ router.put("/updateName", async (req, res) => {
       { bind: [name, user.id], type: QueryTypes.UPDATE }
     );
   } catch (error) {
-    console.error(error);
     res.status(403).send(error);
   }
 });

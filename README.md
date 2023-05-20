@@ -109,7 +109,7 @@ And that's it! <br />
 [X]General: Apply the token bug error to all post requests and perhaps create a general function for this behavior <br />
 [] Improvement: Add TimeStamps to songs <br />
 [] Improvement: Add some automated testing <br />
-[] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
+[X] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
 [] Cleanup: clean up inserts and use model <br />
 [X]Cleanup: get rid of create flag in manager <br />
 [] Bug: bio/name do not get updated upon token refresh <br/>
