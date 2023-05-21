@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 
-export const findError = (error: any) => {
-  switch (`${(error as AxiosError)?.response?.status}`) {
+export const findAxiosError = (error: any) => {
+  switch (String(`${(error as AxiosError)?.response?.status}`)) {
     case "403":
       return 403;
     case "404":

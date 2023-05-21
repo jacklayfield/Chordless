@@ -7,8 +7,6 @@ var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const verifyJWT = require("../middleware/verifyJWT");
 
-module.exports = router;
-
 router.use(verifyJWT);
 
 router.get("/userdata", async (req, res) => {
@@ -34,10 +32,10 @@ router.get("/userdata", async (req, res) => {
 
 router.put("/updateBio", async (req, res) => {
   try {
-    const user_id = req.body.data.user_id;
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
 
     const user = await User.findOne({
-      where: { id: user_id },
+      where: { id: userId },
     });
 
     const bio = req.body.data.bio;
@@ -46,6 +44,8 @@ router.put("/updateBio", async (req, res) => {
       "UPDATE users SET bio = ($1) WHERE id = ($2) RETURNING *",
       { bind: [bio, user.id], type: QueryTypes.UPDATE }
     );
+
+    res.status(200).send();
   } catch (error) {
     res.status(403).send(error);
   }
@@ -53,10 +53,10 @@ router.put("/updateBio", async (req, res) => {
 
 router.put("/updateName", async (req, res) => {
   try {
-    const user_id = req.body.data.user_id;
+    const userId = jwt.verify(req.cookies.token, config.secret).id;
 
     const user = await User.findOne({
-      where: { id: user_id },
+      where: { id: userId },
     });
 
     const name = req.body.data.name;
@@ -65,7 +65,11 @@ router.put("/updateName", async (req, res) => {
       "UPDATE users SET name = ($1) WHERE id = ($2) RETURNING *",
       { bind: [name, user.id], type: QueryTypes.UPDATE }
     );
+
+    res.status(200).send();
   } catch (error) {
     res.status(403).send(error);
   }
 });
+
+module.exports = router;

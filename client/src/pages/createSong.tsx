@@ -5,17 +5,13 @@ import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
 import { createSongRequest } from "../api/apiSong";
 import { apiRequest } from "../api/request";
-import { findError } from "../api/error";
+import { findAxiosError } from "../api/error";
 
 export type CHORD_TYPE = {
   chordArr: number[];
   chordName: String;
   chordId: number;
 };
-
-interface SPROPS {
-  userFlag: boolean;
-}
 
 let newChordsCount = 0;
 
@@ -104,7 +100,7 @@ export const CreateSong = () => {
     }
     // On failure
     else {
-      if (findError(res) == 403) {
+      if (findAxiosError(res) === 403) {
         toast.error("Failed to save song... (Please login!)", {
           autoClose: 3000,
           position: toast.POSITION.BOTTOM_RIGHT,

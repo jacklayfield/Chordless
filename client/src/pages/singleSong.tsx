@@ -18,7 +18,7 @@ import {
   updateChordsRequest,
 } from "../api/apiSong";
 import { apiRequest } from "../api/request";
-import { findError } from "../api/error";
+import { findAxiosError } from "../api/error";
 import { Loading } from "../components/general/loading";
 
 export const SingleSong = () => {
@@ -60,7 +60,7 @@ export const SingleSong = () => {
         }
         setChords(dbChords);
       } else {
-        setError(findError(resSong));
+        setError(findAxiosError(resSong));
       }
 
       setLoading(false);

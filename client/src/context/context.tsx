@@ -29,7 +29,7 @@ type ProviderProps = {
 export const refreshToken = async () => {
   try {
     const res = await axios.post("/api/auth-standard/refresh");
-    if (res.status == 200) {
+    if (res.status === 200) {
       console.log("token refreshed");
       return true;
     }
@@ -59,8 +59,8 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
         id: res.data.id,
         username: String(res.data.username),
         email: String(res.data.email),
-        name: String(res.data.name),
-        bio: String(res.data.bio),
+        name: res.data.name,
+        bio: res.data.bio,
       };
       setCurrentUser(user);
       setAuthIsLoading(false);

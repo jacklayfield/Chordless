@@ -96,7 +96,6 @@ And that's it! <br />
 [X] Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
 [X] General: If user not signed in, do NOT let them create a song <br />
 [X] General: "Create song" window redirection and popup after submit <br />
-[] Improvement: If user not logged in, try to handle context more efficiently (Already configured to not waste a DB query, but no api call at all would be better). <br />
 [X] Cleanup: Organize css files <br />
 [] Cleanup: Change unnececessary div wrappers to fragments <br />
 [] Cleanup: Group imports <br />
@@ -112,6 +111,6 @@ And that's it! <br />
 [X] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
 [] Cleanup: clean up inserts and use model <br />
 [X]Cleanup: get rid of create flag in manager <br />
-[] Bug: bio/name do not get updated upon token refresh <br/>
+[X] Bug: bio/name do not get updated upon token refresh <br/>
 
 [] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>
