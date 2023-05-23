@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { findAxiosError } from "./error";
 
 // export const BASE_URL = "http://localhost:8000"; //(for local development)
-export const BASE_URL = "http://chordless-api"; //(for deployment)
+export const BASE_URL = "https://chordless-api.onrender.com"; //(for deployment)
 
 export const apiRequest = async (reqFunction: Function) => {
   let res = await reqFunction();
