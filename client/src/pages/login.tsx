@@ -3,6 +3,7 @@ import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
 import "../styling/login.css";
 import { Loading } from "../components/general/loading";
+import { BASE_URL } from "../api/request";
 
 export const Login = () => {
   const google = () => {
@@ -20,7 +21,7 @@ export const Login = () => {
     try {
       setSuccess(false);
       setError(false);
-      const res = await axios.post("/api/auth-standard/login", {
+      const res = await axios.post(BASE_URL + "/api/auth-standard/login", {
         data: { username, password },
       });
       if (res.status === 200) {

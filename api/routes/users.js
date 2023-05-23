@@ -4,14 +4,13 @@ const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-const config = require("../config/auth.config");
 const verifyJWT = require("../middleware/verifyJWT");
 
 router.use(verifyJWT);
 
 router.get("/userdata", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
 
     const user = await User.findOne({
       where: { id: userId },
@@ -32,7 +31,7 @@ router.get("/userdata", async (req, res) => {
 
 router.put("/updateBio", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
 
     const user = await User.findOne({
       where: { id: userId },
@@ -53,7 +52,7 @@ router.put("/updateBio", async (req, res) => {
 
 router.put("/updateName", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
 
     const user = await User.findOne({
       where: { id: userId },

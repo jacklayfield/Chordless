@@ -4,7 +4,6 @@ const Chord = require("../models/Chord");
 const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 var jwt = require("jsonwebtoken");
-const config = require("../config/auth.config");
 const verifyJWT = require("../middleware/verifyJWT");
 
 const NOTFOUND = 1;
@@ -20,7 +19,7 @@ router.get("/", function (request, response) {
 
 router.post("/create", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const name = req.body.data.songName;
     const chords = req.body.data.chords;
 
@@ -51,7 +50,7 @@ router.post("/create", async (req, res) => {
 
 router.get("/userSongs", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
 
     // Fetch songs based on user id
     const songs = await Song.findAll({
@@ -66,7 +65,7 @@ router.get("/userSongs", async (req, res) => {
 
 router.get("/singleSong/id=:id", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
 
     const song = await Song.findOne({
@@ -90,7 +89,7 @@ router.get("/singleSong/id=:id", async (req, res) => {
 
 router.get("/allChords/id=:id", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
 
     const status = confirmUserToSong(songId, userId);
@@ -117,7 +116,7 @@ router.get("/allChords/id=:id", async (req, res) => {
 
 router.delete("/deleteSong/id=:id", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
 
     const status = confirmUserToSong(songId, userId);
@@ -147,7 +146,7 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
 
 router.put("/updateChords", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
     const updatedChords = req.body.data.updatedChords;
 
@@ -182,7 +181,7 @@ router.put("/updateChords", async (req, res) => {
 
 router.put("/deleteChords", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
     const deletedChordIndicies = req.body.data.deletedChordIndicies;
 
@@ -217,7 +216,7 @@ router.put("/deleteChords", async (req, res) => {
 
 router.post("/insertChords", async (req, res) => {
   try {
-    const userId = jwt.verify(req.cookies.token, config.secret).id;
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
     const songId = req.params.id;
     const newSong = req.body.data.newSong;
 

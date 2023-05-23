@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "./request";
 
 export const updateNameRequest = async (name: String) => {
   return axios
-    .put("/api/users/updateName", {
+    .put(BASE_URL + "/api/users/updateName", {
       data: { name },
     })
     .catch((err) => {
@@ -13,7 +14,7 @@ export const updateNameRequest = async (name: String) => {
 
 export const updateBioRequest = async (bio: String) => {
   return axios
-    .put("/api/users/updateBio", {
+    .put(BASE_URL + "/api/users/updateBio", {
       data: { bio },
     })
     .catch((err) => {
@@ -23,7 +24,7 @@ export const updateBioRequest = async (bio: String) => {
 };
 
 export const userDataRequest = async () => {
-  return axios.get("/api/users/userdata").catch((err) => {
+  return axios.get(BASE_URL + "/api/users/userdata").catch((err) => {
     console.error(err);
     return err;
   });

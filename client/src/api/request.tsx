@@ -1,6 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { findAxiosError } from "./error";
 
+// export const BASE_URL = "http://localhost:8000"; //(for local development)
+export const BASE_URL = "http://chordless-api"; //(for deployment)
+
 export const apiRequest = async (reqFunction: Function) => {
   let res = await reqFunction();
   console.log("res" + `${(res as AxiosError)?.response?.status}`);
@@ -17,7 +20,7 @@ export const apiRequest = async (reqFunction: Function) => {
 };
 
 export const refreshToken = async () => {
-  return axios.post("/api/auth-standard/refresh").catch((err) => {
+  return axios.post(BASE_URL + "/api/auth-standard/refresh").catch((err) => {
     console.error(err);
     return err;
   });

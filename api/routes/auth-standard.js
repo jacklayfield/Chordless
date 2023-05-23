@@ -4,7 +4,6 @@ const sequelize = require("./../database/sequelize");
 const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-const config = require("../config/auth.config");
 const RefreshToken = require("../models/RefreshToken");
 
 // CREATE USER
@@ -48,11 +47,11 @@ router.post("/login", async (req, res) => {
     }
 
     // Sign the new tokens for the now verified user
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    var token = jwt.sign({ id: user.id }, process.env.SECRET, {
       expiresIn: "9s",
     });
 
-    var token_refresh = jwt.sign({ id: user.id }, config.refresh_secret, {
+    var token_refresh = jwt.sign({ id: user.id }, process.env.REFRESH_SECRET, {
       expiresIn: "20s",
     });
 
@@ -95,25 +94,29 @@ router.post("/refresh", async (req, res) => {
     if (!tokenFromDB) return res.sendStatus(403);
 
     // Verify token with secret
-    jwt.verify(refreshToken, config.refresh_secret, async (error, user) => {
-      if (error) {
-        // If there is an error, token is no longer valid, delete it from DB and return
-        const [results, meta] = await sequelize.query(
-          "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
-          { bind: [refreshToken], type: QueryTypes.INSERT }
-        );
-        res.clearCookie("token");
-        res.clearCookie("refreshToken");
-        return res.status(403).send("token auth failed");
+    jwt.verify(
+      refreshToken,
+      process.env.REFRESH_SECRET,
+      async (error, user) => {
+        if (error) {
+          // If there is an error, token is no longer valid, delete it from DB and return
+          const [results, meta] = await sequelize.query(
+            "DELETE FROM refreshtokens WHERE (tokenvalue)=$1 RETURNING *",
+            { bind: [refreshToken], type: QueryTypes.INSERT }
+          );
+          res.clearCookie("token");
+          res.clearCookie("refreshToken");
+          return res.status(403).send("token auth failed");
+        }
+        //otherwise let's sign the new access token for the user
+        var token = jwt.sign({ id: user.id }, process.env.SECRET, {
+          expiresIn: "9s",
+        });
+        // Set cookie
+        res.cookie("token", token, { httpOnly: true });
+        res.json({ accessToken: token });
       }
-      //otherwise let's sign the new access token for the user
-      var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: "9s",
-      });
-      // Set cookie
-      res.cookie("token", token, { httpOnly: true });
-      res.json({ accessToken: token });
-    });
+    );
   } catch (error) {
     res.status(500).send(error);
   }
