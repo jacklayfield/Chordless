@@ -10,7 +10,7 @@ const corsOptions = {
     }
   },
   credentials: true,
-  optionsSuccessStatus: 200,
+  methods: "GET,POST,PUT,DELETE",
 };
 
 module.exports = corsOptions;

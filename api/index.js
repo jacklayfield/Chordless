@@ -17,8 +17,6 @@ const app = express();
 
 app.use(cookieParser());
 
-app.use(cors(corsOptions));
-
 app.use(
   cookieSession({
     name: "session",
@@ -43,6 +41,8 @@ app.use(function (request, response, next) {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use("/auth-google", authGoogleRoute);

@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { apiRequest } from "../api/request";
+import { BASE_URL_API, apiRequest } from "../api/request";
 import { userDataRequest } from "../api/apiUser";
 
 export type UserType = {
@@ -75,9 +75,11 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   const handleLogout = async () => {
     localStorage.removeItem("username");
     setCurrentUser({} as UserType);
-    await axios.get("/api/auth-standard/logout").catch((error) => {
-      console.error(error);
-    });
+    await axios
+      .get(BASE_URL_API + "/api/auth-standard/logout")
+      .catch((error) => {
+        console.error(error);
+      });
     window.location.reload();
   };
 

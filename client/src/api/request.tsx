@@ -1,13 +1,15 @@
 import axios, { AxiosError } from "axios";
 import { findAxiosError } from "./error";
 
+axios.defaults.withCredentials = true;
+
 //(for local development)
-// export const BASE_URL_CLIENT = "http://localhost:3000";
-// export const BASE_URL_API = "http://localhost:8000";
+export const BASE_URL_CLIENT = "http://localhost:3000";
+export const BASE_URL_API = "http://localhost:8000";
 
 //for deployment
-export const BASE_URL_CLIENT = "https://chordless.onrender.com";
-export const BASE_URL_API = "https://chordless-api.onrender.com";
+// export const BASE_URL_CLIENT = "https://chordless.onrender.com";
+// export const BASE_URL_API = "https://chordless-api.onrender.com";
 
 export const apiRequest = async (reqFunction: Function) => {
   let res = await reqFunction();
