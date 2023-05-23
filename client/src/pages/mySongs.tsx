@@ -5,7 +5,7 @@ import axios from "axios";
 import { Songs } from "../components/song/songs";
 import "../styling/song.css";
 import { Loading } from "../components/general/loading";
-import { BASE_URL } from "../api/request";
+import { BASE_URL_API } from "../api/request";
 
 export type SONG_TYPE = {
   songName: String;
@@ -23,7 +23,7 @@ export const MySongs = () => {
       setLoadingSongs(true);
       if (!authIsLoading) {
         try {
-          const res = await axios.get(BASE_URL + "/api/songs/userSongs");
+          const res = await axios.get(BASE_URL_API + "/api/songs/userSongs");
           // console.log(res);
 
           let dbSongs: SONG_TYPE[] = [];

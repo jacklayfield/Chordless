@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
 import { Loading } from "../components/general/loading";
+import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 
 export const CreateAccount = () => {
   const google = () => {
-    window.open("http://localhost:8000/auth-google/google", "_self");
+    window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -21,14 +22,14 @@ export const CreateAccount = () => {
       setusernameError(false);
       setEmailError(false);
       setSuccess(false);
-      const res = await axios.post("/api/auth-standard/create", {
+      const res = await axios.post(BASE_URL_API + "/api/auth-standard/create", {
         data: { username, email, password },
       });
       if (res.status === 200) {
         setLoading(false);
         setSuccess(true);
         await new Promise((r) => setTimeout(r, 2000));
-        window.open("http://localhost:3000/login", "_self");
+        window.open(BASE_URL_CLIENT + "/login", "_self");
         console.log("Success");
       }
     } catch (error) {

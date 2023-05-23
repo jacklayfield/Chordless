@@ -3,11 +3,11 @@ import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
 import "../styling/login.css";
 import { Loading } from "../components/general/loading";
-import { BASE_URL } from "../api/request";
+import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 
 export const Login = () => {
   const google = () => {
-    window.open("http://localhost:8000/auth-google/google", "_self");
+    window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -21,7 +21,7 @@ export const Login = () => {
     try {
       setSuccess(false);
       setError(false);
-      const res = await axios.post(BASE_URL + "/api/auth-standard/login", {
+      const res = await axios.post(BASE_URL_API + "/api/auth-standard/login", {
         data: { username, password },
       });
       if (res.status === 200) {
@@ -30,7 +30,7 @@ export const Login = () => {
         //Store the username in localStorage for setting NavBar
         localStorage.setItem("username", String(username));
         await new Promise((r) => setTimeout(r, 1000));
-        window.open("http://localhost:3000/mySongs", "_self");
+        window.open("/mySongs", "_self");
         console.log("Success");
       }
     } catch (error) {
@@ -80,7 +80,7 @@ export const Login = () => {
           <button className="login-btn">Login</button>
           <span>
             New user? Sign up{" "}
-            <a href="http://localhost:3000/createAccount">Here</a>
+            <a href={BASE_URL_CLIENT + "/createAccount"}>Here</a>
           </span>
           <h4 className="alt-login-text">Or</h4>
           <div className="alt-login">
