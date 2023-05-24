@@ -8,8 +8,8 @@ axios.defaults.withCredentials = true;
 // export const BASE_URL_API = "http://localhost:8000";
 
 //for deployment
-export const BASE_URL_CLIENT = "https://chordless.onrender.com";
-export const BASE_URL_API = "https://chordless-api.onrender.com";
+export const BASE_URL_CLIENT = "https://app.chordless.net";
+export const BASE_URL_API = "https://api.chordless.net";
 
 export const apiRequest = async (reqFunction: Function) => {
   let res = await reqFunction();
