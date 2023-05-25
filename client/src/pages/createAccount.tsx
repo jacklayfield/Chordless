@@ -30,10 +30,8 @@ export const CreateAccount = () => {
         setSuccess(true);
         await new Promise((r) => setTimeout(r, 2000));
         window.open(BASE_URL_CLIENT + "/login", "_self");
-        console.log("Success");
       }
     } catch (error) {
-      console.log(error);
       if (
         `${(error as AxiosError)?.response?.data}` === "email must be unique"
       ) {

@@ -5,7 +5,7 @@ import axios from "axios";
 import { Songs } from "../components/song/songs";
 import "../styling/song.css";
 import { Loading } from "../components/general/loading";
-import { BASE_URL_API } from "../api/request";
+import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 
 export type SONG_TYPE = {
   songName: String;
@@ -24,7 +24,6 @@ export const MySongs = () => {
       if (!authIsLoading) {
         try {
           const res = await axios.get(BASE_URL_API + "/api/songs/userSongs");
-          // console.log(res);
 
           let dbSongs: SONG_TYPE[] = [];
 
@@ -82,7 +81,7 @@ export const MySongs = () => {
             <div>
               It appears you are not signed in! Please tap "Login" in the top
               right or{" "}
-              <a href="http://localhost:3000/createAccount">click here</a> to
+              <a href={BASE_URL_CLIENT + "/createAccount"}>click here</a> to
               make an account (It's easy).
             </div>
           )}

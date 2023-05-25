@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { ChordManager } from "../components/song/chordManager";
 import { MiniChords } from "../components/song/miniChords";
-import { Row, Col } from "react-bootstrap";
 import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/general/viewMenu";
 import { DeleteConfirmation } from "../components/general/deleteConfirmation";
@@ -17,7 +16,7 @@ import {
   singleSongRequest,
   updateChordsRequest,
 } from "../api/apiSong";
-import { apiRequest } from "../api/request";
+import { BASE_URL_CLIENT, apiRequest } from "../api/request";
 import { findAxiosError } from "../api/error";
 import { Loading } from "../components/general/loading";
 
@@ -86,11 +85,9 @@ export const SingleSong = () => {
     const res = await apiRequest(() => deleteSongRequest(songid));
 
     if (res.status === 200) {
-      console.log("SUCCESS");
       setDisplayConfirmationModal(false);
-      window.open("http://localhost:3000/mySongs", "_self");
+      window.open(BASE_URL_CLIENT + "/mySongs", "_self");
     } else {
-      console.log("FAIL");
     }
   };
 
@@ -101,7 +98,9 @@ export const SingleSong = () => {
   ) => {
     if (updatedChords.length > 0) {
       // put request for updating chords
-      const res = await apiRequest(() => updateChordsRequest(updatedChords));
+      const res = await apiRequest(() =>
+        updateChordsRequest(updatedChords, songid)
+      );
       if (res.status !== 200) {
         /*Failmsg */
       }
@@ -109,7 +108,7 @@ export const SingleSong = () => {
 
     if (deletedChordIndicies.length > 0) {
       const res = await apiRequest(() =>
-        deleteChordsRequest(deletedChordIndicies)
+        deleteChordsRequest(deletedChordIndicies, songid)
       );
       if (res.status !== 200) {
         /*Failmsg */
@@ -118,7 +117,6 @@ export const SingleSong = () => {
 
     // If we find a chord with a negative id, we know there are new chords to be inserted
     if (newSong.map((e) => e.chordId).some((x) => x < 0)) {
-      console.log("negative found");
       const res = await apiRequest(() => insertChordsRequest(newSong, songid));
       if (res.status !== 200) {
         /*Failmsg */

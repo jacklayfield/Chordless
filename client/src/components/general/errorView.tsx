@@ -6,7 +6,6 @@ interface EPROPS {
 }
 
 export const ErrorView: React.FC<EPROPS> = ({ errType }) => {
-  console.log(errType);
   if (errType === 404) {
     return (
       <div className="center-div mt-4">

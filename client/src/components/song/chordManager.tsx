@@ -48,13 +48,8 @@ export const ChordManager: React.FC<CPROPS> = ({
         updatedChords.push(chordObj);
       }
     }
-
-    console.log("size of update list: " + updatedChords.length);
-    // console.log("first element of list: " + updatedChords[0].chordArr);
-
     // Update our local copy of the chords list
     updateChordsLocally(chordPosition, chordObj);
-    console.log("id: " + chordId);
   };
 
   const updateChordsLocally = (chordPosition: number, chordObj: CHORD_TYPE) => {
@@ -74,11 +69,6 @@ export const ChordManager: React.FC<CPROPS> = ({
     if (index !== -1) {
       updatedChords.splice(index, 1);
     }
-
-    console.log("cur size of update list: " + updatedChords.length);
-    updatedChords.forEach((e) => {
-      console.log(e.chordArr);
-    });
 
     // Remove from the local list
     deleteChordsLocally(chordIndex);

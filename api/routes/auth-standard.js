@@ -55,8 +55,6 @@ router.post("/login", async (req, res) => {
       expiresIn: "20s",
     });
 
-    console.log("here1");
-
     // Put the refresh token in the DB
 
     const [results, meta] = await sequelize.query(
@@ -70,8 +68,6 @@ router.post("/login", async (req, res) => {
       maxAge: 7 * 24 * 60 * 1000,
       httpOnly: true,
     });
-
-    console.log(token);
 
     res.status(200).send({
       id: user.id,

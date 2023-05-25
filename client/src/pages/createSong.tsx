@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
 import { createSongRequest } from "../api/apiSong";
-import { apiRequest } from "../api/request";
+import { apiRequest, BASE_URL_CLIENT } from "../api/request";
 import { findAxiosError } from "../api/error";
 
 export type CHORD_TYPE = {
@@ -36,8 +36,8 @@ export const CreateSong = () => {
     newChordName: string,
     chordId: number
   ) => {
-    if (!currentUser?.name) {
-      window.open("http://localhost:3000/login", "_self");
+    if (!currentUser?.username) {
+      window.open(BASE_URL_CLIENT + "/login", "_self");
       return;
     }
     let chordObj: CHORD_TYPE = {
@@ -95,8 +95,6 @@ export const CreateSong = () => {
       setChords([]);
       setCurrFrets([0, 0, 0, 0, 0, 0]);
       (document.getElementById("song-name") as HTMLInputElement).value = "";
-
-      console.log(res);
     }
     // On failure
     else {

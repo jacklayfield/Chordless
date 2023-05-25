@@ -50,8 +50,6 @@ app.use("/api/auth-standard", authStandardRoute);
 app.use("/api/songs", songRoute);
 app.use("/api/users", userRoute);
 
-// console.log(process.env.PGHOST);
-
 app.listen("8000", () => {
   console.log("Server running...");
 });

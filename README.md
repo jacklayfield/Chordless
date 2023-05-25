@@ -113,4 +113,4 @@ And that's it! <br />
 [X]Cleanup: get rid of create flag in manager <br />
 [X] Bug: bio/name do not get updated upon token refresh <br/>
 
-[] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>
+[X] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>

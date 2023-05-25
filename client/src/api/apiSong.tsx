@@ -25,10 +25,13 @@ export const deleteSongRequest = async (songid: String) => {
     });
 };
 
-export const updateChordsRequest = async (updatedChords: CHORD_TYPE[]) => {
+export const updateChordsRequest = async (
+  updatedChords: CHORD_TYPE[],
+  songId: String
+) => {
   return axios
     .put(BASE_URL_API + "/api/songs/updateChords", {
-      data: { updatedChords },
+      data: { updatedChords, songId },
     })
     .catch((err) => {
       console.error(err);
@@ -38,11 +41,11 @@ export const updateChordsRequest = async (updatedChords: CHORD_TYPE[]) => {
 
 export const insertChordsRequest = async (
   newSong: CHORD_TYPE[],
-  songid: String
+  songId: String
 ) => {
   return axios
     .post(BASE_URL_API + "/api/songs/insertChords", {
-      data: { newSong, songid },
+      data: { newSong, songId },
     })
     .catch((err) => {
       console.error(err);
@@ -50,10 +53,13 @@ export const insertChordsRequest = async (
     });
 };
 
-export const deleteChordsRequest = async (deletedChordIndicies: number[]) => {
+export const deleteChordsRequest = async (
+  deletedChordIndicies: number[],
+  songId: String
+) => {
   return axios
     .put(BASE_URL_API + "/api/songs/deleteChords", {
-      data: { deletedChordIndicies },
+      data: { deletedChordIndicies, songId },
     })
     .catch((err) => {
       console.error(err);

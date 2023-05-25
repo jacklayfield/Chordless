@@ -40,8 +40,6 @@ router.post("/create", async (req, res) => {
     });
     const results1 = await Promise.all(statements);
 
-    console.log(results1);
-
     res.json(results);
   } catch (error) {
     res.status(500).send(error);
@@ -147,7 +145,7 @@ router.delete("/deleteSong/id=:id", async (req, res) => {
 router.put("/updateChords", async (req, res) => {
   try {
     const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
-    const songId = req.params.id;
+    const songId = req.body.data.songId;
     const updatedChords = req.body.data.updatedChords;
 
     const status = confirmUserToSong(songId, userId);
@@ -171,8 +169,6 @@ router.put("/updateChords", async (req, res) => {
     });
     const results = await Promise.all(statements);
 
-    console.log(results);
-
     res.json(results);
   } catch (error) {
     res.status(500).send(error);
@@ -182,7 +178,7 @@ router.put("/updateChords", async (req, res) => {
 router.put("/deleteChords", async (req, res) => {
   try {
     const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
-    const songId = req.params.id;
+    const songId = req.body.data.songId;
     const deletedChordIndicies = req.body.data.deletedChordIndicies;
 
     const status = confirmUserToSong(songId, userId);
@@ -206,8 +202,6 @@ router.put("/deleteChords", async (req, res) => {
     });
     const results = await Promise.all(statements);
 
-    console.log(results);
-
     res.json(results);
   } catch (error) {
     res.status(500).send(error);
@@ -217,7 +211,7 @@ router.put("/deleteChords", async (req, res) => {
 router.post("/insertChords", async (req, res) => {
   try {
     const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
-    const songId = req.params.id;
+    const songId = req.body.data.songId;
     const newSong = req.body.data.newSong;
 
     const status = confirmUserToSong(songId, userId);
@@ -251,8 +245,6 @@ router.post("/insertChords", async (req, res) => {
       }
     });
     const results = await Promise.all(statements);
-
-    console.log(results);
 
     res.json(results);
   } catch (error) {

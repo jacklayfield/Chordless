@@ -17,7 +17,5 @@ export function deepCloneChords(inputChords: CHORD_TYPE[]) {
     clonedChords.push(chordObj);
   });
 
-  console.log("deep clone made");
-
   return clonedChords;
 }

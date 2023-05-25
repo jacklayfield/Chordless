@@ -31,12 +31,10 @@ export const Login = () => {
         localStorage.setItem("username", String(username));
         await new Promise((r) => setTimeout(r, 1000));
         window.open("/mySongs", "_self");
-        console.log("Success");
       }
     } catch (error) {
       setLoading(false);
       setError(true);
-      console.log(`${(error as AxiosError)?.response?.data}`);
       if (`${(error as AxiosError)?.response?.data}` === "Wrong credentials!") {
         console.error(error);
       }
