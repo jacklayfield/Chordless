@@ -1,8 +1,7 @@
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import logo from "../../images/logo.png";
-import text from "../../images/text.png";
+import chordless_logo_transparent from "../../images/chordless_logo_transparent.png";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import React from "react";
 import CurrentUserContext from "../../context/context";
@@ -28,16 +27,9 @@ export const NavBar = () => {
           <a href="/createSong">
             <img
               alt=""
-              src={logo}
-              width="50"
-              height="50"
-              className="d-inline-block align-top"
-            />
-            <img
-              alt=""
-              src={text}
-              width="100"
-              height="55"
+              src={chordless_logo_transparent}
+              width="177"
+              height="40"
               className="d-inline-block align-top"
             />
           </a>

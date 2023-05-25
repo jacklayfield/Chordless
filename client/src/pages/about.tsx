@@ -53,7 +53,7 @@ export const About = () => {
         especially for begginers. Sometimes breaking things out into steps and
         showing you exactly where to put your fingers on what looks like your
         actual fretboard makes the process a lot less frustrating. That's why
-        this view is made available (alongside the others).{" "}
+        this view is the standard for this application.{" "}
       </span>{" "}
     </div>
   );
