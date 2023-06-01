@@ -4,8 +4,11 @@ import axios, { AxiosError } from "axios";
 import "../styling/login.css";
 import { Loading } from "../components/general/loading";
 import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
+import { useViewport } from "../hooks/useViewport";
 
 export const Login = () => {
+  const { width } = useViewport();
+  const breakpoint = 1100;
   const google = () => {
     window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
@@ -46,7 +49,7 @@ export const Login = () => {
   } else if (success) {
     return (
       <div className="center">
-        <div className="cover">
+        <div className={width > breakpoint ? "cover" : "cover small-window"}>
           <h1 className="login-text">Login</h1>
           <div>
             <h4 className="login-status success">Login Successful!</h4>
@@ -57,7 +60,10 @@ export const Login = () => {
   } else {
     return (
       <div className="center">
-        <form className="cover" onSubmit={handleSubmit}>
+        <form
+          className={width > breakpoint ? "cover" : "cover small-window"}
+          onSubmit={handleSubmit}
+        >
           <h1 className="login-text">Login</h1>
           <div className="input-container">
             <input

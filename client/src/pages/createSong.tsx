@@ -16,7 +16,7 @@ export type CHORD_TYPE = {
 let newChordsCount = 0;
 
 export const CreateSong = () => {
-  const { currentUser } = React.useContext(CurrentUserContext);
+  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
 
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
@@ -36,10 +36,6 @@ export const CreateSong = () => {
     newChordName: string,
     chordId: number
   ) => {
-    if (!currentUser?.username) {
-      window.open(BASE_URL_CLIENT + "/login", "_self");
-      return;
-    }
     let chordObj: CHORD_TYPE = {
       chordArr: newFrets,
       chordName: newChordName,
@@ -139,6 +135,12 @@ export const CreateSong = () => {
           <div className="chords">
             No chords added to this song yet! Click the plus (+) button to add
             your first chord!{" "}
+          </div>
+        )}
+        {!currentUser?.username && !authIsLoading && chords.length !== 0 && (
+          <div className="login-status">
+            WARNING: You are NOT logged in. Feel free to play around, but you
+            will NOT be able to save progress!
           </div>
         )}
 

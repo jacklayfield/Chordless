@@ -84,3 +84,17 @@ export const allChordsRequest = async (songid: String) => {
       return err;
     });
 };
+
+export const updateSongNameRequest = async (
+  songId: String,
+  songName: String
+) => {
+  return axios
+    .put(BASE_URL_API + "/api/songs/updateSongName", {
+      data: { songName, songId },
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};

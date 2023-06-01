@@ -252,6 +252,33 @@ router.post("/insertChords", async (req, res) => {
   }
 });
 
+router.put("/updateSongName", async (req, res) => {
+  try {
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
+    const songId = req.body.data.songId;
+    const songName = req.body.data.songName;
+
+    console.log("in method" + songId);
+
+    const status = confirmUserToSong(songId, userId);
+
+    if (status === NOTFOUND) {
+      res.status(404).send("Song was not found");
+    }
+    if (status === FORBIDDEN) {
+      res.status(403).send("Insufficient permissions! Nice try!");
+    }
+
+    const [results, meta] = await sequelize.query(
+      `UPDATE songs SET name='${songName}' WHERE id=${songId} RETURNING *`
+    );
+
+    res.json(results);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 const confirmUserToSong = async (userId, songId) => {
   const song = await Song.findOne({
     where: { id: songId },

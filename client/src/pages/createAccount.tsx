@@ -3,8 +3,11 @@ import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
 import { Loading } from "../components/general/loading";
 import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
+import { useViewport } from "../hooks/useViewport";
 
 export const CreateAccount = () => {
+  const { width } = useViewport();
+  const breakpoint = 1100;
   const google = () => {
     window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
@@ -52,7 +55,7 @@ export const CreateAccount = () => {
   } else if (success) {
     return (
       <div className="center">
-        <div className="cover">
+        <div className={width > breakpoint ? "cover" : "cover small-window"}>
           <h1 className="login-text">Create Account</h1>
           <div>
             <h4 className="login-status success">
@@ -66,7 +69,10 @@ export const CreateAccount = () => {
   } else {
     return (
       <div className="center">
-        <form className="cover" onSubmit={handleSubmit}>
+        <form
+          className={width > breakpoint ? "cover" : "cover small-window"}
+          onSubmit={handleSubmit}
+        >
           <h1 className="login-text">Create Account</h1>
 
           <div className="input-container">

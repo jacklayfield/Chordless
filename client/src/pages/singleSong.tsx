@@ -15,19 +15,23 @@ import {
   insertChordsRequest,
   singleSongRequest,
   updateChordsRequest,
+  updateSongNameRequest,
 } from "../api/apiSong";
 import { BASE_URL_CLIENT, apiRequest } from "../api/request";
 import { findAxiosError } from "../api/error";
 import { Loading } from "../components/general/loading";
+import { toast, ToastContainer } from "react-toastify";
+import CurrentUserContext from "./../context/context";
 
 export const SingleSong = () => {
+  const { handleLogout } = React.useContext(CurrentUserContext);
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
   const SUCCESS = 0;
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [song, setSong] = useState<String>();
+  const [song, setSong] = useState<String>("");
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
   const [error, setError] = useState<number>(SUCCESS);
   const [view, setView] = useState<String>("standard");
@@ -132,7 +136,18 @@ export const SingleSong = () => {
     window.location.reload();
   };
 
-  const handleUpdateName = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdateName = async () => {
+    let res = await apiRequest(() => updateSongNameRequest(songid, song));
+    console.log(res.status);
+    if (res.status === 200) {
+      setSong(song);
+      toast.success("Song name updated!", {
+        autoClose: 2000,
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } else {
+      handleLogout();
+    }
     setEditName(false);
   };
 
@@ -147,7 +162,48 @@ export const SingleSong = () => {
   } else {
     return (
       <div>
+        <ToastContainer autoClose={8000} />
+
+        <button
+          className="chordless-btn delete-song"
+          onClick={() => showDeleteModal()}
+        >
+          <i className="fa-solid fa-trash-can fa-lg p-1"></i> Delete
+        </button>
         <ViewMenu handleViewChange={handleViewChange} view={view} />
+        <div className="center-div">
+          <div className="song-options">
+            {editName ? (
+              <>
+                <input
+                  type="text"
+                  id="bio"
+                  defaultValue={String(song)}
+                  placeholder="Song Name"
+                  onChange={(event) => setSong(event.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-success p-1 m-2"
+                  onClick={handleUpdateName}
+                >
+                  Save Name
+                </button>
+              </>
+            ) : (
+              <>
+                <h1>{song}</h1>
+                <div className="song-options-edit">
+                  <i
+                    className="fa-solid fa-edit fa-lg"
+                    onClick={() => setEditName(true)}
+                  ></i>
+                </div>{" "}
+              </>
+            )}
+          </div>
+        </div>
+
         {view === "standard" ? (
           <div className="inner-div">
             <ChordManager

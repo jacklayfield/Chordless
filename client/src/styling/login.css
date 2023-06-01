@@ -16,6 +16,10 @@
   align-items: center;
 }
 
+.small-window {
+  width: 80% !important;
+}
+
 .alt-login {
   width: 100%;
   display: flex;

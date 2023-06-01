@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { CreateSong } from "./pages/createSong";
 import { About } from "./pages/about";
 import { Login } from "./pages/login";
@@ -16,6 +16,7 @@ import { Layout } from "./components/theme/layout";
 function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/createSong" />} />
       <Route
         path="/createSong"
         element={<Layout children={<CreateSong />} name={"Create Song"} />}
@@ -37,9 +38,9 @@ function App() {
         element={<Layout children={<SingleSong />} name={"Song View"} />}
       />
       <Route path="/test" element={<Test />} />
-      <Route path="*" element={<ErrorView errType={404} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/createAccount" element={<CreateAccount />} />
+      <Route path="*" element={<ErrorView errType={404} />} />
     </Routes>
   );
 }

@@ -33,7 +33,21 @@
 .song-options-delete {
   color: rgb(133, 0, 0);
   cursor: pointer;
-  margin-right: 1rem;
+  margin-left: 20;
+}
+
+.delete-song {
+  background-color: #ff5757;
+  height: 2rem;
+  font-weight: normal;
+  margin-left: auto;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  color: #383838;
+}
+
+.delete-song:hover {
+  background-color: #ff3535;
 }
 
 .song-options-edit {
