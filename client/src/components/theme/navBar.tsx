@@ -8,7 +8,7 @@ import CurrentUserContext from "../../context/context";
 import "../../styling/navbar.css";
 
 export const NavBar = () => {
-  const { currentUser, authIsLoading, handleLogout } =
+  const { currentUser, authIsLoading, handleLogout, apiIsLoading } =
     React.useContext(CurrentUserContext);
 
   if (!authIsLoading) {
@@ -54,36 +54,39 @@ export const NavBar = () => {
                 className="fa-solid fa-user"
               ></i>
             </Nav.Link>
-            {localStorage.getItem("username") !== "undefined" && (
-              <NavDropdown
-                title={localStorage.getItem("username")}
-                className="m-0"
-              >
-                <NavDropdown.Item href="/profile">
-                  <i
-                    style={{ color: "gray", paddingRight: "10px" }}
-                    className="fa-solid fa-user"
-                  ></i>
-                  Profile
-                </NavDropdown.Item>
-                <NavDropdown.Item>
-                  <i
-                    style={{ color: "gray", paddingRight: "10px" }}
-                    className="fa-solid fa-gear"
-                  ></i>
-                  Preferences
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
-
-            {localStorage.getItem("username") === "undefined" && (
-              <Nav.Link eventKey={2} href="/login">
-                <> </> Login
-              </Nav.Link>
+            {!apiIsLoading && (
+              <>
+                {localStorage.getItem("username") !== "undefined" && (
+                  <NavDropdown
+                    title={localStorage.getItem("username")}
+                    className="m-0"
+                  >
+                    <NavDropdown.Item href="/profile">
+                      <i
+                        style={{ color: "gray", paddingRight: "10px" }}
+                        className="fa-solid fa-user"
+                      ></i>
+                      Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <i
+                        style={{ color: "gray", paddingRight: "10px" }}
+                        className="fa-solid fa-gear"
+                      ></i>
+                      Preferences
+                    </NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={handleLogout}>
+                      Logout
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                )}
+                {localStorage.getItem("username") === "undefined" && (
+                  <Nav.Link eventKey={2} href="/login">
+                    <> </> Login
+                  </Nav.Link>
+                )}
+              </>
             )}
           </Nav>
         </Navbar.Collapse>

@@ -15,6 +15,8 @@ export type UserContext = {
   setCurrentUser: (user: UserType) => void;
   checkLogin: (allowReload: boolean) => Promise<void>;
   setAuthIsLoading: (isLoading: boolean) => void;
+  setApiIsLoading: (isLoading: boolean) => void;
+  apiIsLoading: boolean;
   authIsLoading: boolean;
   handleLogout: () => void;
 };
@@ -44,12 +46,15 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
   );
   const [authIsLoading, setAuthIsLoading] = React.useState(true);
 
+  const [apiIsLoading, setApiIsLoading] = React.useState(false);
+
   React.useEffect(() => {
     checkLogin();
   }, []);
 
   const checkLogin = async () => {
     setAuthIsLoading(true);
+    setApiIsLoading(false);
 
     const res = await apiRequest(() => userDataRequest());
 
@@ -64,6 +69,10 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
       };
       setCurrentUser(user);
       setAuthIsLoading(false);
+    } else if (res.code == "ERR_NETWORK") {
+      setApiIsLoading(true);
+      await new Promise((r) => setTimeout(r, 10000));
+      window.location.reload();
     } else {
       // Unsuccessful fetch, remove any existing data
       localStorage.removeItem("username");
@@ -88,6 +97,8 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
     setCurrentUser,
     checkLogin,
     setAuthIsLoading,
+    setApiIsLoading,
+    apiIsLoading,
     authIsLoading,
     handleLogout,
   };

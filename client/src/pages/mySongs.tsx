@@ -6,6 +6,7 @@ import { Songs } from "../components/song/songs";
 import "../styling/song.css";
 import { Loading } from "../components/general/loading";
 import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
+import { ApiConnecting } from "../components/general/apiConnecting";
 
 export type SONG_TYPE = {
   songName: String;
@@ -13,7 +14,8 @@ export type SONG_TYPE = {
 };
 
 export const MySongs = () => {
-  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
+  const { currentUser, authIsLoading, apiIsLoading } =
+    React.useContext(CurrentUserContext);
 
   const [songs, setSongs] = useState<SONG_TYPE[]>([]);
   const [loadingSongs, setLoadingSongs] = useState<boolean>(true);
@@ -53,7 +55,9 @@ export const MySongs = () => {
   };
 
   const content = () => {
-    if (authIsLoading || loadingSongs) {
+    if (apiIsLoading) {
+      return <ApiConnecting />;
+    } else if (authIsLoading || loadingSongs) {
       return <Loading />;
     } else {
       splitSongs();

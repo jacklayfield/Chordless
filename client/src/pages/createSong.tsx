@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CurrentUserContext from "../context/context";
 import { toast, ToastContainer } from "react-toastify";
 import { ChordEditor } from "../components/song/chordEditor";
@@ -6,6 +6,8 @@ import { OptionsMenu } from "../components/song/optionsMenu";
 import { createSongRequest } from "../api/apiSong";
 import { apiRequest, BASE_URL_CLIENT } from "../api/request";
 import { findAxiosError } from "../api/error";
+import { ApiConnecting } from "../components/general/apiConnecting";
+import { Loading } from "../components/general/loading";
 
 export type CHORD_TYPE = {
   chordArr: number[];
@@ -16,7 +18,8 @@ export type CHORD_TYPE = {
 let newChordsCount = 0;
 
 export const CreateSong = () => {
-  const { currentUser, authIsLoading } = React.useContext(CurrentUserContext);
+  const { currentUser, authIsLoading, apiIsLoading } =
+    React.useContext(CurrentUserContext);
 
   const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
 
@@ -108,57 +111,63 @@ export const CreateSong = () => {
     }
   };
 
-  return (
-    <div className="inner-div">
-      <div className="center-div">
-        <ToastContainer autoClose={8000} />
-        <h3>Song Name</h3>
-        <input
-          id="song-name"
-          className="mb-4"
-          type="text"
-          placeholder="my song"
-          required
-          onChange={(event) => setSongName(event.target.value)}
-        ></input>
+  if (apiIsLoading) {
+    return <ApiConnecting />;
+  } else if (authIsLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <div className="inner-div">
+        <div className="center-div">
+          <ToastContainer autoClose={8000} />
+          <h3>Song Name</h3>
+          <input
+            id="song-name"
+            className="mb-4"
+            type="text"
+            placeholder="my song"
+            required
+            onChange={(event) => setSongName(event.target.value)}
+          ></input>
 
-        {chords.length > 0 ? (
-          <div className="center-div">
-            <OptionsMenu
-              confirmFunction={handleSubmit}
-              cancelFunction={restartSong}
-              confirmText={"Save Song"}
-              cancelText={"Restart / Cancel"}
-            />
-          </div>
-        ) : (
-          <div className="chords">
-            No chords added to this song yet! Click the plus (+) button to add
-            your first chord!{" "}
-          </div>
-        )}
-        {!currentUser?.username && !authIsLoading && chords.length !== 0 && (
-          <div className="login-status">
-            WARNING: You are NOT logged in. Feel free to play around, but you
-            will NOT be able to save progress!
-          </div>
-        )}
+          {chords.length > 0 ? (
+            <div className="center-div">
+              <OptionsMenu
+                confirmFunction={handleSubmit}
+                cancelFunction={restartSong}
+                confirmText={"Save Song"}
+                cancelText={"Restart / Cancel"}
+              />
+            </div>
+          ) : (
+            <div className="chords">
+              No chords added to this song yet! Click the plus (+) button to add
+              your first chord!{" "}
+            </div>
+          )}
+          {!currentUser?.username && !authIsLoading && chords.length !== 0 && (
+            <div className="login-status">
+              WARNING: You are NOT logged in. Feel free to play around, but you
+              will NOT be able to save progress!
+            </div>
+          )}
 
-        <ChordEditor
-          chords={chords}
-          addChord={addChord}
-          updateChords={updateChords}
-          deleteChord={deleteChord}
-        />
+          <ChordEditor
+            chords={chords}
+            addChord={addChord}
+            updateChords={updateChords}
+            deleteChord={deleteChord}
+          />
+        </div>
+        <div>
+          * Please note that chords with a "~" preceding them denote chords that
+          are not their true form, but are inferred. For example, an "A" chord
+          in its true form would have a muted "low E" (A), but an "A" chord is
+          still inferred from leaving the "low E" open (~A).
+        </div>
       </div>
-      <div>
-        * Please note that chords with a "~" preceding them denote chords that
-        are not their true form, but are inferred. For example, an "A" chord in
-        its true form would have a muted "low E" (A), but an "A" chord is still
-        inferred from leaving the "low E" open (~A).
-      </div>
-    </div>
-  );
+    );
+  }
 
   // Otherwise we are in mobile mode
 };

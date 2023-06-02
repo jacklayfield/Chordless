@@ -22,9 +22,10 @@ import { findAxiosError } from "../api/error";
 import { Loading } from "../components/general/loading";
 import { toast, ToastContainer } from "react-toastify";
 import CurrentUserContext from "./../context/context";
+import { ApiConnecting } from "../components/general/apiConnecting";
 
 export const SingleSong = () => {
-  const { handleLogout } = React.useContext(CurrentUserContext);
+  const { handleLogout, apiIsLoading } = React.useContext(CurrentUserContext);
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
@@ -154,8 +155,9 @@ export const SingleSong = () => {
   const { width } = useViewport();
   const breakpoint_mid_window = 1440;
   const breakpoint_small_window = 1160;
-
-  if (loading) {
+  if (apiIsLoading) {
+    return <ApiConnecting />;
+  } else if (loading) {
     return <Loading />;
   } else if (error !== SUCCESS) {
     return <ErrorView errType={error} />;
