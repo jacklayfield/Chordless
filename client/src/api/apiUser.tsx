@@ -24,8 +24,10 @@ export const updateBioRequest = async (bio: String) => {
 };
 
 export const userDataRequest = async () => {
-  return axios.get(BASE_URL_API + "/api/users/userdata").catch((err) => {
-    console.error(err);
-    return err;
-  });
+  return axios
+    .get(BASE_URL_API + "/api/users/userdata", { timeout: 3000 })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };

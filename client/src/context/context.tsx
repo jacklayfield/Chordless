@@ -69,7 +69,7 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
       };
       setCurrentUser(user);
       setAuthIsLoading(false);
-    } else if (res.code == "ERR_NETWORK") {
+    } else if (res.code == "ERR_NETWORK" || res.code == "ECONNABORTED") {
       setApiIsLoading(true);
       await new Promise((r) => setTimeout(r, 10000));
       window.location.reload();
