@@ -2,6 +2,7 @@ import { CHORD_TYPE } from "../../pages/createSong";
 import { Col, Row } from "react-bootstrap";
 import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
 import { EditableChord } from "./editableChord";
+import { playGuitarBody } from "../../utils/sound";
 
 interface EPROPS {
   chords: CHORD_TYPE[];
@@ -33,16 +34,23 @@ export const ChordEditor: React.FC<EPROPS> = ({
                   <i className="fa-solid fa-star-of-life"></i> New
                 </div>
               )}
-
-              {chord.chordArr}
-              <EditableChord
-                initialFrets={chord.chordArr}
-                chordPosition={i}
-                chordId={chord.chordId}
-                updateChords={updateChords}
-              />
-
               <div className="center-div">
+                {/* {chord.chordArr} */}
+                <button
+                  className="chordless-btn sound"
+                  onClick={() =>
+                    playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr)
+                  }
+                >
+                  <i className="fa-solid fa-volume-high"></i>
+                </button>
+                <EditableChord
+                  initialFrets={chord.chordArr}
+                  chordPosition={i}
+                  chordId={chord.chordId}
+                  updateChords={updateChords}
+                />
+
                 <span className="chord-name">
                   {chord.chordName !== "undefined" ? chord.chordName : ""}
                 </span>

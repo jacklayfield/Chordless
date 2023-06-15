@@ -46,6 +46,12 @@ body {
   background-color: #ff7e2e;
 }
 
+.sound {
+  height: 2.25rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
 .center-div {
   flex: 1;
   display: flex;
