@@ -31,13 +31,11 @@ export const EditableChord: React.FC<SPROPS> = ({
   const breakpoint_mobile = 957;
 
   return width > breakpoint_mobile ? (
-    <div className="center-div">
-      <Fretboard
-        currFrets={currFrets}
-        updateCurrFrets={updateCurrFrets}
-        chordIdentifier={chordId}
-      />
-    </div>
+    <Fretboard
+      currFrets={currFrets}
+      updateCurrFrets={updateCurrFrets}
+      chordIdentifier={chordId}
+    />
   ) : (
     <div className="chords" style={{ color: "red", fontWeight: "bold" }}>
       Mobile Version coming Soon! Please use a window size with a width greater

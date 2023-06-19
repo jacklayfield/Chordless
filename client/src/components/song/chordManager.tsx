@@ -4,6 +4,7 @@ import { deepCloneChords } from "../../utils/general";
 import { CHORD_TYPE } from "../../pages/createSong";
 import { ChordEditor } from "./chordEditor";
 import { OptionsMenu } from "./optionsMenu";
+import { playGuitarBody } from "../../utils/sound";
 
 interface CPROPS {
   chords: CHORD_TYPE[];
@@ -164,11 +165,21 @@ export const ChordManager: React.FC<CPROPS> = ({
           {chords.map((chord, i) => {
             return (
               <div className="chords mb-4" key={i}>
-                <FretboardReadOnly frets={chord.chordArr} miniFlag={false} />
                 <div className="center-div">
-                  <span className="chord-name">
-                    {chord.chordName !== "undefined" ? chord.chordName : ""}
-                  </span>
+                  <button
+                    className="chordless-btn sound mb-2"
+                    onClick={() =>
+                      playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr)
+                    }
+                  >
+                    <i className="fa-solid fa-volume-high"></i>
+                  </button>
+                  <FretboardReadOnly frets={chord.chordArr} miniFlag={false} />
+                  <div className="center-div">
+                    <span className="chord-name">
+                      {chord.chordName !== "undefined" ? chord.chordName : ""}
+                    </span>
+                  </div>
                 </div>
               </div>
             );

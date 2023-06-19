@@ -37,7 +37,7 @@ export const ChordEditor: React.FC<EPROPS> = ({
               <div className="center-div">
                 {/* {chord.chordArr} */}
                 <button
-                  className="chordless-btn sound"
+                  className="chordless-btn sound mb-2"
                   onClick={() =>
                     playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr)
                   }
@@ -55,7 +55,7 @@ export const ChordEditor: React.FC<EPROPS> = ({
                   {chord.chordName !== "undefined" ? chord.chordName : ""}
                 </span>
                 <button
-                  className="chordless-btn delete-chord"
+                  className="chordless-btn delete-chord mt-4"
                   onClick={() => deleteChord(i, chord.chordId)}
                 >
                   Delete Chord
