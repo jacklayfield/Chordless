@@ -73,6 +73,8 @@ export const apiRequest = async (reqFunction: Function) => {
 };
 ```
 
+In hindsight, Redux or Context could have been useful for state management when it came to the chords especially things like "muted" strings which needed to be passed around through several layers of the system. Prop drilling definitely became a slight concern here, but I do not think it was a huge issue as most cases were 2/3 levels deep with the exception of a few cases where we were 3-5 levels deep. 
+
 'reqFunction' is going to be the function that contains the actual axios request. These functions are defined in their category dependant api files on the frontend (ex. apiSong.tsx). <br />
 
 This structure works by defining a 'res' variable housing the result of the axios query passed in from 'reqFunction'. Then, this res is checked to see if it returning a 'forbidden' (403) status. If so, we want to then refresh our token. If this returns success, we can try our 'reqFunction' again, assigning 'res' again to be the updated result from this second call. After this we can simply check 'res.status' and call the appropriate code (like we normally would). <br />
