@@ -12,6 +12,12 @@ This impedes creativity especially for begginers and even intermediate guitarist
 familar with all shapes and who might find tabs to be difficult to create or read. This appplication <br />
 addresses this need. <br />
 
+## Analysis
+
+In hindsight, Redux or Context could have been useful for state management when it came to the chords especially things like "muted" strings which needed to be passed around through several layers of the system. Prop drilling definitely became a slight concern here, but I do not think it was a huge issue as most cases were 2/3 levels deep with the exception of a few cases where we were 3-5 levels deep. <br />
+Structurally, I think this project was well organized. <br />
+Minor cleanup could help readability, and best practices could have been more consistent.  <br />
+
 ## Stack
 
 This project uses React + Typescript, Express, Node.js, and PostgreSQL. <br />
