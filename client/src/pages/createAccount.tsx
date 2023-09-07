@@ -11,13 +11,16 @@ export const CreateAccount = () => {
   const google = () => {
     window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
   const [usernameError, setusernameError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,7 +29,7 @@ export const CreateAccount = () => {
       setEmailError(false);
       setSuccess(false);
       const res = await axios.post(BASE_URL_API + "/api/auth-standard/create", {
-        data: { username, email, password },
+        data: { form },
       });
       if (res.status === 200) {
         setLoading(false);
@@ -48,6 +51,15 @@ export const CreateAccount = () => {
         setusernameError(true);
       }
     }
+  };
+
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    setForm((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   if (loading) {
@@ -78,28 +90,31 @@ export const CreateAccount = () => {
           <div className="input-container">
             <input
               type="text"
+              name="username"
               placeholder="username"
               minLength={3}
               required
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={handleFormChange}
             />
           </div>
           <div className="input-container">
             <input
               type="text"
+              name="email"
               placeholder="email"
               minLength={7}
               required
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={handleFormChange}
             />
           </div>
           <div className="input-container bottom">
             <input
               type="password"
+              name="password"
               placeholder="password"
               minLength={6}
               required
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={handleFormChange}
             />
           </div>
           <button className="login-btn">Create Account</button>

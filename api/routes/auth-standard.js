@@ -10,9 +10,9 @@ const RefreshToken = require("../models/RefreshToken");
 router.post("/create", async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
-    const hashedPass = await bcrypt.hash(req.body.data.password, salt);
-    const username = req.body.data.username;
-    const email = req.body.data.email;
+    const hashedPass = await bcrypt.hash(req.body.data.form.password, salt);
+    const username = req.body.data.form.username;
+    const email = req.body.data.form.email;
 
     const [results, meta] = await sequelize.query(
       "INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *",
