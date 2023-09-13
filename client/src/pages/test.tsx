@@ -9,11 +9,11 @@ export function Test() {
     });
 
   return (
-    <div>
+    <>
       <div className="songOptions">
         <div>{songNotif()}</div>
         <div>Hi</div>
       </div>
-    </div>
+    </>
   );
 }

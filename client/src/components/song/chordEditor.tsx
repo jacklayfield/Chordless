@@ -18,8 +18,7 @@ export const ChordEditor: React.FC<EPROPS> = ({
   deleteChord,
 }) => {
   return (
-    <div>
-      {" "}
+    <>
       <div className="center-div mb-2">
         <div onClick={() => addChord(-1)} className="new-chord-btn">
           <i className="fa-solid fa-plus fa-lg"></i>
@@ -70,6 +69,6 @@ export const ChordEditor: React.FC<EPROPS> = ({
           </div>
         );
       })}{" "}
-    </div>
+    </>
   );
 };

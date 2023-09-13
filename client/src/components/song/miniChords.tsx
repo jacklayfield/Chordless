@@ -24,7 +24,7 @@ export const MiniChords: React.FC<MPROPS> = ({ chords }) => {
     []
   );
   return (
-    <div>
+    <>
       {chunkedChords.map((chordSet, i) => {
         return (
           <div key={i}>
@@ -52,6 +52,6 @@ export const MiniChords: React.FC<MPROPS> = ({ chords }) => {
           </div>
         );
       })}
-    </div>
+    </>
   );
 };

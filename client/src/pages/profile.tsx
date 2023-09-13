@@ -66,7 +66,7 @@ export const Profile = () => {
     return <ErrorView errType={403} />;
   } else {
     return (
-      <div>
+      <>
         <ToastContainer autoClose={2000} />
         <div className="inner-div">
           <img className="profile-img" src={defaultImg} alt="" /> <br />
@@ -133,7 +133,7 @@ export const Profile = () => {
             </div>
           )}
         </div>
-      </div>
+      </>
     );
   }
 };

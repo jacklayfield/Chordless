@@ -12,11 +12,15 @@ export const Login = () => {
   const google = () => {
     window.open(BASE_URL_API + "/auth-google/google", "_self");
   };
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -25,13 +29,13 @@ export const Login = () => {
       setSuccess(false);
       setError(false);
       const res = await axios.post(BASE_URL_API + "/api/auth-standard/login", {
-        data: { username, password },
+        data: { form },
       });
       if (res.status === 200) {
         setLoading(false);
         setSuccess(true);
         //Store the username in localStorage for setting NavBar
-        localStorage.setItem("username", String(username));
+        localStorage.setItem("username", String(form.username));
         await new Promise((r) => setTimeout(r, 1000));
         window.open("/mySongs", "_self");
       }
@@ -42,6 +46,15 @@ export const Login = () => {
         console.error(error);
       }
     }
+  };
+
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+
+    setForm((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   if (loading) {
@@ -68,17 +81,19 @@ export const Login = () => {
           <div className="input-container">
             <input
               type="text"
+              name="username"
               placeholder="username"
               required
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={handleFormChange}
             />
           </div>
           <div className="input-container bottom">
             <input
               type="password"
+              name="password"
               placeholder="password"
               required
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={handleFormChange}
             />
           </div>
           <button className="login-btn">Login</button>

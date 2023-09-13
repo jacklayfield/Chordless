@@ -16,7 +16,7 @@ addresses this need. <br />
 
 In hindsight, Redux or Context could have been useful for state management when it came to the chords especially things like "muted" strings which needed to be passed around through several layers of the system. Prop drilling definitely became a slight concern here, but I do not think it was a huge issue as most cases were 2/3 levels deep with the exception of a few cases where we were 3-5 levels deep. <br />
 Structurally, I think this project was well organized. <br />
-Minor cleanup could help readability, and best practices could have been more consistent.  <br />
+Minor cleanup could help readability, and best practices could have been more consistent. <br />
 
 ## Stack
 
@@ -105,12 +105,12 @@ And that's it! <br />
 [X] General: If user not signed in, do NOT let them create a song <br />
 [X] General: "Create song" window redirection and popup after submit <br />
 [X] Cleanup: Organize css files <br />
-[] Cleanup: Change unnececessary div wrappers to fragments <br />
+[X] Cleanup: Change unnececessary div wrappers to fragments <br />
 [] Cleanup: Group imports <br />
 [X] Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
 [X] Improvement: Break down larger components into smaller sub-components<br />
 [X] Improvement: Create components for general styling <br />
-[] Cleanup: Change conditional rendering to be if else when more than 2 possibilities <br />
+[X] Cleanup: Change conditional rendering to be if else when more than 2 possibilities <br />
 [X] Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
 [] General: Find a better way of handling the page update after updating a song <br />
 [X]General: Apply the token bug error to all post requests and perhaps create a general function for this behavior <br />

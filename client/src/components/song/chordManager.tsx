@@ -9,7 +9,6 @@ import { playGuitarBody } from "../../utils/sound";
 interface CPROPS {
   chords: CHORD_TYPE[];
   updateSong: Function;
-  createFlag: boolean;
 }
 
 // These arrays represent the flagged chordIds for the specified action.
@@ -18,11 +17,7 @@ let deletedChords: number[] = [];
 
 let newChordsCount = 0;
 
-export const ChordManager: React.FC<CPROPS> = ({
-  chords,
-  updateSong,
-  createFlag,
-}) => {
+export const ChordManager: React.FC<CPROPS> = ({ chords, updateSong }) => {
   const [localChords, setLocalChords] = useState<CHORD_TYPE[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -120,16 +115,7 @@ export const ChordManager: React.FC<CPROPS> = ({
     setEditMode(false);
   };
 
-  return createFlag ? (
-    <div>
-      <ChordEditor
-        chords={localChords}
-        addChord={addChord}
-        updateChords={updateChordsLocally}
-        deleteChord={deleteChordsLocally}
-      />
-    </div>
-  ) : (
+  return (
     <div className="center-div">
       {editMode ? (
         <>

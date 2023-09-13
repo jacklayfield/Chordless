@@ -163,7 +163,7 @@ export const SingleSong = () => {
     return <ErrorView errType={error} />;
   } else {
     return (
-      <div>
+      <>
         <ToastContainer autoClose={8000} />
 
         <button
@@ -208,11 +208,7 @@ export const SingleSong = () => {
 
         {view === "standard" ? (
           <div className="inner-div">
-            <ChordManager
-              chords={chords}
-              updateSong={updateSong}
-              createFlag={false}
-            />
+            <ChordManager chords={chords} updateSong={updateSong} />
           </div>
         ) : (
           <div>
@@ -225,7 +221,7 @@ export const SingleSong = () => {
           hideModal={hideConfirmationModal}
           message={deleteMessage}
         />
-      </div>
+      </>
     );
   }
 };
