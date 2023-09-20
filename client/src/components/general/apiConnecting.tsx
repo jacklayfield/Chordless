@@ -13,6 +13,14 @@ export const ApiConnecting = () => {
           Note: If this goes on for more than a few minutes it is likely that
           something else is wrong.
         </h3>
+        <br />
+        <h2>
+          See the demo here!
+          <a href="https://www.youtube.com/watch?v=N0fiR1U1zzc">
+            {" "}
+            https://www.youtube.com/watch?v=N0fiR1U1zzc
+          </a>
+        </h2>
       </div>
     </div>
   );
