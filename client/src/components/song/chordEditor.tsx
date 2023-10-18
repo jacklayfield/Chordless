@@ -1,6 +1,4 @@
 import { CHORD_TYPE } from "../../pages/createSong";
-import { Col, Row } from "react-bootstrap";
-import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
 import { EditableChord } from "./editableChord";
 import { playGuitarBody } from "../../utils/sound";
 

@@ -16,10 +16,7 @@ export const ApiConnecting = () => {
         <br />
         <h2>
           See the demo here!
-          <a href="https://www.youtube.com/watch?v=N0fiR1U1zzc">
-            {" "}
-            https://www.youtube.com/watch?v=N0fiR1U1zzc
-          </a>
+          <a href="https://www.youtube.com/watch?v=N0fiR1U1zzc"> DEMO</a>
         </h2>
       </div>
     </div>

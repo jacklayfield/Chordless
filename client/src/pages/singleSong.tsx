@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { ChordManager } from "../components/song/chordManager";
 import { MiniChords } from "../components/song/miniChords";
-import { useViewport } from "../hooks/useViewport";
 import { ViewMenu } from "../components/general/viewMenu";
 import { DeleteConfirmation } from "../components/general/deleteConfirmation";
 import React from "react";
@@ -23,6 +22,7 @@ import { Loading } from "../components/general/loading";
 import { toast, ToastContainer } from "react-toastify";
 import CurrentUserContext from "./../context/context";
 import { ApiConnecting } from "../components/general/apiConnecting";
+import { Container } from "react-bootstrap";
 
 export const SingleSong = () => {
   const { handleLogout, apiIsLoading } = React.useContext(CurrentUserContext);
@@ -152,9 +152,6 @@ export const SingleSong = () => {
     setEditName(false);
   };
 
-  const { width } = useViewport();
-  const breakpoint_mid_window = 1440;
-  const breakpoint_small_window = 1160;
   if (apiIsLoading) {
     return <ApiConnecting />;
   } else if (loading) {
@@ -211,9 +208,9 @@ export const SingleSong = () => {
             <ChordManager chords={chords} updateSong={updateSong} />
           </div>
         ) : (
-          <div>
+          <Container>
             <MiniChords chords={chords} />
-          </div>
+          </Container>
         )}
         <DeleteConfirmation
           showModal={displayConfirmationModal}

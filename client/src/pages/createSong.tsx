@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CurrentUserContext from "../context/context";
 import { toast, ToastContainer } from "react-toastify";
 import { ChordEditor } from "../components/song/chordEditor";
 import { OptionsMenu } from "../components/song/optionsMenu";
 import { createSongRequest } from "../api/apiSong";
-import { apiRequest, BASE_URL_CLIENT } from "../api/request";
+import { apiRequest } from "../api/request";
 import { findAxiosError } from "../api/error";
 import { ApiConnecting } from "../components/general/apiConnecting";
 import { Loading } from "../components/general/loading";
@@ -21,17 +21,9 @@ export const CreateSong = () => {
   const { currentUser, authIsLoading, apiIsLoading } =
     React.useContext(CurrentUserContext);
 
-  const [currFrets, setCurrFrets] = useState<number[]>([0, 0, 0, 0, 0, 0]);
-
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
   const [songName, setSongName] = useState<String>("my song");
-
-  const updateCurrFrets = (string: number, fret: number) => {
-    let newFrets = [...currFrets];
-    newFrets[string] = fret !== undefined ? fret : -1;
-    setCurrFrets(newFrets);
-  };
 
   const updateChords = async (
     newFrets: number[],
@@ -92,7 +84,6 @@ export const CreateSong = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       setChords([]);
-      setCurrFrets([0, 0, 0, 0, 0, 0]);
       (document.getElementById("song-name") as HTMLInputElement).value = "";
     }
     // On failure
@@ -117,54 +108,53 @@ export const CreateSong = () => {
     return <Loading />;
   } else {
     return (
-      <div className="inner-div">
-        <div className="center-div">
-          <ToastContainer autoClose={8000} />
-          <h3>Song Name</h3>
-          <input
-            id="song-name"
-            className="mb-4"
-            type="text"
-            placeholder="my song"
-            required
-            onChange={(event) => setSongName(event.target.value)}
-          ></input>
+      <div className="inner-div center-div">
+        <ToastContainer autoClose={8000} />
+        <h3>Song Name</h3>
+        <input
+          id="song-name"
+          className="mb-4"
+          type="text"
+          placeholder="my song"
+          required
+          onChange={(event) => setSongName(event.target.value)}
+        ></input>
 
-          {chords.length > 0 ? (
-            <div className="center-div">
-              <OptionsMenu
-                confirmFunction={handleSubmit}
-                cancelFunction={restartSong}
-                confirmText={"Save Song"}
-                cancelText={"Restart / Cancel"}
-              />
-            </div>
-          ) : (
-            <div className="chords">
-              No chords added to this song yet! Click the plus (+) button to add
-              your first chord!{" "}
-            </div>
-          )}
-          {!currentUser?.username && !authIsLoading && chords.length !== 0 && (
-            <div className="login-status">
-              WARNING: You are NOT logged in. Feel free to play around, but you
-              will NOT be able to save progress!
-            </div>
-          )}
+        {chords.length > 0 ? (
+          <>
+            <OptionsMenu
+              confirmFunction={handleSubmit}
+              cancelFunction={restartSong}
+              confirmText={"Save Song"}
+              cancelText={"Restart / Cancel"}
+            />
+          </>
+        ) : (
+          <div className="chords">
+            No chords added to this song yet! Click the plus (+) button to add
+            your first chord!{" "}
+          </div>
+        )}
+        {!currentUser?.username && !authIsLoading && chords.length !== 0 && (
+          <div className="login-status">
+            WARNING: You are NOT logged in. Feel free to play around, but you
+            will NOT be able to save progress!
+          </div>
+        )}
 
-          <ChordEditor
-            chords={chords}
-            addChord={addChord}
-            updateChords={updateChords}
-            deleteChord={deleteChord}
-          />
-        </div>
-        <div>
+        <ChordEditor
+          chords={chords}
+          addChord={addChord}
+          updateChords={updateChords}
+          deleteChord={deleteChord}
+        />
+
+        <>
           * Please note that chords with a "~" preceding them denote chords that
           are not their true form, but are inferred. For example, an "A" chord
           in its true form would have a muted "low E" (A), but an "A" chord is
           still inferred from leaving the "low E" open (~A).
-        </div>
+        </>
       </div>
     );
   }

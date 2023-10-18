@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CurrentUserContext from "../context/context";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import axios from "axios";
 import { Songs } from "../components/song/songs";
 import "../styling/song.css";
@@ -72,14 +72,16 @@ export const MySongs = () => {
                   make your first song!
                 </div>
               )}
-              <Row>
-                <Col>
-                  <Songs songs={half1} />
-                </Col>
-                <Col>
-                  <Songs songs={half2} />
-                </Col>
-              </Row>
+              <Container>
+                <Row>
+                  <Col>
+                    <Songs songs={half1} />
+                  </Col>
+                  <Col>
+                    <Songs songs={half2} />
+                  </Col>
+                </Row>
+              </Container>
             </div>
           ) : (
             <div>
