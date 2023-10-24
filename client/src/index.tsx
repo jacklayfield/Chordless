@@ -7,6 +7,7 @@ import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import { CurrentUserProvider } from "./context/context";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { NavBar } from "./components/theme/navBar";
+import { ModeSwitch } from "./components/general/modeSwitch";
 
 disableReactDevTools();
 
@@ -18,6 +19,7 @@ root.render(
     <CurrentUserProvider>
       <BrowserRouter>
         <NavBar />
+        <ModeSwitch />
         <Routes>
           <Route path="/*" element={<App />} />
         </Routes>
