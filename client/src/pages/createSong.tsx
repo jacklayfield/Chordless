@@ -113,7 +113,7 @@ export const CreateSong = () => {
         <h3>Song Name</h3>
         <input
           id="song-name"
-          className="mb-4"
+          className="song-input mb-4"
           type="text"
           placeholder="my song"
           required

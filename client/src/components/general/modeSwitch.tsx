@@ -5,7 +5,8 @@ export const ModeSwitch = () => {
 
   const setMode = () => {
     if (
-      document.querySelector("body")?.getAttribute("data-theme") === "light"
+      document.querySelector("body")?.getAttribute("data-theme") === "light" ||
+      document.querySelector("body")?.getAttribute("data-theme") === null
     ) {
       document.querySelector("body")?.setAttribute("data-theme", "dark");
     } else {
@@ -15,8 +16,12 @@ export const ModeSwitch = () => {
   };
 
   return (
-    <div className="center-div mt-2">
-      <button onClick={setMode}>Change Mode</button>
+    <div className="center-div pt-4">
+      <label>Dark / Light Mode</label>
+      <label className="switch">
+        <input type="checkbox" onClick={setMode} />
+        <span className="slider" />
+      </label>
     </div>
   );
 };

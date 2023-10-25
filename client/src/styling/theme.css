@@ -12,7 +12,7 @@ body {
 
 .section-titles {
   background: #ff914e;
-  color: lightgray;
+  color: var(--text_color);
 }
 
 .section-titles-text {
@@ -58,6 +58,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 10px;
+  color: var(--text_color);
 }
 
 a:link {
@@ -78,6 +79,7 @@ a:link {
 .inner-div {
   padding: 20px;
   font-size: 20px;
+  color: var(--text_color);
 }
 
 .flex-container {
@@ -138,4 +140,42 @@ a:link {
   100% {
     transform: translate(24px, 0);
   }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 34px;
+  background-color: var(--switch_background);
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 46px;
+  left: 4px;
+  bottom: 4px;
+  background-color: var(--switch_slider);
+  transition: 0.4s;
+}
+
+input:checked + .slider:before {
+  transform: translateX(46px);
 }

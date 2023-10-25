@@ -148,7 +148,7 @@
 }
 
 .chords {
-  background: #e6e6e6;
+  background: var(--body_background);
   padding: 1rem;
   border-radius: 0.5rem;
 }
