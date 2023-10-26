@@ -18,6 +18,16 @@
   --hover_button: #303030;
 }
 
+[data-theme="madness"] {
+  --body_background: #6900af;
+  --col_background: rgb(36, 0, 199);
+  --switch_background: rgb(190, 0, 89);
+  --switch_slider: #00c2db;
+  --text_color: #00ff0d;
+  --warning: #38a722;
+  --hover_button: #ff00ea;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

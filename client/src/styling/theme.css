@@ -173,7 +173,6 @@ a:link {
   left: 4px;
   bottom: 4px;
   background-color: var(--switch_slider);
-  transition: 0.4s;
 }
 
 input:checked + .slider:before {
