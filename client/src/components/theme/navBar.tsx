@@ -68,7 +68,7 @@ export const NavBar = () => {
                       ></i>
                       Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item>
+                    <NavDropdown.Item href="/preferences">
                       <i
                         style={{ color: "gray", paddingRight: "10px" }}
                         className="fa-solid fa-gear"

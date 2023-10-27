@@ -12,6 +12,7 @@ import { SingleSong } from "./pages/singleSong";
 import { Test } from "./pages/test";
 import { ErrorView } from "./components/general/errorView";
 import { Layout } from "./components/theme/layout";
+import { Preferences } from "./pages/preferences";
 
 function App() {
   return (
@@ -32,6 +33,10 @@ function App() {
       <Route
         path="/profile"
         element={<Layout children={<Profile />} name={"Profile"} />}
+      />
+      <Route
+        path="/preferences"
+        element={<Layout children={<Preferences />} name={"Preferences"} />}
       />
       <Route
         path="/song/:songid"

@@ -16,10 +16,9 @@ body {
 }
 
 .section-titles-text {
-  font-weight: 300;
+  font-weight: 600;
   color: #383838;
   font-size: 35px;
-  font-family: "Trebuchet MS";
   margin-left: 15px;
 }
 
@@ -177,4 +176,8 @@ a:link {
 
 input:checked + .slider:before {
   transform: translateX(46px);
+}
+
+.toast {
+  background-color: var(--col_background);
 }
