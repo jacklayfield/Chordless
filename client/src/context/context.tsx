@@ -9,6 +9,7 @@ export type UserType = {
   email: string;
   name: string | null;
   bio: string | null;
+  preferences: string[];
 };
 export type UserContext = {
   currentUser?: UserType;
@@ -66,6 +67,7 @@ export const CurrentUserProvider = ({ children }: ProviderProps) => {
         email: String(res.data.email),
         name: res.data.name,
         bio: res.data.bio,
+        preferences: res.data.preferences,
       };
       setCurrentUser(user);
       setAuthIsLoading(false);

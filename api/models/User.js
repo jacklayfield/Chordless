@@ -31,6 +31,10 @@ module.exports = sequelize.define(
       field: "bio",
       type: Sequelize.STRING,
     },
+    preferences: {
+      field: "preferences",
+      type: Sequelize.STRING,
+    },
   },
   { timestamps: false }
 );

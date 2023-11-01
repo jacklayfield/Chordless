@@ -21,7 +21,8 @@ router.get("/userdata", async (req, res) => {
     const username = user.username;
     const name = user.name;
     const bio = user.bio;
-    parsedUser = { id, username, email, name, bio };
+    const preferences = user.preferences;
+    parsedUser = { id, username, email, name, bio, preferences };
 
     res.json(parsedUser);
   } catch (error) {

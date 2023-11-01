@@ -8,11 +8,16 @@ import { toast, ToastContainer } from "react-toastify";
 export const Preferences = () => {
   const { currentUser, authIsLoading, handleLogout } =
     React.useContext(CurrentUserContext);
+  const [userPreferences, setUserPreferences] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchUserDetails = () => {};
+    const fetchUserDetails = () => {
+      if (!authIsLoading && currentUser?.preferences != null) {
+        setUserPreferences(currentUser.preferences);
+      }
+    };
     fetchUserDetails();
-  }, [authIsLoading]);
+  }, [authIsLoading, currentUser?.preferences]);
 
   if (authIsLoading) {
     return <Loading />;
@@ -29,6 +34,8 @@ export const Preferences = () => {
            * guitar sound
            *
            */}
+
+          {userPreferences}
 
           <div className="preference-item">
             <label className="preference-item-title">Guitar Sound</label>

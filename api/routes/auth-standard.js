@@ -14,9 +14,15 @@ router.post("/create", async (req, res) => {
     const username = req.body.data.form.username;
     const email = req.body.data.form.email;
 
+    // Default preferences
+    const preferences = ["Acoustic", "Classic"];
+
     const [results, meta] = await sequelize.query(
-      "INSERT INTO users (username, email, password) VALUES($1, $2, $3) RETURNING *",
-      { bind: [username, email, hashedPass], type: QueryTypes.INSERT }
+      "INSERT INTO users (username, email, password, preferences) VALUES($1, $2, $3, $4) RETURNING *",
+      {
+        bind: [username, email, hashedPass, preferences],
+        type: QueryTypes.INSERT,
+      }
     );
 
     res.json(results);
