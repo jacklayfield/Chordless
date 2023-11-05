@@ -209,7 +209,11 @@ export const SingleSong = () => {
             <ChordManager
               chords={chords}
               updateSong={updateSong}
-              sound={currentUser?.preferences[0] || "Acoustic"}
+              sound={
+                currentUser?.preferences != undefined
+                  ? currentUser.preferences[0]
+                  : "Acoustic"
+              }
             />
           </div>
         ) : (

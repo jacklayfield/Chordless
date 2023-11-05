@@ -147,7 +147,11 @@ export const CreateSong = () => {
           addChord={addChord}
           updateChords={updateChords}
           deleteChord={deleteChord}
-          sound={currentUser?.preferences[0] || "Acoustic"}
+          sound={
+            currentUser?.preferences != undefined
+              ? currentUser.preferences[0]
+              : "Acoustic"
+          }
         />
 
         <>
