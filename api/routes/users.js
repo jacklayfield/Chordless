@@ -72,4 +72,27 @@ router.put("/updateName", async (req, res) => {
   }
 });
 
+router.put("/updatePreferences", async (req, res) => {
+  try {
+    const userId = jwt.verify(req.cookies.token, process.env.SECRET).id;
+
+    const user = await User.findOne({
+      where: { id: userId },
+    });
+
+    const preferences = req.body.data.preferences;
+
+    console.log(preferences);
+
+    const [results, meta] = await sequelize.query(
+      "UPDATE users SET preferences = ($1) WHERE id = ($2) RETURNING *",
+      { bind: [preferences, user.id], type: QueryTypes.UPDATE }
+    );
+
+    res.status(200).send();
+  } catch (error) {
+    res.status(403).send(error);
+  }
+});
+
 module.exports = router;

@@ -25,7 +25,8 @@ import { ApiConnecting } from "../components/general/apiConnecting";
 import { Container } from "react-bootstrap";
 
 export const SingleSong = () => {
-  const { handleLogout, apiIsLoading } = React.useContext(CurrentUserContext);
+  const { handleLogout, apiIsLoading, currentUser } =
+    React.useContext(CurrentUserContext);
   const location = useLocation();
   const songid = location.pathname.split("/")[2];
 
@@ -205,7 +206,11 @@ export const SingleSong = () => {
 
         {view === "standard" ? (
           <div className="inner-div">
-            <ChordManager chords={chords} updateSong={updateSong} />
+            <ChordManager
+              chords={chords}
+              updateSong={updateSong}
+              sound={currentUser?.preferences[0] || "Acoustic"}
+            />
           </div>
         ) : (
           <Container>

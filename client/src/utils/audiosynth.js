@@ -39,8 +39,8 @@ let Synth, AudioSynth, AudioSynthInstrument;
     setPublicVar.call(this, "name", b);
     setPrivateVar.call(this, "_soundID", c);
   });
-  setPub("play", function (note, octave, duration) {
-    return this._parent.play(this._soundID, note, octave, duration);
+  setPub("play", function (sound, note, octave, duration) {
+    return this._parent.play(sound, note, octave, duration);
   });
   setPub("generate", function (note, octave, duration) {
     return this._parent.generate(this._soundID, note, octave, duration);

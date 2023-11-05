@@ -7,6 +7,7 @@ interface EPROPS {
   addChord: Function;
   updateChords: Function;
   deleteChord: Function;
+  sound: string;
 }
 
 export const ChordEditor: React.FC<EPROPS> = ({
@@ -14,6 +15,7 @@ export const ChordEditor: React.FC<EPROPS> = ({
   addChord,
   updateChords,
   deleteChord,
+  sound,
 }) => {
   return (
     <>
@@ -36,7 +38,7 @@ export const ChordEditor: React.FC<EPROPS> = ({
                 <button
                   className="chordless-btn sound mb-2"
                   onClick={() =>
-                    playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr)
+                    playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr, sound)
                   }
                 >
                   <i className="fa-solid fa-volume-high"></i>

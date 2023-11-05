@@ -109,7 +109,7 @@ export const CreateSong = () => {
   } else {
     return (
       <div className="inner-div center-div">
-        <ToastContainer autoClose={8000}  />
+        <ToastContainer autoClose={8000} />
         <h3>Song Name</h3>
         <input
           id="song-name"
@@ -147,6 +147,7 @@ export const CreateSong = () => {
           addChord={addChord}
           updateChords={updateChords}
           deleteChord={deleteChord}
+          sound={currentUser?.preferences[0] || "Acoustic"}
         />
 
         <>

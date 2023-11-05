@@ -22,14 +22,32 @@ function getNote(string, fret) {
   return [note, octave];
 }
 
-function playNote(string, fret) {
+function playNote(string, fret, soundNum) {
   const [note, octave] = getNote(string, fret);
   const duration = 1.5;
-  guitar.play(note, octave, duration);
+  console.log(note);
+  guitar.play(soundNum, note, octave, duration);
 }
 
-function playGuitarBody(strings, frets) {
-  frets.forEach((f, s) => strings.includes(s) && playNote(s, f));
+function playGuitarBody(strings, frets, sound) {
+  var soundNum = 2;
+
+  switch (sound) {
+    case "Piano":
+      soundNum = 0;
+      break;
+    case "Organ":
+      soundNum = 1;
+      break;
+    case "Acoustic":
+      soundNum = 2;
+      break;
+    case "EDM":
+      soundNum = 3;
+      break;
+  }
+
+  frets.forEach((f, s) => strings.includes(s) && playNote(s, f, soundNum));
 }
 
 export { playGuitarBody };

@@ -9,6 +9,7 @@ import { playGuitarBody } from "../../utils/sound";
 interface CPROPS {
   chords: CHORD_TYPE[];
   updateSong: Function;
+  sound: string;
 }
 
 // These arrays represent the flagged chordIds for the specified action.
@@ -17,7 +18,11 @@ let deletedChords: number[] = [];
 
 let newChordsCount = 0;
 
-export const ChordManager: React.FC<CPROPS> = ({ chords, updateSong }) => {
+export const ChordManager: React.FC<CPROPS> = ({
+  chords,
+  updateSong,
+  sound,
+}) => {
   const [localChords, setLocalChords] = useState<CHORD_TYPE[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -144,6 +149,7 @@ export const ChordManager: React.FC<CPROPS> = ({ chords, updateSong }) => {
             addChord={addChord}
             updateChords={updateChords}
             deleteChord={deleteChord}
+            sound={sound}
           />
         </div>
       ) : (
@@ -155,7 +161,7 @@ export const ChordManager: React.FC<CPROPS> = ({ chords, updateSong }) => {
                   <button
                     className="chordless-btn sound mb-2"
                     onClick={() =>
-                      playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr)
+                      playGuitarBody([0, 1, 2, 3, 4, 5], chord.chordArr, sound)
                     }
                   >
                     <i className="fa-solid fa-volume-high"></i>
