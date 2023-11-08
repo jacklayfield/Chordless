@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CurrentUserContext from "../context/context";
 import { toast, ToastContainer } from "react-toastify";
 import { ChordEditor } from "../components/song/chordEditor";
@@ -24,6 +24,15 @@ export const CreateSong = () => {
   // Note: Will need this hook for later, when each previously submitted chord will be displayed
   const [chords, setChords] = useState<CHORD_TYPE[]>([]);
   const [songName, setSongName] = useState<String>("my song");
+
+  useEffect(() => {
+    // Simply set the user preference on mount. No need to block page loading as it is already handled by authIsLoading
+    if (currentUser?.preferences) {
+      document
+        .querySelector("body")
+        ?.setAttribute("data-appearance", currentUser?.preferences[1]);
+    }
+  }, [currentUser?.preferences]);
 
   const updateChords = async (
     newFrets: number[],

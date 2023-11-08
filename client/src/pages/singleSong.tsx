@@ -71,7 +71,13 @@ export const SingleSong = () => {
       setLoading(false);
     };
     fetchSong();
-  }, [songid]);
+
+    if (currentUser?.preferences) {
+      document
+        .querySelector("body")
+        ?.setAttribute("data-appearance", currentUser?.preferences[1]);
+    }
+  }, [songid, currentUser?.preferences]);
 
   const handleViewChange = (view: String) => {
     view === "standard" ? setView("standard") : setView("lgScope");

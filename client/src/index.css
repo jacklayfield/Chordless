@@ -6,6 +6,7 @@
   --text_color: #212529;
   --warning: #ff5757;
   --hover_button: #b6b6b6;
+  --fretboard_bg: #402f1f;
 }
 
 [data-theme="dark"] {
@@ -26,6 +27,20 @@
   --text_color: #00ff0d;
   --warning: #38a722;
   --hover_button: #ff00ea;
+}
+
+[data-appearance="Light"] {
+  --fretboard_bg: #d8c9ba;
+}
+
+[data-appearance="Fancy"] {
+  --body_background: #222222;
+  --col_background: rgb(20, 20, 20);
+  --switch_background: rgb(20, 20, 20);
+  --switch_slider: #222222;
+  --text_color: #e0e0e0;
+  --warning: #a11e1e;
+  --hover_button: #303030;
 }
 
 body {

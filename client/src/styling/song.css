@@ -125,3 +125,7 @@
 .new-label {
   animation: shimmer 2s infinite linear;
 }
+
+.song-input {
+  width: 50%;
+}
