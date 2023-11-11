@@ -43,8 +43,12 @@ export const FretMarkersReadOnly: React.FC<FPROPS> = ({ frets, miniFlag }) => {
               : `${stringPositionsMini[i]}`
           }
           r="6"
-          fill={f === 0 ? "#000" : "rgba(255,255,255,0.5)"}
-          stroke={f === 0 ? "#fff" : "#fff"}
+          fill={
+            f === 0
+              ? "var(--fretboard_circle_default)"
+              : "var(--fretboard_circle_selected)"
+          }
+          stroke={"var(--fretboard_circle_stroke)"}
         />
       );
     }

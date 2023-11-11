@@ -7,6 +7,10 @@
   --warning: #ff5757;
   --hover_button: #b6b6b6;
   --fretboard_bg: #402f1f;
+  --fretboard_strings: #fff;
+  --fretboard_circle_selected: rgba(105, 157, 255, 0.8);
+  --fretboard_circle_default: #000;
+  --fretboard_circle_stroke: #fff;
 }
 
 [data-theme="dark"] {
@@ -31,6 +35,10 @@
 
 [data-appearance="Light"] {
   --fretboard_bg: #d8c9ba;
+  --fretboard_strings: #000000;
+  --fretboard_circle_selected: rgba(255, 120, 120, 0.8);
+  --fretboard_circle_default: #fff;
+  --fretboard_circle_stroke: #000000;
 }
 
 [data-appearance="Fancy"] {

@@ -23,7 +23,7 @@ export const FretboardBg: React.FC<FPROPS> = ({ miniFlag }) => {
         y1={pos}
         x2={miniFlag === false ? fbSize.width : fbSize.widthMini}
         y2={pos}
-        stroke="#000"
+        stroke="var(--fretboard_strings)"
         strokeWidth="2"
       />
     );
