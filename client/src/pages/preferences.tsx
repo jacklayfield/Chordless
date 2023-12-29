@@ -1,12 +1,15 @@
-import CurrentUserContext from "./../context/context";
 import React, { useEffect, useState } from "react";
-import "../styling/profile.css";
+import { toast, ToastContainer } from "react-toastify";
+import CurrentUserContext from "./../context/context";
+
 import { Loading } from "../components/general/loading";
 import { ErrorView } from "../components/general/errorView";
-import { toast, ToastContainer } from "react-toastify";
+
 import { apiRequest } from "../api/request";
 import { updatePreferencesRequest } from "../api/apiUser";
 import { findAxiosError } from "../api/error";
+
+import "../styling/profile.css";
 
 export const Preferences = () => {
   const { currentUser, authIsLoading, handleLogout } =

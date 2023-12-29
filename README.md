@@ -95,33 +95,33 @@ And that's it! <br />
 
 #### TODO
 
-[X] Transfer page related elements out of guitar component <br />
-[X] Cleanup: profile/about page styling <br />
-[X] Feature: Add Confirmations for deleting chords/songs <br />
-[X] Bug: Fix bug with selecting top string <br />
-[X] Bug: Refresh tokens not generating token prior to loading page on refresh after real token expired. <br />
-[X] Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
-[X] Bug: Mute buttons with "-0" not showing up on song view. <br />
-[X] General: "Create account" window redirection and popup after submit <br />
-[X] Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
-[X] General: If user not signed in, do NOT let them create a song <br />
-[X] General: "Create song" window redirection and popup after submit <br />
-[X] Cleanup: Organize css files <br />
-[X] Cleanup: Change unnececessary div wrappers to fragments <br />
-[] Cleanup: Group imports <br />
-[X] Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
-[X] Improvement: Break down larger components into smaller sub-components<br />
-[X] Improvement: Create components for general styling <br />
-[X] Cleanup: Change conditional rendering to be if else when more than 2 possibilities <br />
-[X] Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
-[] General: Find a better way of handling the page update after updating a song <br />
-[X]General: Apply the token bug error to all post requests and perhaps create a general function for this behavior <br />
-[] Improvement: Add TimeStamps to songs <br />
-[] Improvement: Add some automated testing <br />
-[X] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
-[] Cleanup: clean up inserts and use model <br />
-[X]Cleanup: get rid of create flag in manager <br />
-[X] Bug: bio/name do not get updated upon token refresh <br/>
-[] Cleanup: Improve css grouping
+- [x] Transfer page related elements out of guitar component <br />
+- [x] Cleanup: profile/about page styling <br />
+- [x] Feature: Add Confirmations for deleting chords/songs <br />
+- [x] Bug: Fix bug with selecting top string <br />
+- [x] Bug: Refresh tokens not generating token prior to loading page on refresh after real token expired. <br />
+- [x] Cleanup: get rid of unnecessary nested try catch blocks in auth route <br />
+- [x] Bug: Mute buttons with "-0" not showing up on song view. <br />
+- [x] General: "Create account" window redirection and popup after submit <br />
+- [x] Bug: Odd logout bug that occours when trying to logout from CreateSong page <br />
+- [x] General: If user not signed in, do NOT let them create a song <br />
+- [x] General: "Create song" window redirection and popup after submit <br />
+- [x] Cleanup: Organize css files <br />
+- [x] Cleanup: Change unnececessary div wrappers to fragments <br />
+- [x] Cleanup: Group imports <br />
+- [x] Cleanup: Consolidate songBuilder / createSong page (No need to have these two separated) <br />
+- [x] Improvement: Break down larger components into smaller sub-components<br />
+- [x] Improvement: Create components for general styling <br />
+- [x] Cleanup: Change conditional rendering to be if else when more than 2 possibilities <br />
+- [x] Bug: While idle for some time, when a post request is performed, a token may expire which would cause the request to fail despite the refresh token being valid <br />
+- [ ] General: Find a better way of handling the page update after updating a song <br />
+- [x]General: Apply the token bug error to all post requests and perhaps create a general function for this behavior <br />
+- [ ] Improvement: Add TimeStamps to songs <br />
+- [ ] Improvement: Add some automated testing <br />
+- [x] Improvement: Handle JWT token confirmation better (add designated middleware section) <br />
+- [ ] Cleanup: clean up inserts and use model <br />
+- [x]Cleanup: get rid of create flag in manager <br />
+- [x] Bug: bio/name do not get updated upon token refresh <br/>
+- [ ] Cleanup: Improve css grouping
 
-[X] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>
+- [x] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>

@@ -1,7 +1,6 @@
 import React from "react";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import { CreateSong } from "./pages/createSong";
 import { About } from "./pages/about";
 import { Login } from "./pages/login";
@@ -13,6 +12,9 @@ import { Test } from "./pages/test";
 import { ErrorView } from "./components/general/errorView";
 import { Layout } from "./components/theme/layout";
 import { Preferences } from "./pages/preferences";
+
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (

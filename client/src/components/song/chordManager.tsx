@@ -1,10 +1,13 @@
 import { useState } from "react";
+
 import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
-import { deepCloneChords } from "../../utils/general";
-import { CHORD_TYPE } from "../../pages/createSong";
 import { ChordEditor } from "./chordEditor";
 import { OptionsMenu } from "./optionsMenu";
+
 import { playGuitarBody } from "../../utils/sound";
+import { deepCloneChords } from "../../utils/general";
+
+import { CHORD_TYPE } from "../../pages/createSong";
 
 interface CPROPS {
   chords: CHORD_TYPE[];

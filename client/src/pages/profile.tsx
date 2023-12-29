@@ -1,12 +1,15 @@
-import defaultImg from "../images/defaultProfile.png";
-import CurrentUserContext from "./../context/context";
 import React, { useEffect, useState } from "react";
-import "../styling/profile.css";
+import { toast, ToastContainer } from "react-toastify";
+import CurrentUserContext from "./../context/context";
+
+import { ErrorView } from "../components/general/errorView";
+
 import { apiRequest } from "../api/request";
 import { updateBioRequest, updateNameRequest } from "../api/apiUser";
 import { Loading } from "../components/general/loading";
-import { ErrorView } from "../components/general/errorView";
-import { toast, ToastContainer } from "react-toastify";
+
+import defaultImg from "../images/defaultProfile.png";
+import "../styling/profile.css";
 
 export const Profile = () => {
   const { currentUser, authIsLoading, handleLogout } =

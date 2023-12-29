@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { Container } from "react-bootstrap";
+import { toast, ToastContainer } from "react-toastify";
+import CurrentUserContext from "./../context/context";
+
 import { ChordManager } from "../components/song/chordManager";
 import { MiniChords } from "../components/song/miniChords";
 import { ViewMenu } from "../components/general/viewMenu";
 import { DeleteConfirmation } from "../components/general/deleteConfirmation";
 import React from "react";
 import { ErrorView } from "../components/general/errorView";
-import { CHORD_TYPE } from "./createSong";
+import { ApiConnecting } from "../components/general/apiConnecting";
+import { Loading } from "../components/general/loading";
+
 import {
   allChordsRequest,
   deleteChordsRequest,
@@ -16,13 +22,11 @@ import {
   updateChordsRequest,
   updateSongNameRequest,
 } from "../api/apiSong";
+
 import { BASE_URL_CLIENT, apiRequest } from "../api/request";
 import { findAxiosError } from "../api/error";
-import { Loading } from "../components/general/loading";
-import { toast, ToastContainer } from "react-toastify";
-import CurrentUserContext from "./../context/context";
-import { ApiConnecting } from "../components/general/apiConnecting";
-import { Container } from "react-bootstrap";
+
+import { CHORD_TYPE } from "./createSong";
 
 export const SingleSong = () => {
   const { handleLogout, apiIsLoading, currentUser } =

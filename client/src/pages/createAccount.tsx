@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import Google from "../images/google.png";
-import axios, { AxiosError } from "axios";
-import { Loading } from "../components/general/loading";
-import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 import { useViewport } from "../hooks/useViewport";
+import axios, { AxiosError } from "axios";
+
+import { Loading } from "../components/general/loading";
+
+import Google from "../images/google.png";
+
+import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 
 export const CreateAccount = () => {
   const { width } = useViewport();

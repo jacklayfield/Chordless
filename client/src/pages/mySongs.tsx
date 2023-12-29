@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import CurrentUserContext from "../context/context";
-import { Row, Col, Container } from "react-bootstrap";
 import axios from "axios";
+import { Row, Col, Container } from "react-bootstrap";
+import CurrentUserContext from "../context/context";
+
 import { Songs } from "../components/song/songs";
-import "../styling/song.css";
 import { Loading } from "../components/general/loading";
+
 import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 import { ApiConnecting } from "../components/general/apiConnecting";
+
+import "../styling/song.css";
 
 export type SONG_TYPE = {
   songName: String;

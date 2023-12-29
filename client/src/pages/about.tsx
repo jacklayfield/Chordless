@@ -1,4 +1,5 @@
 import guitar_player from "../images/guitar_player.jpg";
+
 import "../styling/theme.css";
 
 export const About = () => {

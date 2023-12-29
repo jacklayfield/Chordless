@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import Google from "../images/google.png";
 import axios, { AxiosError } from "axios";
-import "../styling/login.css";
-import { Loading } from "../components/general/loading";
-import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
 import { useViewport } from "../hooks/useViewport";
+
+import { Loading } from "../components/general/loading";
+
+import { BASE_URL_API, BASE_URL_CLIENT } from "../api/request";
+
+import Google from "../images/google.png";
+import "../styling/login.css";
 
 export const Login = () => {
   const { width } = useViewport();

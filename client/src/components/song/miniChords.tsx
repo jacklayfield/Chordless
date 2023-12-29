@@ -1,6 +1,7 @@
-import { CHORD_TYPE } from "../../pages/createSong";
 import { Col, Row } from "react-bootstrap";
 import { FretboardReadOnly } from "../guitar/fretboardReadOnly";
+
+import { CHORD_TYPE } from "../../pages/createSong";
 
 interface MPROPS {
   chords: CHORD_TYPE[];
