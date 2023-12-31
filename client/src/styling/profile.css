@@ -17,8 +17,8 @@
 
 .edit-button {
   border: 0px;
-  background: var(--col_background);
-  color: var(--text_color)
+  background: var(--col_background) !important;
+  color: var(--text_color) !important;
 }
 
 .profile-titles {

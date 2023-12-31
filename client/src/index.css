@@ -41,7 +41,7 @@
   --fretboard_circle_stroke: #000000;
 }
 
-[data-appearance="Fancy"] {
+/* [data-appearance="Fancy"] {
   --body_background: #222222;
   --col_background: rgb(20, 20, 20);
   --switch_background: rgb(20, 20, 20);
@@ -49,7 +49,7 @@
   --text_color: #e0e0e0;
   --warning: #a11e1e;
   --hover_button: #303030;
-}
+} */
 
 body {
   margin: 0;
