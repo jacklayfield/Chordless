@@ -1,3 +1,4 @@
+##UPDATE: Plans to rewrite server in Python or Go in the making. 
 # Chordless
 
 ## [app.chordless.net](https://app.chordless.net)
