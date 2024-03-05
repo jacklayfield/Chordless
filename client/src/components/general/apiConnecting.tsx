@@ -2,16 +2,16 @@ export const ApiConnecting = () => {
   return (
     <div className="p-4">
       <div className="chords">
-        <h1>Hey there... Sorry about this</h1>
+        <h1>Spinning up backend service...</h1>
         <h3>
-          It is likely you've caught the site when the api was made "idle". This
-          page will auto-refresh every 10 seconds until we establish a
-          connection. The woes of hosting for free 😭😭
+          The backend service is spinning up. It was likely made idle due to not
+          being used for 5 consecutive minutes. This page will automatically
+          refresh until a connection is established.
         </h3>
         <br />
         <h3>
-          Note: If this goes on for more than a few minutes it is likely that
-          something else is wrong.
+          Note: If this goes on for more than a minute or so it is likely that
+          something else is wrong. Please report by emailing: layf100@gmail.com.
         </h3>
         <br />
         <h2>
