@@ -5,10 +5,10 @@
   align-items: center;
   padding-top: 6rem;
   padding-bottom: 6rem;
-  color: var(--text_color) !important;
+  color: var(--text_color);
 }
 .cover {
-  background-color: var(--col_background) !important;
+  background-color: var(--col_background);
   width: 40%;
   border-radius: 1rem;
   box-shadow: 0 0.2rem 1.5rem rgb(104, 104, 104);
@@ -35,13 +35,13 @@
 
 input {
   border: none;
-  background-color: var(--body_background) !important;
+  background-color: var(--body_background);
   width: 70%;
   border-radius: 0.5rem;
   text-align: center;
   padding: 1rem;
   font-size: 1.2rem;
-  color: var(--text_color) !important;
+  color: var(--text_color);
 }
 
 input:focus {
@@ -68,9 +68,9 @@ input:focus {
 }
 
 .google {
-  background-color: var(--body_background) !important;
-  transform: scale(1) !important;
-  cursor: not-allowed !important;
+  background-color: var(--body_background);
+  transform: scale(1);
+  cursor: not-allowed;
 }
 
 .icon {
@@ -104,8 +104,8 @@ input:focus {
 }
 
 .login-status {
-  background: var(--warning) !important;
-  color: var(--text_color) !important;
+  background: var(--warning);
+  color: var(--text_color);
   margin-bottom: 20px;
   padding: 10px 10px 10px 10px;
   border-radius: 10px;
@@ -114,5 +114,5 @@ input:focus {
 
 .success {
   background: #4acf69;
-  color: var(--text_color) !important;
+  color: var(--text_color);
 }
