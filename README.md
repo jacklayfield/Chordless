@@ -123,6 +123,5 @@ And that's it! <br />
 - [ ] Cleanup: clean up inserts and use model <br />
 - [x]Cleanup: get rid of create flag in manager <br />
 - [x] Bug: bio/name do not get updated upon token refresh <br/>
-- [ ] Cleanup: Improve css grouping
-
-- [x] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) <br/>
+- [ ] Cleanup: Improve css grouping <br/>
+- [x] Deployment: Deploy app v1! (ensure all major bugs / cleanup addressed) 
